@@ -257,7 +257,390 @@ input:checked + .slider::before{transform:translateX(20px)}
 </div></div>
 
 <script>
-/* PART B goes here — see next message */
+(function(){
+  'use strict';
+
+  // ============================================
+  // STORAGE
+  // ============================================
+  const STORAGE_KEY = 'spur-reminders';
+  const THEME_KEY = 'spur-theme';
+
+  function loadReminders(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function saveReminders(list){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e){}
+  }
+
+  let reminders = loadReminders();
+
+  // ============================================
+  // HELPERS
+  // ============================================
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[c]);
+  }
+
+  function formatTime(t){
+    if (!t) return '';
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr = h % 12 || 12;
+    return `${hr}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+
+  function vibrate(ms){
+    if (navigator.vibrate) navigator.vibrate(ms);
+  }
+
+  // ============================================
+  // CLOCK
+  // ============================================
+  function updateClock(){
+    const n = new Date();
+    let h = n.getHours();
+    const m = String(n.getMinutes()).padStart(2,'0');
+    h = h % 12 || 12;
+    const el = document.getElementById('clock');
+    if (el) el.textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // ============================================
+  // TAB NAVIGATION
+  // ============================================
+  const tabs = document.querySelectorAll('.tab');
+  const screens = document.querySelectorAll('.screen');
+  const navTitle = document.getElementById('navTitle');
+  const navRight = document.getElementById('navRight');
+  const titles = { today:'Today', routine:'Routine', activity:'Activity', settings:'Settings' };
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.screen;
+      tabs.forEach(x => x.classList.toggle('active', x === tab));
+      screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
+      if (navTitle) navTitle.textContent = titles[t] || 'Spur';
+      if (navRight) navRight.style.visibility = (t === 'today') ? 'visible' : 'hidden';
+      const sc = document.querySelector('.screens');
+      if (sc) sc.scrollTop = 0;
+      vibrate(5);
+    });
+  });
+
+  // ============================================
+  // REMINDERS — RENDER
+  // ============================================
+  const listEl = document.getElementById('remindersList');
+  const emptyHint = document.getElementById('emptyHint');
+  const todayBadge = document.getElementById('todayBadge');
+  const completionStat = document.getElementById('completionStat');
+
+  function render(){
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    if (reminders.length === 0) {
+      if (emptyHint) emptyHint.style.display = 'block';
+    } else {
+      if (emptyHint) emptyHint.style.display = 'none';
+
+      reminders.forEach(r => {
+        const wrap = document.createElement('div');
+        wrap.className = 'swipe-wrap';
+
+        const del = document.createElement('div');
+        del.className = 'swipe-delete';
+        del.textContent = 'Delete';
+        del.addEventListener('click', () => removeReminder(r.id));
+
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div class="row-icon" style="background:${r.color}">${r.icon}</div>
+          <div class="row-body">
+            <div class="row-title" style="${r.done ? 'text-decoration:line-through;color:var(--text-secondary)' : ''}">${escapeHtml(r.title)}</div>
+            <div class="row-sub">${formatTime(r.time)} · ${r.repeat}</div>
+          </div>
+          <div class="row-check ${r.done ? 'done' : ''}"></div>
+        `;
+
+        // Check toggle
+        const check = row.querySelector('.row-check');
+        check.addEventListener('click', (e) => {
+          e.stopPropagation();
+          r.done = !r.done;
+          saveReminders(reminders);
+          render();
+          vibrate(8);
+        });
+
+        // Swipe to delete
+        let startX = 0, currentX = 0, swiping = false;
+        row.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          currentX = 0;
+          swiping = true;
+          row.style.transition = 'none';
+        }, { passive: true });
+
+        row.addEventListener('touchmove', (e) => {
+          if (!swiping) return;
+          currentX = e.touches[0].clientX - startX;
+          if (currentX < 0 && currentX > -80) {
+            row.style.transform = `translateX(${currentX}px)`;
+          } else if (currentX <= -80) {
+            row.style.transform = 'translateX(-80px)';
+          }
+        }, { passive: true });
+
+        row.addEventListener('touchend', () => {
+          swiping = false;
+          row.style.transition = 'transform .25s ease';
+          if (currentX < -40) {
+            row.style.transform = 'translateX(-80px)';
+          } else {
+            row.style.transform = 'translateX(0)';
+          }
+        });
+
+        // Tap on row (outside check) resets swipe
+        row.addEventListener('click', () => {
+          if (currentX !== 0) {
+            row.style.transform = 'translateX(0)';
+            currentX = 0;
+          }
+        });
+
+        wrap.appendChild(del);
+        wrap.appendChild(row);
+        listEl.appendChild(wrap);
+      });
+    }
+
+    updateStats();
+  }
+
+  function updateStats(){
+    const total = reminders.length;
+    const done = reminders.filter(r => r.done).length;
+
+    if (todayBadge) {
+      const pending = total - done;
+      if (pending > 0) {
+        todayBadge.textContent = pending;
+        todayBadge.style.display = 'inline-block';
+      } else {
+        todayBadge.style.display = 'none';
+      }
+    }
+
+    if (completionStat) {
+      completionStat.textContent = total === 0 ? '0%' : Math.round((done / total) * 100) + '%';
+    }
+  }
+
+  function removeReminder(id){
+    reminders = reminders.filter(r => r.id !== id);
+    saveReminders(reminders);
+    render();
+    vibrate(15);
+  }
+
+  // ============================================
+  // ADD REMINDER SHEET
+  // ============================================
+  const sheet = document.getElementById('addSheet');
+  const overlay = document.getElementById('sheetOverlay');
+  const titleInput = document.getElementById('reminderTitle');
+  const timeInput = document.getElementById('reminderTime');
+  const iconPicker = document.getElementById('iconPicker');
+
+  let selectedIcon = '🔥';
+  let selectedColor = '#FF9500';
+  let selectedRepeat = 'Once';
+
+  function openSheet(){
+    if (sheet) sheet.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    // Reset form
+    if (titleInput) titleInput.value = '';
+    if (timeInput) timeInput.value = '09:00';
+    selectedRepeat = 'Once';
+    selectedIcon = '🔥';
+    selectedColor = '#FF9500';
+    document.querySelectorAll('.repeat-opt').forEach(b => {
+      b.classList.toggle('selected', b.dataset.repeat === 'Once');
+    });
+    document.querySelectorAll('.icon-opt').forEach(b => {
+      b.classList.toggle('selected', b.dataset.icon === '🔥');
+    });
+    setTimeout(() => titleInput && titleInput.focus(), 350);
+    vibrate(5);
+  }
+
+  function closeSheet(){
+    if (sheet) sheet.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  if (navRight) navRight.addEventListener('click', openSheet);
+  if (overlay) overlay.addEventListener('click', closeSheet);
+  const cancelBtn = document.getElementById('cancelSheet');
+  if (cancelBtn) cancelBtn.addEventListener('click', closeSheet);
+
+  // Repeat picker
+  document.querySelectorAll('.repeat-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.repeat-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedRepeat = btn.dataset.repeat;
+      vibrate(5);
+    });
+  });
+
+  // Icon picker
+  if (iconPicker) {
+    iconPicker.querySelectorAll('.icon-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        iconPicker.querySelectorAll('.icon-opt').forEach(b => b.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedIcon = opt.dataset.icon;
+        selectedColor = opt.dataset.color;
+        vibrate(5);
+      });
+    });
+  }
+
+  // Save reminder
+  const saveBtn = document.getElementById('saveReminder');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const title = (titleInput && titleInput.value.trim()) || 'Untitled';
+      const time = (timeInput && timeInput.value) || '09:00';
+
+      reminders.push({
+        id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+        title,
+        time,
+        repeat: selectedRepeat,
+        icon: selectedIcon,
+        color: selectedColor,
+        done: false,
+        createdAt: Date.now()
+      });
+
+      saveReminders(reminders);
+      render();
+      closeSheet();
+      vibrate(15);
+    });
+  }
+
+  // ============================================
+  // ROUTINE CHECKMARKS (non-persistent demo)
+  // ============================================
+  document.querySelectorAll('[data-check]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      el.classList.toggle('done');
+      vibrate(8);
+    });
+  });
+
+  // ============================================
+  // SEGMENTED CONTROL
+  // ============================================
+  document.querySelectorAll('.segmented').forEach(g => {
+    g.querySelectorAll('.seg').forEach(b => {
+      b.addEventListener('click', () => {
+        g.querySelectorAll('.seg').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        vibrate(5);
+      });
+    });
+  });
+
+  // ============================================
+  // THEME
+  // ============================================
+  const darkToggle = document.getElementById('darkToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
+
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    if (darkToggle) darkToggle.checked = (t === 'dark');
+    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', t === 'dark' ? '#1C1C1E' : '#007AFF');
+  }
+
+  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+  if (darkToggle) {
+    darkToggle.addEventListener('change', () => {
+      applyTheme(darkToggle.checked ? 'dark' : 'light');
+      vibrate(8);
+    });
+  }
+
+  // ============================================
+  // DATA — EXPORT & RESET
+  // ============================================
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const data = JSON.stringify({ reminders, exportedAt: new Date().toISOString() }, null, 2);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(data).then(() => {
+          alert('Data copied to clipboard ✅');
+        }).catch(() => {
+          prompt('Copy your data:', data);
+        });
+      } else {
+        prompt('Copy your data:', data);
+      }
+      vibrate(8);
+    });
+  }
+
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Reset all Spur data? This cannot be undone.')) {
+        reminders = [];
+        saveReminders(reminders);
+        render();
+        vibrate(20);
+      }
+    });
+  }
+
+  // ============================================
+  // SERVICE WORKER (PWA)
+  // ============================================
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {
+        // silently ignore (won't work on file:// or if missing)
+      });
+    });
+  }
+
+  // ============================================
+  // INIT
+  // ============================================
+  render();
+
+  console.log('%c🚀 Spur v0.2 loaded','color:#007AFF;font-weight:bold;font-size:14px');
+})();
 </script>
 </body>
 </html>
