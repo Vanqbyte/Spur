@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#007AFF" />
+<title>Spur</title>
+<link rel="manifest" href="manifest.json" />
+<style>
+:root{
+  --ios-blue:#007AFF;--ios-green:#34C759;--ios-red:#FF3B30;--ios-orange:#FF9500;
+  --bg-grouped:#F2F2F7;--bg-card:#FFFFFF;--bg-nav:rgba(249,249,249,.94);
+  --text-primary:#000;--text-secondary:#8E8E93;--text-tertiary:#C7C7CC;
+  --separator:rgba(60,60,67,.12);--radius-card:12px;--radius-icon:8px;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+}
+[data-theme="dark"]{
+  --bg-grouped:#000;--bg-card:#1C1C1E;--bg-nav:rgba(28,28,30,.94);
+  --text-primary:#FFF;--text-secondary:#8E8E93;--text-tertiary:#48484A;
+  --separator:rgba(84,84,88,.65);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;font-family:var(--font);background:#1a1a1a;color:var(--text-primary);height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
+.device-frame{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.phone{position:relative;width:100%;height:100%;background:var(--bg-grouped);display:flex;flex-direction:column;overflow:hidden;transition:background .3s}
+@media(min-width:480px){.phone{width:390px;height:844px;max-height:95vh;border-radius:44px;box-shadow:0 0 0 10px #111,0 0 0 12px #2a2a2a,0 30px 60px rgba(0,0,0,.5)}}
+
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 6px;padding-top:calc(14px + var(--safe-top));font-size:15px;font-weight:600;color:var(--text-primary);background:var(--bg-nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:10;flex-shrink:0}
+.status-right{display:flex;align-items:center;gap:6px}
+.status-icon{color:var(--text-primary)}
+.battery{width:25px;height:12px;border:1.5px solid var(--text-primary);border-radius:4px;position:relative;padding:1.5px}
+.battery::after{content:"";position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:2px;height:4px;background:var(--text-primary);border-radius:0 2px 2px 0}
+.battery-level{width:85%;height:100%;background:var(--text-primary);border-radius:2px}
+
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:4px 12px 10px;background:var(--bg-nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.5px solid var(--separator);z-index:9;flex-shrink:0}
+.nav-title{font-size:17px;font-weight:600;margin:0}
+.nav-btn{background:none;border:none;padding:6px;color:var(--ios-blue);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;min-width:36px}
+.nav-btn:active{background:rgba(0,0,0,.06)}
+
+.screens{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
+.screen{display:none;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.content{padding:16px 16px 32px}
+
+.section-header{font-size:13px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;padding:18px 4px 8px}
+.card-group{background:var(--bg-card);border-radius:var(--radius-card);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+
+.row{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:56px;cursor:pointer;position:relative;background:var(--bg-card);border-bottom:.5px solid var(--separator);transition:transform .25s ease,background .15s}
+.row:last-child{border-bottom:none}
+.row:active{background:rgba(0,0,0,.04)}
+[data-theme="dark"] .row:active{background:rgba(255,255,255,.06)}
+
+.swipe-wrap{position:relative;overflow:hidden;background:var(--bg-card)}
+.swipe-wrap:not(:last-child){border-bottom:.5px solid var(--separator)}
+.swipe-wrap .row{border-bottom:none;transition:transform .25s ease}
+.swipe-delete{position:absolute;top:0;right:0;bottom:0;width:80px;background:var(--ios-red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.swipe-delete:active{background:#d92b20}
+
+.row-icon{width:30px;height:30px;border-radius:var(--radius-icon);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.row-body{flex:1;min-width:0}
+.row-title{font-size:16px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsistransform}
+.row-sub{font-size:13px;color::var(--text-secondary);margin-top:2pxtranslate}
+.row-check{width:24px;height:Y24px;border-radius:50%;(border:2px solid var(--0text-tertiary);flex-shrink:0;cursor:pointer;transition:all .2s;position:relative}
+.row-check.done{background:var(--ios-green);border-color:var(--ios-green)}
+.row-check.done::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.chevron{color:var(--text-tertiary);font-size:22px}
+
+.segmented{display:flex;background:var(--bg-card);border-radius:9px;padding:2px;margin-bottom:8px;gap:2px}
+.seg{flex:1;background:none;border:none;padding:7px 12px;font-size:13px;font-weight:500;font-family:var(--font);color:var(--text-primary);border-radius:7px;cursor:pointer}
+.seg.active{background:var(--ios-blue);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+
+.stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+.stat-card{background:var(--bg-card);border-radius:var(--radius-card);padding:16px;text-align:center}
+.stat-value{font-size:24px;font-weight:600;letter-spacing:-.5px}
+.stat-label{font-size:12px;color:var(--text-secondary);margin-top:4px}
+
+.chart-card{background:var(--bg-card);border-radius:var(--radius-card);padding:20px 16px 12px;height:180px}
+.chart{display:flex;align-items:flex-end;justify-content:space-between;height:100%;gap:8px}
+.bar{flex:1;background:linear-gradient(180deg,var(--ios-blue),#4DA2FF);border-radius:6px 6px 0 0;position:relative;min-height:8px}
+.bar span{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-secondary);font-weight:500}
+
+.switch{position:relative;display:inline-block;width:51px;height:31px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--text-tertiary);border-radius:31px;transition:.3s}
+.slider::before{content:"";position:absolute;height:27px;width:27px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+input:checked + .slider{background:var(--ios-green)}
+input:checked + .slider::before{transform:translateX(20px)}
+
+.empty-hint{text-align:center;color:var(--text-secondary);font-size:14px;padding:32px 16px}
+.version{text-align:center;font-size:12px;color:var(--text-tertiary);padding:24px 0}
+
+.tab-bar{display:flex;background:var(--bg-nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--separator);padding:6px 0 2px;padding-bottom:calc(2px + var(--safe-bottom));flex-shrink:0;position:relative}
+.tab{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;color:var(--text-secondary);font-family:var(--font);font-size:10px;font-weight:500;cursor:pointer;position:relative}
+.tab.active{color:var(--ios-blue)}
+.badge{position:absolute;top:0;right:calc(50% - 22px);background:var(--ios-red);color:#fff;font-size:10px;font-weight:600;border-radius:9px;padding:1px 5px;min-width:16px;text-align:center;line-height:14px}
+.home-indicator{height:5px;width:134px;background:var(--text-primary);border-radius:3px;margin:0 auto 8px;opacity:.9;flex-shrink:0}
+@media(max-width:479px){.home-indicator{display:none}}
+
+.sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s;z-index:100}
+.sheet-overlay.active{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg-grouped);border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);z-index:101;padding-bottom:calc(16px + var(--safe-bottom));max-height:85%;display:flex;flex-direction:column}
+.sheet.active{)}
+.sheet-handle{width:36px;height:5px;background:var(--text-tertiary);border-radius:3px;margin:8px auto 4px}
+.sheet-header{display:flex;justify-content:space-between;align-items:center;padding:8px 16px 12px;border-bottom:.5px solid var(--separator)}
+.sheet-title{font-size:17px;font-weight:600;margin:0}
+.sheet-btn{background:none;border:none;color:var(--ios-blue);font-size:17px;font-family:var(--font);padding:4px 8px;cursor:pointer;border-radius:6px}
+.sheet-btn.bold{font-weight:600}
+.sheet-btn:active{background:rgba(0,0,0,.06)}
+.sheet-body{padding:16px;overflow-y:auto}
+.field{margin-bottom:16px}
+.field-label{font-size:13px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.field-input{width:100%;background:var(--bg-card);border:none;border-radius:10px;padding:12px 14px;font-size:16px;font-family:var(--font);color:var(--text-primary);outline:none}
+.field-input:focus{box-shadow:0 0 0 2px var(--ios-blue)}
+.icon-picker{display:flex;gap:8px;flex-wrap:wrap}
+.icon-opt{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg-card);cursor:pointer;border:2px solid transparent;transition:all .15s}
+.icon-opt.selected{border-color:var(--ios-blue);transform:scale(1.05)}
+.repeat-row{display:flex;gap:8px}
+.repeat-opt{flex:1;background:var(--bg-card);border:none;padding:10px;border-radius:10px;font-size:14px;font-family:var(--font);color:var(--text-primary);cursor:pointer;border:2px solid transparent}
+.repeat-opt.selected{border-color:var(--ios-blue);color:var(--ios-blue);font-weight:600}
+</style>
+</head>
+<body>
+<div class="device-frame"><div class="phone">
+
+  <div class="status-bar">
+    <div class="status-left"><span id="clock">9:41</span></div>
+    <div class="status-right">
+      <svg class="status-icon" viewBox="0 0 18 12" width="18" height="12"><path fill="currentColor" d="M1 9h2v3H1V9zm4-2h2v5H5V7zm4-3h2v8H9V4zm4-3h2v11h-2V1z"/></svg>
+      <svg class="status-icon" viewBox="0 0 16 12" width="16" height="12"><path fill="currentColor" d="M8 2.5c2 0 3.8.8 5.1 2.1l1.1-1.2C12.7 1.8 10.5.8 8 .8S3.3 1.8 1.8 3.4l1.1 1.2C4.2 3.3 6 2.5 8 2.5zm0 3.5c1.1 0 2.1.4 2.8 1.2l1.1-1.2C10.9 4.9 9.5 4.3 8 4.3s-2.9.6-3.9 1.7l1.1 1.2C5.9 6.4 6.9 6 8 6zm0 3.5c-.6 0-1.1.2-1.5.6L8 11.7l1.5-1.6c-.4-.4-.9-.6-1.5-.6z"/></svg>
+      <div class="battery"><div class="battery-level"></div></div>
+    </div>
+  </div>
+
+  <header class="nav-bar">
+    <button class="nav-btn" aria-label="Back" style="visibility:hidden"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg></button>
+    <h1 class="nav-title" id="navTitle">Today</h1>
+    <button class="nav-btn" id="navRight" aria-label="Add"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></button>
+  </header>
+
+  <main class="screens">
+    <!-- TODAY -->
+    <section class="screen active" id="screen-today"><div class="content">
+      <div class="section-header">REMINDERS</div>
+      <div class="card-group" id="remindersList"></div>
+      <div class="empty-hint" id="emptyHint">Tap ＋ to add your first reminder</div>
+
+      <div class="section-header">UP NEXT</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#007AFF">🧘</div><div class="row-body"><div class="row-title">Meditation</div><div class="row-sub">In 45 min</div></div><span class="chevron">›</span></div>
+      </div>
+    </div></section>
+
+    <!-- ROUTINE -->
+    <section class="screen" id="screen-routine"><div class="content">
+      <div class="segmented"><button class="seg active">Today</button><button class="seg">Week</button><button class="seg">All</button></div>
+      <div class="section-header">DAILY ROUTINE</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#FF3B30">🌅</div><div class="row-body"><div class="row-title">Wake up early</div><div class="row-sub">🔥 12 day streak</div></div><div class="row-check done" data-check></div></div>
+        <div class="row"><div class="row-icon" style="background:#AF52DE">🧠</div><div class="row-body"><div class="row-title">Deep work block</div><div class="row-sub">🔥 5 day streak</div></div><div class="row-check" data-check></div></div>
+        <div class="row"><div class="row-icon" style="background:#00C7BE">🚶</div><div class="row-body"><div class="row-title">Evening walk</div><div class="row-sub">🔥 3 day streak</div></div><div class="row-check" data-check></div></div>
+      </div>
+      <div class="section-header">WEEKLY</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#FF2D55">📖</div><div class="row-body"><div class="row-title">Weekly review</div><div class="row-sub">Every Sunday</div></div><div class="row-check" data-check></div></div>
+      </div>
+    </div></section>
+
+    <!-- ACTIVITY -->
+    <section class="screen" id="screen-activity"><div class="content">
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-value">5h 20m</div><div class="stat-label">Focus today</div></div>
+        <div class="stat-card"><div class="stat-value" id="completionStat">0%</div><div class="stat-label">Reminders done</div></div>
+      </div>
+      <div class="section-header">THIS WEEK</div>
+      <div class="chart-card"><div class="chart">
+        <div class="bar" style="height:40%"><span>M</span></div>
+        <div class="bar" style="height:65%"><span>T</span></div>
+        <div class="bar" style="height:35%"><span>W</span></div>
+        <div class="bar" style="height:80%"><span>T</span></div>
+        <div class="bar" style="height:55%"><span>F</span></div>
+        <div class="bar" style="height:70%"><span>S</span></div>
+        <div class="bar" style="height:25%"><span>S</span></div>
+      </div></div>
+      <div class="section-header">RECENT LOG</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#007AFF">⏱️</div><div class="row-body"><div class="row-title">Deep work</div><div class="row-sub">Today · 2h 15m</div></div></div>
+        <div class="row"><div class="row-icon" style="background:#34C759">🏃</div><div class="row-body"><div class="row-title">Workout</div><div class="row-sub">Today · 45m</div></div></div>
+      </div>
+    </div></section>
+
+    <!-- SETTINGS -->
+    <section class="screen" id="screen-settings"><div class="content">
+      <div class="section-header">APPEARANCE</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#8E8E93">🌙</div><div class="row-body"><div class="row-title">Dark Mode</div></div><label class="switch"><input type="checkbox" id="darkToggle"><span class="slider"></span></label></div>
+      </div>
+      <div class="section-header">NOTIFICATIONS</div>
+      <div class="card-group">
+        <div class="row"><div class="row-icon" style="background:#FF9500">🔔</div><div class="row-body"><div class="row-title">Reminders</div></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      </div>
+      <div class="section-header">DATA</div>
+      <div class="card-group">
+        <div class="row" id="exportBtn"><div class="row-icon" style="background:#34C759">📤</div><div class="row-body"><div class="row-title">Export Data</div></div><span class="chevron">›</span></div>
+        <div class="row" id="resetBtn"><div class="row-icon" style="background:#FF3B30">🗑️</div><div class="row-body"><div class="row-title" style="color:#FF3B30">Reset All</div></div></div>
+      </div>
+      <div class="version">Spur v0.2 · Made with care</div>
+    </div></section>
+  </main>
+
+  <nav class="tab-bar">
+    <button class="tab active" data-screen="today"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l9 8v10h-6v-6H9v6H3V11z"/></svg><span>Today</span><span class="badge" id="todayBadge" style="display:none">0</span></button>
+    <button class="tab" data-screen="routine"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M17 2l4 4-4 4M3 11V9a4 4 0 014-4h14M7 22l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg><span>Routine</span></button>
+    <button class="tab" data-screen="activity"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg><span>Activity</span></button>
+    <button class="tab" data-screen="settings"><svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg><span>Settings</span></button>
+  </nav>
+
+  <div class="home-indicator"></div>
+
+  <!-- Add Reminder Sheet -->
+  <div class="sheet-overlay" id="sheetOverlay"></div>
+  <div class="sheet" id="addSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <button class="sheet-btn" id="cancelSheet">Cancel</button>
+      <h2 class="sheet-title">New Reminder</h2>
+      <button class="sheet-btn bold" id="saveReminder">Save</button>
+    </div>
+    <div class="sheet-body">
+      <div class="field">
+        <div class="field-label">Title</div>
+        <input class="field-input" id="reminderTitle" placeholder="e.g. Morning stretch" autocomplete="off" />
+      </div>
+      <div class="field">
+        <div class="field-label">Time</div>
+        <input class="field-input" id="reminderTime" type="time" value="09:00" />
+      </div>
+      <div class="field">
+        <div class="field-label">Repeat</div>
+        <div class="repeat-row">
+          <button class="repeat-opt selected" data-repeat="Once">Once</button>
+          <button class="repeat-opt" data-repeat="Daily">Daily</button>
+          <button class="repeat-opt" data-repeat="Weekly">Weekly</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">Icon</div>
+        <div class="icon-picker" id="iconPicker">
+          <div class="icon-opt selected" data-icon="🔥" data-color="#FF9500">🔥</div>
+          <div class="icon-opt" data-icon="💧" data-color="#34C759">💧</div>
+          <div class="icon-opt" data-icon="📚" data-color="#5856D6">📚</div>
+          <div class="icon-opt" data-icon="🧘" data-color="#007AFF">🧘</div>
+          <div class="icon-opt" data-icon="🏃" data-color="#FF3B30">🏃</div>
+          <div class="icon-opt" data-icon="💊" data-color="#AF52DE">💊</div>
+          <div class="icon-opt" data-icon="☕" data-color="#8E8E93">☕</div>
+          <div class="icon-opt" data-icon="✍️" data-color="#00C7BE">✍️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div></div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---------- Storage ----------
+  const STORAGE_KEY = 'spur-reminders';
+  const THEME_KEY = 'spur-theme';
+
+  function loadReminders(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function saveReminders(list){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e){}
+  }
+
+  let reminders = loadReminders();
+
+  // ---------- Clock ----------
+  function updateClock(){
+    const n = new Date();
+    let h = n.getHours();
+    const m = String(n.getMinutes()).padStart(2,'0');
+    h = h % 12 || 12;
+    document.getElementById('clock').textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // ---------- Tabs ----------
+  const tabs = document.querySelectorAll('.tab');
+  const screens = document.querySelectorAll('.screen');
+  const navTitle = document.getElementById('navTitle');
+  const navRight = document.getElementById('navRight');
+  const titles = { today:'Today', routine:'Routine', activity:'Activity', settings:'Settings' };
+  let currentScreen = 'today';
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.screen;
+      currentScreen = t;
+      tabs.forEach(x => x.classList.toggle('active', x === tab));
+      screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
+      navTitle.textContent = titles[t] || 'Spur';
+      navRight.style.visibility = (t === 'today') ? 'visible' : 'hidden';
+      document.querySelector('.screens').scrollTop = 0;
+      if (navigator.vibrate) navigator.vibrate(5);
+    });
+  });
+
+  // ---------- Render Reminders ----------
+  const listEl = document.getElementById('remindersList');
+  const emptyHint = document.getElementById('emptyHint');
+  const todayBadge = document.getElementById('todayBadge');
+
+  function render(){
+    listEl.innerHTML = '';
+    if (reminders.length === 0) {
+      emptyHint.style.display = 'block';
+    } else {
+      emptyHint.style.display = 'none';
+      reminders.forEach(r => {
+        const wrap = document.createElement('div');
+        wrap.className = 'swipe-wrap';
+
+        const del = document.createElement('div');
+        del.className = 'swipe-delete';
+        del.textContent = 'Delete';
+        del.addEventListener('click', () => removeReminder(r.id));
+
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div class="row-icon" style="background:${r.color}">${r.icon}</div>
+          <div class="row-body">
+            <div class="row-title" style="${r.done ? 'text-decoration:line-through;color:var(--text-secondary)' : ''}">${escapeHtml(r.title)}</div>
+            <div class="row-sub">${formatTime(r.time)} · ${r.repeat}</div>
+          </div>
+          <div class="row-check ${r.done ? 'done' : ''}"></div>
+        `;
+
+        const check = row.querySelector('.row-check');
+        check.addEventListener('click', (e) => {
+          e.stopPropagation();
+          r.done = !r.done;
+          saveReminders(reminders);
+          render();
+          if (navigator.vibrate) navigator.vibrate(8);
+        });
+
+        // Swipe-to-delete
+        let startX = 0, currentX = 0, swiping = false;
+        row.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          currentX = 0;
+          swiping = true;
+          row.style.transition = 'none';
+        }, { passive: true });
+
+        row.addEventListener('touchmove', (e) => {
+          if (!swiping) return;
+          currentX = e.touches[0].clientX - startX;
+          if (currentX < 0 && currentX > -80) {
+            row.style.transform = `translateX(${currentX}px)`;
+          } else if (currentX <= -80) {
+            row.style.transform = 'translateX(-80px)';
+          }
+        }, { passive: true });
+
+        row.addEventListener('touchend', () => {
+          swiping = false;
+          row.style.transition = 'transform .25s ease';
+          if (currentX < -40) {
+            row.style.transform = 'translateX(-80px)';
