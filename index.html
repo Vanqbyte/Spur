@@ -37,7 +37,7 @@ html,body{margin:0;padding:0;font-family:var(--font);background:var(--bg);color:
 button{font-family:inherit}
 .app{position:fixed;inset:0;display:grid;grid-template-areas:"sidebar main";grid-template-columns:0 1fr;background:var(--bg)}
 .sidebar{grid-area:sidebar;background:var(--bg);border-right:.5px solid var(--hairline);padding:16px;padding-top:calc(16px + var(--safe-top));overflow-y:auto;display:none;flex-direction:column;gap:2px}
-.sidebar-brand{font-size:20px;font-weight:700;letter-spacing:-.4px;padding:8px 12px 20px}
+.sidebar-brand{font-size:20px;font-weight:700;letter-spacing:-.4px;padding:8px 12px 20px;color:var(--accent)}
 .sidebar-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;border:none;background:none;font-size:15px;font-weight:500;color:var(--text-2);cursor:pointer;text-align:left;letter-spacing:-.2px;width:100%;position:relative}
 .sidebar-item:hover{background:var(--surface-inset)}
 .sidebar-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
@@ -46,8 +46,11 @@ button{font-family:inherit}
 .main{grid-area:main;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0}
 .nav{position:relative;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;padding-top:calc(12px + var(--safe-top));background:rgba(249,249,249,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--hairline);flex-shrink:0;min-height:44px;z-index:5}
 [data-theme="dark"] .nav{background:rgba(28,28,30,.82)}
+.nav-logo{font-size:20px;font-weight:700;letter-spacing:-.5px;color:var(--accent);cursor:pointer;background:none;border:none;padding:4px 0;font-family:inherit}
+.nav-logo:active{opacity:.6}
 .nav-title{position:absolute;left:50%;transform:translateX(-50%);font-size:17px;font-weight:600;letter-spacing:-.4px;margin:0;opacity:0;transition:opacity .25s var(--ease)}
 .nav-title.visible{opacity:1}
+.nav-actions{display:flex;align-items:center;gap:2px}
 .nav-btn{background:none;border:none;padding:8px;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;min-width:38px;height:38px}
 .nav-btn:active{transform:scale(.94)}
 .nav-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
@@ -65,39 +68,51 @@ button{font-family:inherit}
 .row-icon{width:32px;height:32px;border-radius:var(--r-icon);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
 .row-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .row-body{flex:1;min-width:0}
-.row-title{font-size:16px;font-weight:500;letter-spacing:-.35px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row-title{font-size:16px;font-weight:500;letter-spacing:-.35px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .25s var(--ease)}
 .row-sub{font-size:14px;color:var(--text-2);letter-spacing:-.15px;margin-top:2px}
 .row-value{font-size:16px;color:var(--text-2);letter-spacing:-.35px}
-.check{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--text-3);flex-shrink:0;cursor:pointer;transition:all .22s var(--spring);position:relative}
-.check.done{background:var(--pillar,var(--accent));border-color:var(--pillar,var(--accent));transform:scale(1.02)}
+.check{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--text-3);flex-shrink:0;cursor:pointer;transition:all .25s var(--spring);position:relative}
+.check.done{background:var(--pillar,var(--accent));border-color:var(--pillar,var(--accent));transform:scale(1.04);animation:checkPop .35s var(--spring)}
 .check.done::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
-.hero{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:24px 20px;display:flex;align-items:center;gap:20px}
+@keyframes checkPop{0%{transform:scale(.85);box-shadow:0 0 0 0 var(--pillar-soft,var(--accent-soft))}60%{transform:scale(1.12);box-shadow:0 0 0 8px transparent}100%{transform:scale(1.04);box-shadow:0 0 0 0 transparent}}
+.hero{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:24px 20px;display:flex;align-items:center;gap:20px;position:relative;transition:box-shadow .5s var(--ease)}
+.hero.flash{animation:heroFlash .9s var(--ease)}
+@keyframes heroFlash{0%,100%{box-shadow:var(--shadow-card)}30%{box-shadow:0 0 0 3px var(--pillar,var(--accent)),0 8px 24px var(--pillar-soft,var(--accent-soft))}}
 .ring{position:relative;width:88px;height:88px;flex-shrink:0}
 .ring svg{transform:rotate(-90deg);display:block}
 .ring-track{fill:none;stroke:var(--pillar-soft,var(--accent-soft));stroke-width:6}
-.ring-fill{fill:none;stroke:var(--pillar,var(--accent));stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .8s var(--spring)}
+.ring-fill{fill:none;stroke:var(--pillar,var(--accent));stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .9s var(--spring)}
 .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;letter-spacing:-.6px}
 .hero-info{flex:1;min-width:0}
 .hero-number{font-size:26px;font-weight:600;letter-spacing:-.7px;line-height:1.15}
 .hero-label{font-size:15px;color:var(--text-2);letter-spacing:-.2px;margin-top:2px}
 .hero-streak{margin-top:10px;font-size:14px;font-weight:500;color:var(--pillar,var(--accent));letter-spacing:-.15px;display:flex;align-items:center;gap:5px}
 .hero-streak svg{width:13px;height:13px;fill:currentColor;stroke:none}
+.hero-msg{position:absolute;bottom:8px;right:20px;font-size:12px;font-weight:600;color:var(--pillar,var(--accent));opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.hero-msg.show{opacity:1;animation:msgIn 1.8s var(--ease)}
+@keyframes msgIn{0%{opacity:0;transform:translateY(4px)}15%{opacity:1;transform:translateY(0)}70%{opacity:1}100%{opacity:0;transform:translateY(0)}}
 .money-btn{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;background:var(--pillar-soft,var(--craft-soft));color:var(--pillar,var(--craft));border:none;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:-.1px;cursor:pointer}
 .money-btn:active{transform:scale(.96)}
 .money-btn-action{background:var(--pillar,var(--craft));color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.month-counter{margin-top:8px;font-size:12px;color:var(--text-2);letter-spacing:-.1px}
+.month-counter strong{color:var(--pillar,var(--accent));font-weight:600}
 .week{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px 12px;display:flex;justify-content:space-between;gap:4px}
-.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px}
-.dot{width:26px;height:26px;border-radius:50%;background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-3);transition:all .3s var(--spring)}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative}
+.dot{width:26px;height:26px;border-radius:50%;background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-3);transition:all .3s var(--spring);position:relative}
 .dot.done{background:var(--pillar,var(--accent));color:#fff;transform:scale(1.05)}
 .dot.partial{background:var(--pillar-soft,var(--accent-soft));color:var(--pillar,var(--accent))}
 .dot.today{box-shadow:0 0 0 2px var(--pillar,var(--accent))}
+.dot .jdot{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--pillar,var(--accent));opacity:.6}
 .day-label{font-size:11px;font-weight:600;color:var(--text-2)}
 .day.today .day-label{color:var(--pillar,var(--accent))}
-.journal{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px}
+.journal{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px;transition:box-shadow .5s var(--ease)}
+.journal.pulse{animation:journalPulse 1s var(--ease)}
+@keyframes journalPulse{0%,100%{box-shadow:var(--shadow-card)}40%{box-shadow:0 0 0 3px var(--pillar-soft,var(--accent-soft))}}
 .journal textarea{width:100%;background:transparent;border:none;font-family:inherit;font-size:16px;color:var(--text);outline:none;resize:none;min-height:52px;letter-spacing:-.35px;line-height:1.45}
 .journal textarea::placeholder{color:var(--text-3)}
 .journal-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px;color:var(--text-3)}
-.journal-saved{color:var(--success);font-weight:600}
+.journal-saved{color:var(--success);font-weight:600;opacity:0;transition:opacity .3s var(--ease)}
+.journal-saved.show{opacity:1}
 .review{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px}
 .review-title{font-size:15px;font-weight:600;letter-spacing:-.25px;margin-bottom:6px}
 .review-text{font-size:15px;color:var(--text-2);letter-spacing:-.2px;line-height:1.5}
@@ -164,7 +179,10 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
 
-/* Today dashboard strip */
+/* Floating plus */
+.float-plus{position:fixed;pointer-events:none;font-size:16px;font-weight:700;color:var(--pillar,var(--accent));z-index:200;animation:floatUp .9s var(--ease) forwards}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.9)}20%{opacity:1;transform:translateY(-8px) scale(1.05)}100%{opacity:0;transform:translateY(-40px) scale(1)}}
+
 .today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
 .today-pillar{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;font-family:inherit;text-align:center}
 .today-pillar:active{transform:scale(.97)}
@@ -219,7 +237,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       <span>Craft</span>
     </button>
     <button class="sidebar-item" data-screen="rel">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       <span>People</span>
     </button>
     <button class="sidebar-item" data-screen="activity">
@@ -234,11 +252,13 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   <div class="main">
     <header class="nav">
-      <button class="nav-btn" style="visibility:hidden"></button>
+      <button class="nav-logo" id="navLogo">Spur</button>
       <h1 class="nav-title" id="navTitle">Today</h1>
-      <button class="nav-btn" id="navAdd" aria-label="Add">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-      </button>
+      <div class="nav-actions">
+        <button class="nav-btn" id="navAdd" aria-label="Add">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
     </header>
 
     <main class="screens" id="screens">
@@ -257,7 +277,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen" id="screen-body" style="--pillar:var(--body);--pillar-soft:var(--body-soft)">
         <h1 class="large-title">Body</h1>
         <div class="content">
-          <div class="hero">
+          <div class="hero" id="bodyHero">
             <div class="ring">
               <svg width="88" height="88" viewBox="0 0 88 88">
                 <circle class="ring-track" cx="44" cy="44" r="38"/>
@@ -272,16 +292,18 @@ input:checked + .slider::before{transform:translateX(20px)}
                 <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
                 <span>Start your streak today</span>
               </div>
+              <div class="month-counter" id="bodyMonth"></div>
             </div>
+            <div class="hero-msg" id="bodyMsg"></div>
           </div>
           <div class="section-header">Today's Habits</div>
           <div class="group" id="bodyHabits"></div>
           <div class="section-header">Last 7 Days</div>
           <div class="week" id="bodyWeek"></div>
           <div class="section-header">Body Journal</div>
-          <div class="journal">
+          <div class="journal" id="bodyJournalCard">
             <textarea id="bodyJournal" placeholder="How does your body feel today?" rows="2"></textarea>
-            <div class="journal-meta"><span id="bodyJournalDate"></span><span class="journal-saved" id="bodyJournalSaved"></span></div>
+            <div class="journal-meta"><span id="bodyJournalDate"></span><span class="journal-saved" id="bodyJournalSaved">Saved</span></div>
           </div>
           <div class="section-header">Weekly Review</div>
           <div class="review">
@@ -295,7 +317,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen" id="screen-craft" style="--pillar:var(--craft);--pillar-soft:var(--craft-soft)">
         <h1 class="large-title">Craft</h1>
         <div class="content">
-          <div class="hero">
+          <div class="hero" id="craftHero">
             <div class="ring">
               <svg width="88" height="88" viewBox="0 0 88 88">
                 <circle class="ring-track" cx="44" cy="44" r="38"/>
@@ -314,16 +336,18 @@ input:checked + .slider::before{transform:translateX(20px)}
                 <span id="moneyToday">₦0 today</span>
                 <span class="money-btn-action">Log</span>
               </button>
+              <div class="month-counter" id="craftMonth"></div>
             </div>
+            <div class="hero-msg" id="craftMsg"></div>
           </div>
           <div class="section-header">Today's Habits</div>
           <div class="group" id="craftHabits"></div>
           <div class="section-header">Last 7 Days</div>
           <div class="week" id="craftWeek"></div>
           <div class="section-header">Craft Journal</div>
-          <div class="journal">
+          <div class="journal" id="craftJournalCard">
             <textarea id="craftJournal" placeholder="What did you build, learn, or earn today?" rows="2"></textarea>
-            <div class="journal-meta"><span id="craftJournalDate"></span><span class="journal-saved" id="craftJournalSaved"></span></div>
+            <div class="journal-meta"><span id="craftJournalDate"></span><span class="journal-saved" id="craftJournalSaved">Saved</span></div>
           </div>
           <div class="section-header">Weekly Review</div>
           <div class="review">
@@ -337,7 +361,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen" id="screen-rel" style="--pillar:var(--rel);--pillar-soft:var(--rel-soft)">
         <h1 class="large-title">People</h1>
         <div class="content">
-          <div class="hero">
+          <div class="hero" id="relHero">
             <div class="ring">
               <svg width="88" height="88" viewBox="0 0 88 88">
                 <circle class="ring-track" cx="44" cy="44" r="38"/>
@@ -352,16 +376,18 @@ input:checked + .slider::before{transform:translateX(20px)}
                 <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
                 <span>Start your streak today</span>
               </div>
+              <div class="month-counter" id="relMonth"></div>
             </div>
+            <div class="hero-msg" id="relMsg"></div>
           </div>
           <div class="section-header">Today's Habits</div>
           <div class="group" id="relHabits"></div>
           <div class="section-header">Last 7 Days</div>
           <div class="week" id="relWeek"></div>
           <div class="section-header">People Journal</div>
-          <div class="journal">
+          <div class="journal" id="relJournalCard">
             <textarea id="relJournal" placeholder="Who did you show up for today? How?" rows="2"></textarea>
-            <div class="journal-meta"><span id="relJournalDate"></span><span class="journal-saved" id="relJournalSaved"></span></div>
+            <div class="journal-meta"><span id="relJournalDate"></span><span class="journal-saved" id="relJournalSaved">Saved</span></div>
           </div>
           <div class="section-header">Weekly Review</div>
           <div class="review">
@@ -379,7 +405,7 @@ input:checked + .slider::before{transform:translateX(20px)}
             <div class="stat"><div class="stat-value" id="bodyStreakStat">0</div><div class="stat-label">Body streak</div></div>
             <div class="stat"><div class="stat-value" id="craftStreakStat">0</div><div class="stat-label">Craft streak</div></div>
             <div class="stat"><div class="stat-value" id="relStreakStat">0</div><div class="stat-label">People streak</div></div>
-            <div class="stat"><div class="stat-value" id="totalStat">0</div><div class="stat-label">Total completions</div></div>
+            <div class="stat"><div class="stat-value" id="totalStat">0</div><div class="stat-label">This week</div></div>
           </div>
           <div class="section-header">Body This Week</div>
           <div class="chart-wrap" style="--pillar:var(--body)"><div class="chart" id="bodyChart"></div></div>
@@ -417,7 +443,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
             </button>
           </div>
-          <div class="version">Spur v0.7</div>
+          <div class="version">Spur v0.8</div>
         </div>
       </section>
     </main>
@@ -565,8 +591,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   const PILLARS = {
     body: {
       label: 'Body',
-      journalPlaceholder: 'How does your body feel today?',
-      reviewText: 'Which habit felt easiest? Which was hardest? What one tweak will you make next week?',
       habits: [
         { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
         { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
@@ -575,8 +599,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     },
     craft: {
       label: 'Craft',
-      journalPlaceholder: 'What did you build, learn, or earn today?',
-      reviewText: 'Did you do focused work? Did you learn something real? Did you ship? Did money move in the right direction?',
       habits: [
         { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
         { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
@@ -586,13 +608,11 @@ input:checked + .slider::before{transform:translateX(20px)}
     },
     rel: {
       label: 'People',
-      journalPlaceholder: 'Who did you show up for today? How?',
-      reviewText: 'Who did you reach out to? Who needs you right now? Did you show up — your way, but on purpose?',
       habits: [
-        { id:'reach',   icon:'phone',  label:'Reach out to one person',  color:'#FF2D55' },
-        { id:'real',    icon:'chat',   label:'One real conversation',    color:'#5856D6' },
-        { id:'notice',  icon:'eye',    label:'Notice what someone needs',color:'#FF9500' },
-        { id:'respect', icon:'shield', label:'Show up for yourself too', color:'#00C7BE' }
+        { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
+        { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
+        { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
+        { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
       ]
     }
   };
@@ -605,7 +625,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
     save(PILLAR_KEY, pillars);
   } else {
-    // Ensure new pillars exist for existing users
     Object.keys(PILLARS).forEach(id => {
       if (!pillars[id]) pillars[id] = { habits: PILLARS[id].habits, days: {} };
     });
@@ -619,6 +638,10 @@ input:checked + .slider::before{transform:translateX(20px)}
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function monthKey(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
   }
   function shortDay(dateStr){
     const d = new Date(dateStr + 'T12:00:00');
@@ -652,42 +675,16 @@ input:checked + .slider::before{transform:translateX(20px)}
     const sign = n < 0 ? '-' : '';
     return sign + '₦' + Math.abs(Math.round(n)).toLocaleString();
   }
-
-  const navItems = document.querySelectorAll('.tab, .sidebar-item');
-  const screens = document.querySelectorAll('.screen');
-  const navTitle = document.getElementById('navTitle');
-  const navAdd = document.getElementById('navAdd');
-  const screensEl = document.getElementById('screens');
-  const titles = { today:'Today', body:'Body', craft:'Craft', rel:'People', activity:'Activity', settings:'Settings' };
-
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const t = item.dataset.screen;
-      if (!t) return;
-      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
-      document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
-      screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
-      if (navTitle){ navTitle.textContent = titles[t] || 'Spur'; navTitle.classList.remove('visible'); }
-      if (navAdd) navAdd.style.visibility = (t === 'today') ? 'visible' : 'hidden';
-      if (screensEl) screensEl.scrollTop = 0;
-      vibrate(5);
-    });
-  });
-
-  if (screensEl && navTitle){
-    screensEl.addEventListener('scroll', () => {
-      navTitle.classList.toggle('visible', screensEl.scrollTop > 40);
-    }, { passive:true });
+  function floatPlus(x, y, color, text){
+    const el = document.createElement('div');
+    el.className = 'float-plus';
+    el.textContent = text || '+1';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.color = color || 'var(--accent)';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 950);
   }
-
-  function getDay(pillarId, key){
-    const p = pillars[pillarId];
-    if (!p.days[key]) p.days[key] = { done: [], journal: '' };
-    if (!p.days[key].done) p.days[key].done = [];
-    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
-    return p.days[key];
-  }
-
   function computeStreak(pillarId){
     const p = pillars[pillarId];
     if (!p) return 0;
@@ -708,18 +705,131 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
     return streak;
   }
+  function monthDaysShown(pillarId){
+    const p = pillars[pillarId];
+    if (!p) return 0;
+    const prefix = monthKey();
+    let count = 0;
+    Object.keys(p.days).forEach(k => {
+      if (k.startsWith(prefix) && p.days[k].done && p.days[k].done.length > 0){
+        count++;
+      }
+    });
+    return count;
+  }
 
-  function toggleHabit(pillarId, habitId){
+  const navItems = document.querySelectorAll('.tab, .sidebar-item');
+  const screens = document.querySelectorAll('.screen');
+  const navTitle = document.getElementById('navTitle');
+  const navAdd = document.getElementById('navAdd');
+  const navLogo = document.getElementById('navLogo');
+  const screensEl = document.getElementById('screens');
+  const titles = { today:'Today', body:'Body', craft:'Craft', rel:'People', activity:'Activity', settings:'Settings' };
+
+  function navigateTo(t){
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
+    document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
+    screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
+    if (navTitle){ navTitle.textContent = titles[t] || 'Spur'; navTitle.classList.remove('visible'); }
+    if (navAdd) navAdd.style.visibility = (t === 'today') ? 'visible' : 'hidden';
+    if (screensEl) screensEl.scrollTop = 0;
+  }
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const t = item.dataset.screen;
+      if (!t) return;
+      navigateTo(t);
+      vibrate(5);
+    });
+  });
+  if (navLogo){
+    navLogo.addEventListener('click', () => {
+      navigateTo('today');
+      vibrate(5);
+    });
+  }
+
+  if (screensEl && navTitle){
+    screensEl.addEventListener('scroll', () => {
+      navTitle.classList.toggle('visible', screensEl.scrollTop > 40);
+    }, { passive:true });
+  }
+
+  function getDay(pillarId, key){
+    const p = pillars[pillarId];
+    if (!p.days[key]) p.days[key] = { done: [], journal: '' };
+    if (!p.days[key].done) p.days[key].done = [];
+    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
+    return p.days[key];
+  }
+
+  function toggleHabit(pillarId, habitId, event){
     const key = todayKey();
     const day = getDay(pillarId, key);
     const idx = day.done.indexOf(habitId);
-    if (idx === -1) day.done.push(habitId);
-    else day.done.splice(idx, 1);
+    const wasDone = idx !== -1;
+    if (wasDone) day.done.splice(idx, 1);
+    else day.done.push(habitId);
     save(PILLAR_KEY, pillars);
-    renderPillar(pillarId);
-    renderTodayStrip();
-    renderActivity();
-    vibrate(10);
+
+    // Feedback when marking done
+    if (!wasDone){
+      // Floating +
+      if (event){
+        const rect = event.target.getBoundingClientRect();
+        const c = getComputedStyle(document.getElementById('screen-' + pillarId)).getPropertyValue('--pillar').trim();
+        floatPlus(rect.left + rect.width/2 - 8, rect.top - 4, c, '+1');
+      }
+      vibrate(12);
+      renderPillar(pillarId);
+      renderTodayStrip();
+      renderActivity();
+
+      // Check for full pillar completion
+      setTimeout(() => checkCompletion(pillarId), 250);
+    } else {
+      vibrate(8);
+      renderPillar(pillarId);
+      renderTodayStrip();
+      renderActivity();
+    }
+  }
+
+  function checkCompletion(pillarId){
+    const p = pillars[pillarId];
+    const key = todayKey();
+    const day = getDay(pillarId, key);
+    const wasFullyDone = day.done.length === p.habits.length;
+
+    if (wasFullyDone){
+      // Flash hero
+      const hero = document.getElementById(pillarId + 'Hero');
+      if (hero) hero.classList.add('flash');
+      setTimeout(() => hero && hero.classList.remove('flash'), 1000);
+
+      // Show message
+      const msg = document.getElementById(pillarId + 'Msg');
+      if (msg){
+        const label = p.label + ' done.';
+        msg.textContent = label;
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 1900);
+      }
+
+      // Milestone check
+      const streak = computeStreak(pillarId);
+      if (streak === 7 || streak === 30 || streak === 100 || streak === 365){
+        setTimeout(() => {
+          if (msg){
+            msg.textContent = streak + ' days.';
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 2200);
+          }
+          vibrate([80, 40, 80, 40, 120]);
+        }, 2000);
+      }
+    }
   }
 
   const RING_CIRC = 238.76;
@@ -731,7 +841,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const total = p.habits.length;
     const doneCount = day.done.length;
     const pct = total === 0 ? 0 : doneCount / total;
-    const prefix = pillarId === 'rel' ? 'rel' : pillarId;
+    const prefix = pillarId;
 
     const ring = document.getElementById(prefix + 'Ring');
     const ringLabel = document.getElementById(prefix + 'RingLabel');
@@ -741,6 +851,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const habitsEl = document.getElementById(prefix + 'Habits');
     const journalEl = document.getElementById(prefix + 'Journal');
     const journalDate = document.getElementById(prefix + 'JournalDate');
+    const monthEl = document.getElementById(prefix + 'Month');
 
     if (ring) ring.setAttribute('stroke-dashoffset', String(RING_CIRC * (1 - pct)));
     if (ringLabel) ringLabel.textContent = Math.round(pct * 100) + '%';
@@ -752,6 +863,11 @@ input:checked + .slider::before{transform:translateX(20px)}
       const txt = streak === 0 ? 'Start your streak today' : `${streak} day streak`;
       if (span) span.textContent = txt;
       else streakEl.textContent = txt;
+    }
+
+    if (monthEl){
+      const days = monthDaysShown(pillarId);
+      monthEl.innerHTML = `<strong>${days}</strong> day${days === 1 ? '' : 's'} shown up this month`;
     }
 
     if (journalDate){
@@ -766,17 +882,27 @@ input:checked + .slider::before{transform:translateX(20px)}
         const d = p.days[k];
         const done = d && d.done && d.done.length === total;
         const partial = d && d.done && d.done.length > 0 && !done;
+        const hasJournal = d && d.journal && d.journal.trim().length > 0;
+
         const cell = document.createElement('div');
         cell.className = 'day';
         if (i === 0) cell.classList.add('today');
+
         const dot = document.createElement('div');
         dot.className = 'dot';
         if (done) dot.classList.add('done');
         else if (partial) dot.classList.add('partial');
         dot.textContent = done ? '✓' : (partial ? '·' : '');
+        if (hasJournal){
+          const jd = document.createElement('span');
+          jd.className = 'jdot';
+          dot.appendChild(jd);
+        }
+
         const label = document.createElement('div');
         label.className = 'day-label';
         label.textContent = shortDay(k);
+
         cell.appendChild(dot);
         cell.appendChild(label);
         weekEl.appendChild(cell);
@@ -798,13 +924,13 @@ input:checked + .slider::before{transform:translateX(20px)}
         `;
         btn.querySelector('.check').addEventListener('click', (e) => {
           e.stopPropagation();
-          toggleHabit(pillarId, h.id);
+          toggleHabit(pillarId, h.id, e);
         });
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
           if (pillarId === 'craft' && h.id === 'deep'){
             openTimer();
           } else {
-            toggleHabit(pillarId, h.id);
+            toggleHabit(pillarId, h.id, e);
           }
         });
         habitsEl.appendChild(btn);
@@ -825,13 +951,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
   }
 
-  // ============================================
-  // TODAY STRIP (3 pillar mini-rings)
-  // ============================================
   const todayStrip = document.getElementById('todayStrip');
-  const PILLAR_COLORS = { body:'var(--body)', craft:'var(--craft)', rel:'var(--rel)' };
   const PILLAR_CLASSES = { body:'t-body', craft:'t-craft', rel:'t-rel' };
-  const SMALL_RING_CIRC = 113.1; // 2π × 18
 
   function renderTodayStrip(){
     if (!todayStrip) return;
@@ -845,7 +966,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 
       const btn = document.createElement('button');
       btn.className = 'today-pillar ' + PILLAR_CLASSES[pid];
-      btn.dataset.pillar = pid;
       btn.innerHTML = `
         <div class="today-pillar-ring">
           <svg width="44" height="44" viewBox="0 0 44 44">
@@ -856,23 +976,12 @@ input:checked + .slider::before{transform:translateX(20px)}
         </div>
         <div class="today-pillar-label">${p.label}</div>
       `;
-      btn.addEventListener('click', () => {
-        // Navigate to that pillar
-        document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.screen === pid));
-        document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.screen === pid));
-        screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + pid));
-        if (navTitle){ navTitle.textContent = titles[pid]; navTitle.classList.remove('visible'); }
-        if (navAdd) navAdd.style.visibility = 'hidden';
-        if (screensEl) screensEl.scrollTop = 0;
-        vibrate(5);
-      });
+      btn.addEventListener('click', () => { navigateTo(pid); vibrate(5); });
       todayStrip.appendChild(btn);
     });
   }
 
-  // ============================================
-  // ACTIVITY
-  // ============================================
+  // Activity
   const bodyStreakStat = document.getElementById('bodyStreakStat');
   const craftStreakStat = document.getElementById('craftStreakStat');
   const relStreakStat = document.getElementById('relStreakStat');
@@ -888,7 +997,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     countUp(craftStreakStat, computeStreak('craft'));
     countUp(relStreakStat, computeStreak('rel'));
 
-    // Total completions in last 7 days
     let total7 = 0;
     ['body','craft','rel'].forEach(pid => {
       const p = pillars[pid];
@@ -972,6 +1080,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   ['body', 'craft', 'rel'].forEach(pid => {
     const el = document.getElementById(pid + 'Journal');
     const savedEl = document.getElementById(pid + 'JournalSaved');
+    const cardEl = document.getElementById(pid + 'JournalCard');
     if (!el) return;
     let timer = null;
     el.addEventListener('input', () => {
@@ -981,17 +1090,21 @@ input:checked + .slider::before{transform:translateX(20px)}
         getDay(pid, key).journal = el.value;
         save(PILLAR_KEY, pillars);
         if (savedEl){
-          savedEl.textContent = 'Saved';
-          setTimeout(() => { savedEl.textContent = ''; }, 1500);
+          savedEl.classList.add('show');
+          setTimeout(() => savedEl.classList.remove('show'), 1600);
         }
+        if (cardEl){
+          cardEl.classList.add('pulse');
+          setTimeout(() => cardEl.classList.remove('pulse'), 1000);
+        }
+        vibrate(6);
+        renderPillar(pid);
         renderActivity();
-      }, 400);
+      }, 700);
     });
   });
 
-  // ============================================
-  // REMINDERS
-  // ============================================
+  // Reminders
   const listEl = document.getElementById('remindersList');
   const emptyReminders = document.getElementById('emptyReminders');
   const todayBadge = document.getElementById('todayBadge');
@@ -1019,7 +1132,8 @@ input:checked + .slider::before{transform:translateX(20px)}
           r.done = !r.done;
           save(REM_KEY, reminders);
           renderReminders();
-          vibrate(8);
+          if (r.done) vibrate(12);
+          else vibrate(8);
         });
         listEl.appendChild(row);
       });
@@ -1080,9 +1194,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     vibrate(15);
   });
 
-  // ============================================
-  // TIMER
-  // ============================================
+  // Timer
   const timerSheet = document.getElementById('timerSheet');
   const timerOverlay = document.getElementById('timerOverlay');
   const timerRing = document.getElementById('timerRing');
@@ -1193,6 +1305,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       renderPillar('craft');
       renderTodayStrip();
       renderActivity();
+      setTimeout(() => checkCompletion('craft'), 300);
     }
     setTimeout(() => closeTimer(), 500);
   }
@@ -1217,9 +1330,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   }
 
-  // ============================================
-  // MONEY
-  // ============================================
+  // Money
   const moneySheet = document.getElementById('moneySheet');
   const moneyOverlay = document.getElementById('moneyOverlay');
   const moneyBtn = document.getElementById('moneyBtn');
@@ -1289,9 +1400,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     vibrate(15);
   });
 
-  // ============================================
-  // THEME / EXPORT / RESET
-  // ============================================
+  // Theme / Export / Reset
   const darkToggle = document.getElementById('darkToggle');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   let savedTheme = null;
@@ -1349,7 +1458,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   }
 
-  // INIT
   renderReminders();
   renderPillar('body');
   renderPillar('craft');
@@ -1357,7 +1465,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   renderTodayStrip();
   renderActivity();
 
-  console.log('%cSpur v0.7','color:#FF2D55;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.8','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
