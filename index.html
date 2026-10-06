@@ -12,6 +12,7 @@
   --accent:#007AFF;--accent-soft:rgba(0,122,255,.12);--accent-hover:rgba(0,122,255,.08);
   --body:#007AFF;--body-soft:rgba(0,122,255,.12);
   --craft:#5856D6;--craft-soft:rgba(88,86,214,.12);
+  --rel:#FF2D55;--rel-soft:rgba(255,45,85,.12);
   --success:#34C759;--destructive:#FF3B30;
   --bg:#F2F2F7;--surface:#FFFFFF;--surface-inset:rgba(120,120,128,.08);
   --text:#000000;--text-2:rgba(60,60,67,.62);--text-3:rgba(60,60,67,.34);
@@ -26,6 +27,7 @@
   --accent:#0A84FF;--accent-soft:rgba(10,132,255,.18);--accent-hover:rgba(10,132,255,.12);
   --body:#0A84FF;--body-soft:rgba(10,132,255,.18);
   --craft:#7B79E0;--craft-soft:rgba(123,121,224,.18);
+  --rel:#FF375F;--rel-soft:rgba(255,55,95,.18);
   --bg:#000000;--surface:#1C1C1E;--surface-inset:rgba(120,120,128,.16);
   --text:#FFFFFF;--text-2:rgba(235,235,245,.6);--text-3:rgba(235,235,245,.3);
   --hairline:rgba(84,84,88,.5);--shadow-card:0 1px 3px rgba(0,0,0,.4);
@@ -80,7 +82,7 @@ button{font-family:inherit}
 .hero-label{font-size:15px;color:var(--text-2);letter-spacing:-.2px;margin-top:2px}
 .hero-streak{margin-top:10px;font-size:14px;font-weight:500;color:var(--pillar,var(--accent));letter-spacing:-.15px;display:flex;align-items:center;gap:5px}
 .hero-streak svg{width:13px;height:13px;fill:currentColor;stroke:none}
-.money-btn{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px 6px 12px;background:var(--pillar-soft,var(--craft-soft));color:var(--pillar,var(--craft));border:none;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:-.1px;cursor:pointer;transition:transform .15s var(--spring)}
+.money-btn{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;background:var(--pillar-soft,var(--craft-soft));color:var(--pillar,var(--craft));border:none;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:-.1px;cursor:pointer}
 .money-btn:active{transform:scale(.96)}
 .money-btn-action{background:var(--pillar,var(--craft));color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
 .week{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px 12px;display:flex;justify-content:space-between;gap:4px}
@@ -127,7 +129,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 .tab{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--text-2);font-size:10px;font-weight:600;cursor:pointer;position:relative}
 .tab.active{color:var(--accent)}
 .tab svg{width:26px;height:26px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.tab .badge{position:absolute;top:2px;right:calc(50% - 20px);background:var(--destructive);color:#fff;font-size:11px;font-weight:600;border-radius:9px;padding:1px 6px;min-width:18px;text-align:center;line-height:14px}
+.tab .badge{position:absolute;top:2px;right:calc(50% - 18px);background:var(--destructive);color:#fff;font-size:11px;font-weight:600;border-radius:9px;padding:1px 6px;min-width:18px;text-align:center;line-height:14px}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s var(--ease);z-index:100}
 .overlay.active{opacity:1;pointer-events:auto}
 .sheet{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .38s var(--spring);z-index:101;padding-bottom:calc(16px + var(--safe-bottom));max-height:88%;display:flex;flex-direction:column;overflow:hidden}
@@ -161,6 +163,21 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary strong{color:var(--text);font-weight:600}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
+
+/* Today dashboard strip */
+.today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
+.today-pillar{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;font-family:inherit;text-align:center}
+.today-pillar:active{transform:scale(.97)}
+.today-pillar-ring{position:relative;width:44px;height:44px}
+.today-pillar-ring svg{transform:rotate(-90deg);display:block}
+.today-pillar-ring .track{fill:none;stroke:currentColor;opacity:.15;stroke-width:4}
+.today-pillar-ring .fill{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s var(--spring)}
+.today-pillar-label{font-size:12px;font-weight:600;color:var(--text);letter-spacing:-.1px}
+.today-pillar-pct{font-size:10px;font-weight:600;color:var(--text-2);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.today-pillar.t-body{color:var(--body)}
+.today-pillar.t-craft{color:var(--craft)}
+.today-pillar.t-rel{color:var(--rel)}
+
 .version{text-align:center;font-size:12px;color:var(--text-3);padding:32px 16px 16px}
 @media (max-width:767px){.sidebar{display:none}.app{grid-template-columns:0 1fr}}
 @media (min-width:768px) and (max-width:1023px){
@@ -201,6 +218,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
       <span>Craft</span>
     </button>
+    <button class="sidebar-item" data-screen="rel">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>People</span>
+    </button>
     <button class="sidebar-item" data-screen="activity">
       <svg viewBox="0 0 24 24"><path d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg>
       <span>Activity</span>
@@ -224,6 +245,9 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen active" id="screen-today">
         <h1 class="large-title">Today</h1>
         <div class="content">
+          <div class="section-header">Your Pillars</div>
+          <div class="today-strip" id="todayStrip"></div>
+
           <div class="section-header">Reminders</div>
           <div class="group" id="remindersList"></div>
           <div class="empty" id="emptyReminders">No reminders yet.<br>Tap + to add your first.</div>
@@ -310,17 +334,59 @@ input:checked + .slider::before{transform:translateX(20px)}
         </div>
       </section>
 
+      <section class="screen" id="screen-rel" style="--pillar:var(--rel);--pillar-soft:var(--rel-soft)">
+        <h1 class="large-title">People</h1>
+        <div class="content">
+          <div class="hero">
+            <div class="ring">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle class="ring-track" cx="44" cy="44" r="38"/>
+                <circle class="ring-fill" id="relRing" cx="44" cy="44" r="38" stroke-dasharray="238.76" stroke-dashoffset="238.76"/>
+              </svg>
+              <div class="ring-label" id="relRingLabel">0%</div>
+            </div>
+            <div class="hero-info">
+              <div class="hero-number" id="relHeroNumber">0 of 4</div>
+              <div class="hero-label">habits done today</div>
+              <div class="hero-streak" id="relStreak">
+                <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
+                <span>Start your streak today</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-header">Today's Habits</div>
+          <div class="group" id="relHabits"></div>
+          <div class="section-header">Last 7 Days</div>
+          <div class="week" id="relWeek"></div>
+          <div class="section-header">People Journal</div>
+          <div class="journal">
+            <textarea id="relJournal" placeholder="Who did you show up for today? How?" rows="2"></textarea>
+            <div class="journal-meta"><span id="relJournalDate"></span><span class="journal-saved" id="relJournalSaved"></span></div>
+          </div>
+          <div class="section-header">Weekly Review</div>
+          <div class="review">
+            <div class="review-title">Sunday reflection</div>
+            <div class="review-text">Who did you reach out to? Who needs you right now? Did you show up — your way, but on purpose?</div>
+          </div>
+          <div class="note">Gentle streaks — miss one day is grace, miss two resets.</div>
+        </div>
+      </section>
+
       <section class="screen" id="screen-activity">
         <h1 class="large-title">Activity</h1>
         <div class="content">
           <div class="stat-grid">
             <div class="stat"><div class="stat-value" id="bodyStreakStat">0</div><div class="stat-label">Body streak</div></div>
             <div class="stat"><div class="stat-value" id="craftStreakStat">0</div><div class="stat-label">Craft streak</div></div>
+            <div class="stat"><div class="stat-value" id="relStreakStat">0</div><div class="stat-label">People streak</div></div>
+            <div class="stat"><div class="stat-value" id="totalStat">0</div><div class="stat-label">Total completions</div></div>
           </div>
           <div class="section-header">Body This Week</div>
           <div class="chart-wrap" style="--pillar:var(--body)"><div class="chart" id="bodyChart"></div></div>
           <div class="section-header">Craft This Week</div>
           <div class="chart-wrap" style="--pillar:var(--craft)"><div class="chart" id="craftChart"></div></div>
+          <div class="section-header">People This Week</div>
+          <div class="chart-wrap" style="--pillar:var(--rel)"><div class="chart" id="relChart"></div></div>
           <div class="section-header">Money This Week</div>
           <div class="money-week" id="moneyWeek"></div>
           <div class="section-header">Recent Journal</div>
@@ -351,7 +417,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
             </button>
           </div>
-          <div class="version">Spur v0.6B</div>
+          <div class="version">Spur v0.7</div>
         </div>
       </section>
     </main>
@@ -369,6 +435,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <button class="tab" data-screen="craft">
         <svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
         <span>Craft</span>
+      </button>
+      <button class="tab" data-screen="rel">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>People</span>
       </button>
       <button class="tab" data-screen="activity">
         <svg viewBox="0 0 24 24"><path d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg>
@@ -392,7 +462,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     <button class="sheet-btn bold" id="saveReminder">Save</button>
   </div>
   <div class="sheet-body">
-    <div class="field"><div class="field-label">Title</div><input class="field-input" id="reminderTitle" placeholder="e.g. Morning stretch" autocomplete="off" /></div>
+    <div class="field"><div class="field-label">Title</div><input class="field-input" id="reminderTitle" placeholder="e.g. Call mum" autocomplete="off" /></div>
     <div class="field"><div class="field-label">Time</div><input class="field-input" id="reminderTime" type="time" value="09:00" /></div>
     <div class="field"><div class="field-label">Repeat</div>
       <div class="chip-row">
@@ -476,7 +546,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
 
   let reminders = load(REM_KEY, []);
-  let money = load(MONEY_KEY, []); // { id, date, amount, type:'in'|'out', note, ts }
+  let money = load(MONEY_KEY, []);
 
   const ICONS = {
     dumbbell: '<svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l1-1 2 2-1 1zM17 14l1-1 2 2-1 1zM4.5 13.5l-2 2 2 2 2-2zM17.5 10.5l2-2-2-2-2 2zM14 4l-1 1 2 2 1-1z"/></svg>',
@@ -485,12 +555,18 @@ input:checked + .slider::before{transform:translateX(20px)}
     bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>',
     brain: '<svg viewBox="0 0 24 24"><path d="M9.5 3A3.5 3.5 0 006 6.5v.3A3.5 3.5 0 004.5 13a3.5 3.5 0 003 3.46V18a3 3 0 003 3M14.5 3A3.5 3.5 0 0118 6.5v.3A3.5 3.5 0 0119.5 13a3.5 3.5 0 01-3 3.46V18a3 3 0 01-3 3"/></svg>',
     coin: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.5 2.5-1.5s2.5.5 2.5 1.5-1 1.5-2.5 1.5-2.5.5-2.5 1.5 1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg>',
-    ship: '<svg viewBox="0 0 24 24"><path d="M12 2v12m0 0l-4-4m4 4l4-4M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3"/></svg>'
+    ship: '<svg viewBox="0 0 24 24"><path d="M12 2v12m0 0l-4-4m4 4l4-4M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>',
+    chat: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+    eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+    shield: '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
   };
 
   const PILLARS = {
     body: {
       label: 'Body',
+      journalPlaceholder: 'How does your body feel today?',
+      reviewText: 'Which habit felt easiest? Which was hardest? What one tweak will you make next week?',
       habits: [
         { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
         { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
@@ -499,11 +575,24 @@ input:checked + .slider::before{transform:translateX(20px)}
     },
     craft: {
       label: 'Craft',
+      journalPlaceholder: 'What did you build, learn, or earn today?',
+      reviewText: 'Did you do focused work? Did you learn something real? Did you ship? Did money move in the right direction?',
       habits: [
         { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
         { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
         { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
         { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
+      ]
+    },
+    rel: {
+      label: 'People',
+      journalPlaceholder: 'Who did you show up for today? How?',
+      reviewText: 'Who did you reach out to? Who needs you right now? Did you show up — your way, but on purpose?',
+      habits: [
+        { id:'reach',   icon:'phone',  label:'Reach out to one person',  color:'#FF2D55' },
+        { id:'real',    icon:'chat',   label:'One real conversation',    color:'#5856D6' },
+        { id:'notice',  icon:'eye',    label:'Notice what someone needs',color:'#FF9500' },
+        { id:'respect', icon:'shield', label:'Show up for yourself too', color:'#00C7BE' }
       ]
     }
   };
@@ -515,6 +604,11 @@ input:checked + .slider::before{transform:translateX(20px)}
       pillars[id] = { habits: PILLARS[id].habits, days: {} };
     });
     save(PILLAR_KEY, pillars);
+  } else {
+    // Ensure new pillars exist for existing users
+    Object.keys(PILLARS).forEach(id => {
+      if (!pillars[id]) pillars[id] = { habits: PILLARS[id].habits, days: {} };
+    });
   }
 
   function todayKey(){
@@ -564,7 +658,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   const navTitle = document.getElementById('navTitle');
   const navAdd = document.getElementById('navAdd');
   const screensEl = document.getElementById('screens');
-  const titles = { today:'Today', body:'Body', craft:'Craft', activity:'Activity', settings:'Settings' };
+  const titles = { today:'Today', body:'Body', craft:'Craft', rel:'People', activity:'Activity', settings:'Settings' };
 
   navItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -596,6 +690,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   function computeStreak(pillarId){
     const p = pillars[pillarId];
+    if (!p) return 0;
     const total = p.habits.length;
     let streak = 0, misses = 0;
     for (let i = 0; i < 365; i++){
@@ -622,6 +717,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     else day.done.splice(idx, 1);
     save(PILLAR_KEY, pillars);
     renderPillar(pillarId);
+    renderTodayStrip();
     renderActivity();
     vibrate(10);
   }
@@ -635,7 +731,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const total = p.habits.length;
     const doneCount = day.done.length;
     const pct = total === 0 ? 0 : doneCount / total;
-    const prefix = pillarId;
+    const prefix = pillarId === 'rel' ? 'rel' : pillarId;
 
     const ring = document.getElementById(prefix + 'Ring');
     const ringLabel = document.getElementById(prefix + 'RingLabel');
@@ -704,7 +800,6 @@ input:checked + .slider::before{transform:translateX(20px)}
           e.stopPropagation();
           toggleHabit(pillarId, h.id);
         });
-        // Deep work → open timer instead of just toggling
         btn.addEventListener('click', () => {
           if (pillarId === 'craft' && h.id === 'deep'){
             openTimer();
@@ -720,7 +815,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       journalEl.value = day.journal || '';
     }
 
-    // Money button label
     if (pillarId === 'craft'){
       const moneyToday = document.getElementById('moneyToday');
       if (moneyToday){
@@ -731,18 +825,82 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
   }
 
+  // ============================================
+  // TODAY STRIP (3 pillar mini-rings)
+  // ============================================
+  const todayStrip = document.getElementById('todayStrip');
+  const PILLAR_COLORS = { body:'var(--body)', craft:'var(--craft)', rel:'var(--rel)' };
+  const PILLAR_CLASSES = { body:'t-body', craft:'t-craft', rel:'t-rel' };
+  const SMALL_RING_CIRC = 113.1; // 2π × 18
+
+  function renderTodayStrip(){
+    if (!todayStrip) return;
+    todayStrip.innerHTML = '';
+    ['body','craft','rel'].forEach(pid => {
+      const p = pillars[pid];
+      const key = todayKey();
+      const day = getDay(pid, key);
+      const total = p.habits.length;
+      const pct = total === 0 ? 0 : day.done.length / total;
+
+      const btn = document.createElement('button');
+      btn.className = 'today-pillar ' + PILLAR_CLASSES[pid];
+      btn.dataset.pillar = pid;
+      btn.innerHTML = `
+        <div class="today-pillar-ring">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <circle class="track" cx="22" cy="22" r="18"/>
+            <circle class="fill" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="${113.1 * (1 - pct)}"/>
+          </svg>
+          <div class="today-pillar-pct">${Math.round(pct * 100)}%</div>
+        </div>
+        <div class="today-pillar-label">${p.label}</div>
+      `;
+      btn.addEventListener('click', () => {
+        // Navigate to that pillar
+        document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.screen === pid));
+        document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.screen === pid));
+        screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + pid));
+        if (navTitle){ navTitle.textContent = titles[pid]; navTitle.classList.remove('visible'); }
+        if (navAdd) navAdd.style.visibility = 'hidden';
+        if (screensEl) screensEl.scrollTop = 0;
+        vibrate(5);
+      });
+      todayStrip.appendChild(btn);
+    });
+  }
+
+  // ============================================
+  // ACTIVITY
+  // ============================================
   const bodyStreakStat = document.getElementById('bodyStreakStat');
   const craftStreakStat = document.getElementById('craftStreakStat');
+  const relStreakStat = document.getElementById('relStreakStat');
+  const totalStat = document.getElementById('totalStat');
   const bodyChart = document.getElementById('bodyChart');
   const craftChart = document.getElementById('craftChart');
+  const relChart = document.getElementById('relChart');
   const journalHistory = document.getElementById('journalHistory');
   const moneyWeek = document.getElementById('moneyWeek');
 
   function renderActivity(){
     countUp(bodyStreakStat, computeStreak('body'));
     countUp(craftStreakStat, computeStreak('craft'));
+    countUp(relStreakStat, computeStreak('rel'));
 
-    [['body', bodyChart], ['craft', craftChart]].forEach(([id, chartEl]) => {
+    // Total completions in last 7 days
+    let total7 = 0;
+    ['body','craft','rel'].forEach(pid => {
+      const p = pillars[pid];
+      for (let i = 0; i < 7; i++){
+        const k = dateKeyOffset(-i);
+        const d = p.days[k];
+        if (d && d.done) total7 += d.done.length;
+      }
+    });
+    countUp(totalStat, total7);
+
+    [['body', bodyChart], ['craft', craftChart], ['rel', relChart]].forEach(([id, chartEl]) => {
       if (!chartEl) return;
       const p = pillars[id];
       const total = p.habits.length;
@@ -759,7 +917,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       }
     });
 
-    // Money this week
     if (moneyWeek){
       const now = new Date();
       const weekStart = new Date(now);
@@ -812,7 +969,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
   }
 
-  ['body', 'craft'].forEach(pid => {
+  ['body', 'craft', 'rel'].forEach(pid => {
     const el = document.getElementById(pid + 'Journal');
     const savedEl = document.getElementById(pid + 'JournalSaved');
     if (!el) return;
@@ -832,7 +989,9 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   });
 
-  // Reminders
+  // ============================================
+  // REMINDERS
+  // ============================================
   const listEl = document.getElementById('remindersList');
   const emptyReminders = document.getElementById('emptyReminders');
   const todayBadge = document.getElementById('todayBadge');
@@ -922,7 +1081,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   });
 
   // ============================================
-  // DEEP WORK TIMER
+  // TIMER
   // ============================================
   const timerSheet = document.getElementById('timerSheet');
   const timerOverlay = document.getElementById('timerOverlay');
@@ -934,8 +1093,8 @@ input:checked + .slider::before{transform:translateX(20px)}
   const pauseBtn = document.getElementById('pauseTimer');
   const stopBtn = document.getElementById('stopTimer');
 
-  const TIMER_CIRC = 628.3; // 2π × 100
-  let timerDuration = 25 * 60; // seconds
+  const TIMER_CIRC = 628.3;
+  let timerDuration = 25 * 60;
   let timerRemaining = 25 * 60;
   let timerInterval = null;
   let timerRunning = false;
@@ -947,13 +1106,11 @@ input:checked + .slider::before{transform:translateX(20px)}
     const s = sec % 60;
     return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
-
   function updateTimerVisual(){
     if (timerTime) timerTime.textContent = fmtClock(timerRemaining);
     const pct = 1 - (timerRemaining / timerDuration);
     if (timerRing) timerRing.setAttribute('stroke-dashoffset', String(TIMER_CIRC * pct));
   }
-
   function openTimer(){
     if (timerSheet) timerSheet.classList.add('active');
     if (timerOverlay) timerOverlay.classList.add('active');
@@ -965,7 +1122,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (timerOverlay) timerOverlay.classList.remove('active');
     stopTimer();
   }
-
   function resetTimer(){
     clearInterval(timerInterval);
     timerRunning = false;
@@ -978,10 +1134,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (pauseBtn) pauseBtn.textContent = 'Pause';
     updateTimerVisual();
   }
-
   function startTimer(){
     if (timerRunning) return;
-    // Request notification permission when the user starts
     if ('Notification' in window && Notification.permission === 'default'){
       Notification.requestPermission().catch(() => {});
     }
@@ -991,20 +1145,15 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (timerPresets) timerPresets.style.display = 'none';
     if (timerActions) timerActions.style.display = 'flex';
     if (pauseBtn) pauseBtn.textContent = 'Pause';
-
     timerInterval = setInterval(() => {
       timerRemaining--;
       updateTimerVisual();
-      if (timerRemaining <= 0){
-        finishTimer();
-      }
+      if (timerRemaining <= 0) finishTimer();
     }, 1000);
   }
-
   function pauseTimer(){
     if (!timerRunning) return;
     if (timerPaused){
-      // resume
       timerPaused = false;
       if (pauseBtn) pauseBtn.textContent = 'Pause';
       timerInterval = setInterval(() => {
@@ -1019,19 +1168,15 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
     vibrate(5);
   }
-
   function stopTimer(){
     clearInterval(timerInterval);
     timerRunning = false;
     timerPaused = false;
   }
-
   function finishTimer(){
     clearInterval(timerInterval);
     timerRunning = false;
     vibrate([100, 50, 100, 50, 100]);
-
-    // Notification
     if ('Notification' in window && Notification.permission === 'granted'){
       try {
         new Notification('Deep work complete', {
@@ -1040,21 +1185,16 @@ input:checked + .slider::before{transform:translateX(20px)}
         });
       } catch(e){}
     }
-
-    // Auto-mark the Deep work habit
     const key = todayKey();
     const day = getDay('craft', key);
     if (!day.done.includes('deep')){
       day.done.push('deep');
       save(PILLAR_KEY, pillars);
       renderPillar('craft');
+      renderTodayStrip();
       renderActivity();
     }
-
-    // Reset UI
-    setTimeout(() => {
-      closeTimer();
-    }, 500);
+    setTimeout(() => closeTimer(), 500);
   }
 
   if (timerOverlay) timerOverlay.addEventListener('click', closeTimer);
@@ -1078,7 +1218,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
 
   // ============================================
-  // MONEY LOG
+  // MONEY
   // ============================================
   const moneySheet = document.getElementById('moneySheet');
   const moneyOverlay = document.getElementById('moneyOverlay');
@@ -1100,7 +1240,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       Net: <strong style="color:${net >= 0 ? 'var(--success)' : 'var(--destructive)'}">${fmtMoney(net)}</strong>
     `;
   }
-
   function openMoney(){
     if (moneySheet) moneySheet.classList.add('active');
     if (moneyOverlay) moneyOverlay.classList.add('active');
@@ -1116,7 +1255,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (moneySheet) moneySheet.classList.remove('active');
     if (moneyOverlay) moneyOverlay.classList.remove('active');
   }
-
   if (moneyBtn) moneyBtn.addEventListener('click', openMoney);
   if (moneyOverlay) moneyOverlay.addEventListener('click', closeMoney);
   document.getElementById('cancelMoney').addEventListener('click', closeMoney);
@@ -1203,6 +1341,8 @@ input:checked + .slider::before{transform:translateX(20px)}
         renderReminders();
         renderPillar('body');
         renderPillar('craft');
+        renderPillar('rel');
+        renderTodayStrip();
         renderActivity();
         vibrate(20);
       }
@@ -1213,9 +1353,11 @@ input:checked + .slider::before{transform:translateX(20px)}
   renderReminders();
   renderPillar('body');
   renderPillar('craft');
+  renderPillar('rel');
+  renderTodayStrip();
   renderActivity();
 
-  console.log('%cSpur v0.6B','color:#5856D6;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.7','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
