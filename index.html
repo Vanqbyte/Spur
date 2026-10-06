@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="theme-color" content="#F2F2F7" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="theme-color" content="#F2F2F7" />
-<title>Spur</title>
 <link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%23007AFF'/><text x='50%25' y='50%25' font-family='sans-serif' font-size='110' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='central'>S</text></svg>" />
-<meta name="apple-mobile-web-app-title" content="Spur" />
+<title>Spur</title>
 <style>
 :root{
   --accent:#007AFF;--accent-soft:rgba(0,122,255,.12);--accent-hover:rgba(0,122,255,.08);
@@ -69,13 +66,17 @@ button{font-family:inherit}
 .large-title-actions{display:flex;gap:4px}
 .lt-btn{background:none;border:none;color:var(--accent);font-size:15px;font-weight:500;padding:6px 10px;border-radius:8px;cursor:pointer;letter-spacing:-.2px}
 .lt-btn:active{background:var(--accent-soft)}
-.section-header{font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:.02em;text-transform:uppercase;padding:24px 0 8px}
+.section-header{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:.02em;text-transform:uppercase;padding:24px 0 8px}
+.section-header span:first-child{display:inline-block}
+.edit-toggle{background:none;border:none;color:var(--accent);font-size:13px;font-weight:600;padding:0;cursor:pointer;letter-spacing:.02em;text-transform:uppercase}
+.edit-toggle:active{opacity:.6}
 .group{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
 .row{display:flex;align-items:center;gap:12px;padding:13px 16px;min-height:52px;position:relative;cursor:pointer;background:var(--surface);border:none;width:100%;text-align:left;font:inherit;color:inherit;transition:background .3s var(--ease)}
 .row.wash{animation:rowWash .9s var(--ease)}
 @keyframes rowWash{0%,100%{background:var(--surface)}30%{background:var(--pillar-soft,var(--accent-soft))}}
 .row:active{background:var(--surface-inset)}
 .row + .row::before{content:"";position:absolute;top:0;left:56px;right:0;height:.5px;background:var(--hairline)}
+.row.edit-mode{cursor:default;padding-right:8px}
 .row-icon{width:32px;height:32px;border-radius:var(--r-icon);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
 .row-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .row-body{flex:1;min-width:0}
@@ -89,6 +90,14 @@ button{font-family:inherit}
 .check.done::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 .check.settled{background:var(--settled);border-color:var(--settled);animation:none}
 @keyframes checkPop{0%{transform:scale(.85);box-shadow:0 0 0 0 var(--pillar-soft,var(--accent-soft))}60%{transform:scale(1.12);box-shadow:0 0 0 8px transparent}100%{transform:scale(1.04);box-shadow:0 0 0 0 transparent}}
+.edit-actions{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{background:none;border:none;padding:8px;border-radius:8px;cursor:pointer;color:var(--text-2);display:flex;align-items:center;justify-content:center}
+.icon-btn:hover{background:var(--surface-inset)}
+.icon-btn:active{background:var(--surface-inset)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn.destructive{color:var(--destructive)}
+.add-habit-row{background:transparent;border-top:.5px solid var(--hairline);color:var(--accent);font-size:15px;font-weight:500;padding:14px 16px;width:100%;text-align:left;display:flex;align-items:center;gap:8px;cursor:pointer}
+.add-habit-row svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round}
 .hero{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:24px 20px;display:flex;align-items:center;gap:20px;position:relative;transition:box-shadow .5s var(--ease)}
 .hero.flash{animation:heroFlash .9s var(--ease)}
 @keyframes heroFlash{0%,100%{box-shadow:var(--shadow-card)}30%{box-shadow:0 0 0 3px var(--pillar,var(--accent)),0 8px 24px var(--pillar-soft,var(--accent-soft))}}
@@ -193,6 +202,17 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary strong{color:var(--text);font-weight:600}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
+.icon-picker{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.icon-opt{aspect-ratio:1;background:var(--surface);border:2px solid transparent;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s var(--spring)}
+.icon-opt:active{transform:scale(.94)}
+.icon-opt.selected{border-color:var(--accent);background:var(--accent-soft)}
+.icon-opt svg{width:22px;height:22px;stroke:var(--text);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-opt.selected svg{stroke:var(--accent)}
+.color-picker{display:flex;gap:10px;flex-wrap:wrap}
+.color-opt{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .15s var(--spring);position:relative}
+.color-opt:active{transform:scale(.94)}
+.color-opt.selected{border-color:var(--text);transform:scale(1.05)}
+.color-opt.selected::after{content:"";position:absolute;inset:4px;border-radius:50%;background:#fff;opacity:.5}
 .float-dot{position:fixed;pointer-events:none;width:6px;height:6px;border-radius:50%;z-index:200;animation:floatDot .9s var(--ease) forwards}
 @keyframes floatDot{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1;transform:translateY(-4px) scale(1)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
 .today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
@@ -313,10 +333,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen active" id="screen-today">
         <h1 class="large-title">Today</h1>
         <div class="content">
-          <div class="section-header">Your Pillars</div>
+          <div class="section-header"><span>Your Pillars</span></div>
           <div class="today-strip" id="todayStrip"></div>
 
-          <div class="section-header">Reminders</div>
+          <div class="section-header"><span>Reminders</span></div>
           <div class="reminders-group" id="remindersGroup"></div>
           <div class="empty" id="emptyReminders">No reminders yet.<br>Tap + to add your first.</div>
         </div>
@@ -344,16 +364,16 @@ input:checked + .slider::before{transform:translateX(20px)}
             </div>
             <div class="hero-msg" id="bodyMsg"></div>
           </div>
-          <div class="section-header">Today's Habits</div>
+          <div class="section-header"><span>Today's Habits</span><button class="edit-toggle" data-edit="body">Edit</button></div>
           <div class="group" id="bodyHabits"></div>
-          <div class="section-header">Last 7 Days</div>
+          <div class="section-header"><span>Last 7 Days</span></div>
           <div class="week" id="bodyWeek"></div>
-          <div class="section-header">Body Journal</div>
+          <div class="section-header"><span>Body Journal</span></div>
           <div class="journal" id="bodyJournalCard">
             <textarea id="bodyJournal" placeholder="How does your body feel today?" rows="2"></textarea>
             <div class="journal-meta"><span id="bodyJournalDate"></span><span class="journal-saved" id="bodyJournalSaved">Saved</span></div>
           </div>
-          <div class="section-header">Weekly Review</div>
+          <div class="section-header"><span>Weekly Review</span></div>
           <div class="review">
             <div class="review-title">Sunday reflection</div>
             <div class="review-text">Which habit felt easiest? Which was hardest? What one tweak will you make next week?</div>
@@ -388,16 +408,16 @@ input:checked + .slider::before{transform:translateX(20px)}
             </div>
             <div class="hero-msg" id="craftMsg"></div>
           </div>
-          <div class="section-header">Today's Habits</div>
+          <div class="section-header"><span>Today's Habits</span><button class="edit-toggle" data-edit="craft">Edit</button></div>
           <div class="group" id="craftHabits"></div>
-          <div class="section-header">Last 7 Days</div>
+          <div class="section-header"><span>Last 7 Days</span></div>
           <div class="week" id="craftWeek"></div>
-          <div class="section-header">Craft Journal</div>
+          <div class="section-header"><span>Craft Journal</span></div>
           <div class="journal" id="craftJournalCard">
             <textarea id="craftJournal" placeholder="What did you build, learn, or earn today?" rows="2"></textarea>
             <div class="journal-meta"><span id="craftJournalDate"></span><span class="journal-saved" id="craftJournalSaved">Saved</span></div>
           </div>
-          <div class="section-header">Weekly Review</div>
+          <div class="section-header"><span>Weekly Review</span></div>
           <div class="review">
             <div class="review-title">Sunday reflection</div>
             <div class="review-text">Did you do focused work? Did you learn something real? Did you ship? Did money move in the right direction?</div>
@@ -428,16 +448,16 @@ input:checked + .slider::before{transform:translateX(20px)}
             </div>
             <div class="hero-msg" id="relMsg"></div>
           </div>
-          <div class="section-header">Today's Habits</div>
+          <div class="section-header"><span>Today's Habits</span><button class="edit-toggle" data-edit="rel">Edit</button></div>
           <div class="group" id="relHabits"></div>
-          <div class="section-header">Last 7 Days</div>
+          <div class="section-header"><span>Last 7 Days</span></div>
           <div class="week" id="relWeek"></div>
-          <div class="section-header">People Journal</div>
+          <div class="section-header"><span>People Journal</span></div>
           <div class="journal" id="relJournalCard">
             <textarea id="relJournal" placeholder="Who did you show up for today? How?" rows="2"></textarea>
             <div class="journal-meta"><span id="relJournalDate"></span><span class="journal-saved" id="relJournalSaved">Saved</span></div>
           </div>
-          <div class="section-header">Weekly Review</div>
+          <div class="section-header"><span>Weekly Review</span></div>
           <div class="review">
             <div class="review-title">Sunday reflection</div>
             <div class="review-text">Who did you reach out to? Who needs you right now? Did you show up — your way, but on purpose?</div>
@@ -455,15 +475,15 @@ input:checked + .slider::before{transform:translateX(20px)}
             <div class="stat"><div class="stat-value" id="relStreakStat">0</div><div class="stat-label">People streak</div></div>
             <div class="stat"><div class="stat-value" id="totalStat">0</div><div class="stat-label">This week</div></div>
           </div>
-          <div class="section-header">Body This Week</div>
+          <div class="section-header"><span>Body This Week</span></div>
           <div class="chart-wrap" style="--pillar:var(--body)"><div class="chart" id="bodyChart"></div></div>
-          <div class="section-header">Craft This Week</div>
+          <div class="section-header"><span>Craft This Week</span></div>
           <div class="chart-wrap" style="--pillar:var(--craft)"><div class="chart" id="craftChart"></div></div>
-          <div class="section-header">People This Week</div>
+          <div class="section-header"><span>People This Week</span></div>
           <div class="chart-wrap" style="--pillar:var(--rel)"><div class="chart" id="relChart"></div></div>
-          <div class="section-header">Money This Week</div>
+          <div class="section-header"><span>Money This Week</span></div>
           <div class="money-week" id="moneyWeek"></div>
-          <div class="section-header">Recent Journal</div>
+          <div class="section-header"><span>Recent Journal</span></div>
           <div class="group" id="journalHistory"></div>
         </div>
       </section>
@@ -471,12 +491,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen" id="screen-settings">
         <h1 class="large-title">Settings</h1>
         <div class="content">
-          <div class="section-header">Notifications</div>
+          <div class="section-header"><span>Notifications</span></div>
           <div class="group">
-            <div class="row" id="notifRow" style="cursor:default">
-              <div class="row-icon" style="background:var(--accent)">
-                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-              </div>
+            <div class="row" style="cursor:default">
+              <div class="row-icon" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
               <div class="row-body">
                 <div class="row-title">Reminder alerts</div>
                 <div class="row-sub" id="notifStatus">Checking…</div>
@@ -484,15 +502,13 @@ input:checked + .slider::before{transform:translateX(20px)}
               <button class="lt-btn" id="notifBtn" style="padding:8px 14px;background:var(--accent);color:#fff;border-radius:9px;font-weight:600">Enable</button>
             </div>
             <button class="row" id="testNotifBtn">
-              <div class="row-icon" style="background:#5856D6">
-                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>
-              </div>
+              <div class="row-icon" style="background:#5856D6"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg></div>
               <div class="row-body"><div class="row-title">Send a test notification</div></div>
               <div class="row-value">›</div>
             </button>
           </div>
 
-          <div class="section-header">Appearance</div>
+          <div class="section-header"><span>Appearance</span></div>
           <div class="group">
             <div class="row">
               <div class="row-icon" style="background:#8E8E93"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
@@ -501,24 +517,24 @@ input:checked + .slider::before{transform:translateX(20px)}
             </div>
           </div>
 
-          <div class="section-header">Data</div>
-<div class="group">
-  <button class="row" id="exportBtn">
-    <div class="row-icon" style="background:#34C759"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></div>
-    <div class="row-body"><div class="row-title">Export Data</div></div>
-    <div class="row-value">›</div>
-  </button>
-  <button class="row" id="importBtn">
-    <div class="row-icon" style="background:#007AFF"><svg viewBox="0 0 24 24"><path d="M12 21V9m0 0l-4 4m4-4l4 4M5 3h14"/></svg></div>
-    <div class="row-body"><div class="row-title">Import Data</div></div>
-    <div class="row-value">›</div>
-  </button>
-  <button class="row" id="resetBtn">
-    <div class="row-icon" style="background:#FF3B30"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></div>
-    <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
-  </button>
-</div>
-          <div class="version">Spur v0.10</div>
+          <div class="section-header"><span>Data</span></div>
+          <div class="group">
+            <button class="row" id="exportBtn">
+              <div class="row-icon" style="background:#34C759"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></div>
+              <div class="row-body"><div class="row-title">Export Data</div></div>
+              <div class="row-value">›</div>
+            </button>
+            <button class="row" id="importBtn">
+              <div class="row-icon" style="background:#007AFF"><svg viewBox="0 0 24 24"><path d="M12 21V9m0 0l-4 4m4-4l4 4M5 3h14"/></svg></div>
+              <div class="row-body"><div class="row-title">Import Data</div></div>
+              <div class="row-value">›</div>
+            </button>
+            <button class="row" id="resetBtn">
+              <div class="row-icon" style="background:#FF3B30"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></div>
+              <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
+            </button>
+          </div>
+          <div class="version">Spur v0.12</div>
         </div>
       </section>
     </main>
@@ -552,6 +568,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     </nav>
   </div>
 </div>
+
+<!-- Import sheet -->
 <div class="overlay" id="importOverlay"></div>
 <div class="sheet" id="importSheet">
   <div class="sheet-handle"></div>
@@ -568,6 +586,32 @@ input:checked + .slider::before{transform:translateX(20px)}
     <div class="money-summary" id="importPreview" style="display:none"></div>
   </div>
 </div>
+
+<!-- Habit edit sheet -->
+<div class="overlay" id="habitOverlay"></div>
+<div class="sheet" id="habitSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn" id="cancelHabit">Cancel</button>
+    <h2 class="sheet-title" id="habitSheetTitle">Edit Habit</h2>
+    <button class="sheet-btn bold" id="saveHabit">Save</button>
+  </div>
+  <div class="sheet-body">
+    <div class="field">
+      <div class="field-label">Title</div>
+      <input class="field-input" id="habitTitle" placeholder="e.g. Morning stretch" autocomplete="off" />
+    </div>
+    <div class="field">
+      <div class="field-label">Icon</div>
+      <div class="icon-picker" id="habitIconPicker"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Color</div>
+      <div class="color-picker" id="habitColorPicker"></div>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="addSheet">
   <div class="sheet-handle"></div>
@@ -684,17 +728,12 @@ input:checked + .slider::before{transform:translateX(20px)}
   let reminders = load(REM_KEY, []);
   let money = load(MONEY_KEY, []);
 
-  // ============================================
-  // SERVICE WORKER REGISTRATION
-  // ============================================
   let swRegistration = null;
   if ('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').then(reg => {
       swRegistration = reg;
       syncRemindersToSW();
-    }).catch((err) => {
-      console.warn('SW registration failed', err);
-    });
+    }).catch((err) => { console.warn('SW registration failed', err); });
   }
 
   function computeNextFireAt(reminder){
@@ -702,9 +741,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const now = new Date();
     const [h, m] = (reminder.time || '09:00').split(':').map(Number);
     const fire = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
-
     if (reminder.repeat === 'Once'){
-      // Fire only if in the future today
       if (fire.getTime() > now.getTime()) return fire.getTime();
       return null;
     }
@@ -722,12 +759,8 @@ input:checked + .slider::before{transform:translateX(20px)}
   function syncRemindersToSW(){
     if (!swRegistration || !swRegistration.active) return;
     const payload = reminders.map(r => ({
-      id: r.id,
-      title: r.title,
-      time: r.time,
-      done: r.done,
-      repeat: r.repeat,
-      pillar: r.pillar || 'Reminder',
+      id: r.id, title: r.title, time: r.time, done: r.done,
+      repeat: r.repeat, pillar: r.pillar || 'Reminder',
       nextFireAt: computeNextFireAt(r)
     }));
     swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
@@ -744,8 +777,13 @@ input:checked + .slider::before{transform:translateX(20px)}
     phone: '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>',
     chat: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
     eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-    shield: '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+    shield: '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    heart: '<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+    star: '<svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>'
   };
+
+  const ICON_KEYS = ['dumbbell','drop','book','bolt','brain','coin','ship','phone','chat','eye','shield','heart'];
+  const COLOR_PALETTE = ['#FF3B30','#FF9500','#FFCC00','#34C759','#00C7BE','#007AFF','#5856D6','#AF52DE','#FF2D55','#8E8E93'];
 
   const PILLARS = {
     body: { label: 'Body', habits: [
@@ -767,16 +805,30 @@ input:checked + .slider::before{transform:translateX(20px)}
     ]}
   };
 
+  // Ensure each habit has a stable id (for older data)
+  function ensureHabitIds(habits){
+    habits.forEach((h, idx) => {
+      if (!h.id) h.id = 'h_' + idx + '_' + Math.random().toString(36).slice(2,6);
+      if (!h.icon) h.icon = 'bolt';
+      if (!h.color) h.color = '#007AFF';
+    });
+  }
+
   let pillars = load(PILLAR_KEY, null);
   if (!pillars){
     pillars = {};
     Object.keys(PILLARS).forEach(id => {
-      pillars[id] = { habits: PILLARS[id].habits, days: {} };
+      pillars[id] = { habits: JSON.parse(JSON.stringify(PILLARS[id].habits)), days: {} };
     });
     save(PILLAR_KEY, pillars);
   } else {
     Object.keys(PILLARS).forEach(id => {
-      if (!pillars[id]) pillars[id] = { habits: PILLARS[id].habits, days: {} };
+      if (!pillars[id]){
+        pillars[id] = { habits: JSON.parse(JSON.stringify(PILLARS[id].habits)), days: {} };
+      } else if (!pillars[id].habits){
+        pillars[id].habits = JSON.parse(JSON.stringify(PILLARS[id].habits));
+      }
+      ensureHabitIds(pillars[id].habits);
     });
   }
 
@@ -825,6 +877,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const p = pillars[pillarId];
     if (!p) return 0;
     const total = p.habits.length;
+    if (total === 0) return 0;
     let streak = 0, misses = 0;
     for (let i = 0; i < 365; i++){
       const key = dateKeyOffset(-i);
@@ -845,6 +898,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const p = pillars[pillarId];
     if (!p) return 0;
     const total = p.habits.length;
+    if (total === 0) return 0;
     const upTo = new Date(upToKey + 'T12:00:00');
     let streak = 0, misses = 0;
     for (let i = 0; i < 365; i++){
@@ -932,6 +986,150 @@ input:checked + .slider::before{transform:translateX(20px)}
     }, { passive:true });
   }
 
+  // ============================================
+  // HABIT EDITING
+  // ============================================
+  const editingPillars = {}; // pillarId → true if edit mode
+  const habitSheet = document.getElementById('habitSheet');
+  const habitOverlay = document.getElementById('habitOverlay');
+  const habitTitle = document.getElementById('habitTitle');
+  const habitIconPicker = document.getElementById('habitIconPicker');
+  const habitColorPicker = document.getElementById('habitColorPicker');
+  const habitSheetTitle = document.getElementById('habitSheetTitle');
+
+  let editCtx = null; // { pillarId, habitId (null = new), icon, color }
+
+  function buildIconPicker(selected){
+    habitIconPicker.innerHTML = '';
+    ICON_KEYS.forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'icon-opt' + (key === selected ? ' selected' : '');
+      btn.type = 'button';
+      btn.dataset.icon = key;
+      btn.innerHTML = ICONS[key];
+      btn.addEventListener('click', () => {
+        habitIconPicker.querySelectorAll('.icon-opt').forEach(x => x.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (editCtx) editCtx.icon = key;
+        vibrate(5);
+      });
+      habitIconPicker.appendChild(btn);
+    });
+  }
+  function buildColorPicker(selected){
+    habitColorPicker.innerHTML = '';
+    COLOR_PALETTE.forEach(color => {
+      const btn = document.createElement('button');
+      btn.className = 'color-opt' + (color === selected ? ' selected' : '');
+      btn.type = 'button';
+      btn.style.background = color;
+      btn.dataset.color = color;
+      btn.addEventListener('click', () => {
+        habitColorPicker.querySelectorAll('.color-opt').forEach(x => x.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (editCtx) editCtx.color = color;
+        vibrate(5);
+      });
+      habitColorPicker.appendChild(btn);
+    });
+  }
+
+  function openHabitSheet(pillarId, habit){
+    editCtx = {
+      pillarId,
+      habitId: habit ? habit.id : null,
+      icon: habit ? habit.icon : 'bolt',
+      color: habit ? habit.color : '#007AFF'
+    };
+    habitSheetTitle.textContent = habit ? 'Edit Habit' : 'New Habit';
+    habitTitle.value = habit ? habit.label : '';
+    buildIconPicker(editCtx.icon);
+    buildColorPicker(editCtx.color);
+    habitSheet.classList.add('active');
+    habitOverlay.classList.add('active');
+    setTimeout(() => habitTitle.focus(), 350);
+    vibrate(5);
+  }
+  function closeHabitSheet(){
+    habitSheet.classList.remove('active');
+    habitOverlay.classList.remove('active');
+    editCtx = null;
+  }
+
+  document.getElementById('cancelHabit').addEventListener('click', closeHabitSheet);
+  habitOverlay.addEventListener('click', closeHabitSheet);
+
+  document.getElementById('saveHabit').addEventListener('click', () => {
+    if (!editCtx) return;
+    const label = (habitTitle.value || '').trim() || 'Untitled habit';
+    const p = pillars[editCtx.pillarId];
+    if (editCtx.habitId){
+      // Edit
+      const h = p.habits.find(x => x.id === editCtx.habitId);
+      if (h){
+        h.label = label;
+        h.icon = editCtx.icon;
+        h.color = editCtx.color;
+      }
+    } else {
+      // New
+      const newId = 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2,5);
+      p.habits.push({
+        id: newId,
+        icon: editCtx.icon,
+        label: label,
+        color: editCtx.color
+      });
+    }
+    save(PILLAR_KEY, pillars);
+    renderPillar(editCtx.pillarId);
+    renderTodayStrip();
+    renderActivity();
+    closeHabitSheet();
+    vibrate(15);
+  });
+
+  function moveHabit(pillarId, habitId, delta){
+    const p = pillars[pillarId];
+    const idx = p.habits.findIndex(h => h.id === habitId);
+    if (idx < 0) return;
+    const target = idx + delta;
+    if (target < 0 || target >= p.habits.length) return;
+    const [h] = p.habits.splice(idx, 1);
+    p.habits.splice(target, 0, h);
+    save(PILLAR_KEY, pillars);
+    renderPillar(pillarId);
+    renderTodayStrip();
+    vibrate(8);
+  }
+
+  function deleteHabit(pillarId, habitId){
+    const p = pillars[pillarId];
+    const h = p.habits.find(x => x.id === habitId);
+    if (!h) return;
+    if (!confirm(`Delete "${h.label}"?\n\nThis removes it from today's list. Past history stays.`)) return;
+    p.habits = p.habits.filter(x => x.id !== habitId);
+    save(PILLAR_KEY, pillars);
+    renderPillar(pillarId);
+    renderTodayStrip();
+    renderActivity();
+    vibrate(15);
+  }
+
+  function toggleEditMode(pillarId){
+    editingPillars[pillarId] = !editingPillars[pillarId];
+    renderPillar(pillarId);
+    vibrate(5);
+  }
+
+  // Wire edit-toggle buttons
+  document.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => toggleEditMode(btn.dataset.edit));
+  });
+
+  // ============================================
+  // HABIT TOGGLE
+  // ============================================
   function toggleHabit(pillarId, habitId, event){
     const key = todayKey();
     const day = getDay(pillarId, key);
@@ -979,7 +1177,9 @@ input:checked + .slider::before{transform:translateX(20px)}
     const p = pillars[pillarId];
     const key = todayKey();
     const day = getDay(pillarId, key);
-    const wasFullyDone = day.done.length === p.habits.length;
+    const total = p.habits.length;
+    if (total === 0) return;
+    const wasFullyDone = day.done.length === total;
 
     if (wasFullyDone){
       const hero = document.getElementById(pillarId + 'Hero');
@@ -1014,7 +1214,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const key = todayKey();
     const day = getDay(pillarId, key);
     const total = p.habits.length;
-    const doneCount = day.done.length;
+    const doneCount = day.done.filter(id => p.habits.some(h => h.id === id)).length;
     const pct = total === 0 ? 0 : doneCount / total;
     const prefix = pillarId;
 
@@ -1055,8 +1255,9 @@ input:checked + .slider::before{transform:translateX(20px)}
       for (let i = 6; i >= 0; i--){
         const k = dateKeyOffset(-i);
         const d = p.days[k];
-        const done = d && d.done && d.done.length === total;
-        const partial = d && d.done && d.done.length > 0 && !done;
+        const validDone = d && d.done ? d.done.filter(id => p.habits.some(h => h.id === id)).length : 0;
+        const done = validDone === total && total > 0;
+        const partial = validDone > 0 && !done;
         const hasJournal = d && d.journal && d.journal.trim().length > 0;
 
         const cell = document.createElement('button');
@@ -1086,35 +1287,80 @@ input:checked + .slider::before{transform:translateX(20px)}
       }
     }
 
+    const editMode = !!editingPillars[pillarId];
+    const editToggleEl = document.querySelector('[data-edit="' + pillarId + '"]');
+    if (editToggleEl) editToggleEl.textContent = editMode ? 'Done' : 'Edit';
+
     if (habitsEl){
       habitsEl.innerHTML = '';
-      p.habits.forEach(h => {
+      if (p.habits.length === 0){
+        const empty = document.createElement('div');
+        empty.style.cssText = 'padding:24px 16px;text-align:center;color:var(--text-2);font-size:14px;letter-spacing:-.15px;';
+        empty.textContent = 'No habits yet — tap Edit to add one.';
+        habitsEl.appendChild(empty);
+      }
+      p.habits.forEach((h, idx) => {
         const isDone = day.done.includes(h.id);
         const doneAt = day.doneAt ? day.doneAt[h.id] : null;
         const settled = isDone && isSettled(doneAt);
 
-        const btn = document.createElement('button');
-        btn.className = 'row';
+        const btn = document.createElement('div');
+        btn.className = 'row' + (editMode ? ' edit-mode' : '');
         btn.innerHTML = `
           <div class="row-icon" style="background:${h.color}">${ICONS[h.icon] || ICONS.bolt}</div>
           <div class="row-body">
-            <div class="row-title" style="${isDone ? 'color:var(--text-2)' : ''}">${escapeHtml(h.label)}</div>
+            <div class="row-title" style="${isDone && !editMode ? 'color:var(--text-2)' : ''}">${escapeHtml(h.label)}</div>
           </div>
-          <div class="check ${isDone ? 'done' : ''} ${settled ? 'settled' : ''}"></div>
+          ${editMode ? `
+            <div class="edit-actions">
+              <button class="icon-btn" data-move="-1" title="Move up" ${idx === 0 ? 'disabled' : ''} style="${idx === 0 ? 'opacity:.3' : ''}">
+                <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+              </button>
+              <button class="icon-btn" data-move="1" title="Move down" ${idx === p.habits.length - 1 ? 'disabled' : ''} style="${idx === p.habits.length - 1 ? 'opacity:.3' : ''}">
+                <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <button class="icon-btn" data-edit-habit title="Edit">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+              </button>
+              <button class="icon-btn destructive" data-delete-habit title="Delete">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+              </button>
+            </div>
+          ` : `<div class="check ${isDone ? 'done' : ''} ${settled ? 'settled' : ''}"></div>`}
         `;
-        btn.querySelector('.check').addEventListener('click', (e) => {
-          e.stopPropagation();
-          toggleHabit(pillarId, h.id, e);
-        });
-        btn.addEventListener('click', (e) => {
-          if (pillarId === 'craft' && h.id === 'deep'){
-            openTimer();
-          } else {
+
+        if (editMode){
+          const moveUp = btn.querySelector('[data-move="-1"]');
+          const moveDown = btn.querySelector('[data-move="1"]');
+          const editBtn = btn.querySelector('[data-edit-habit]');
+          const delBtn = btn.querySelector('[data-delete-habit]');
+          if (moveUp) moveUp.addEventListener('click', (e) => { e.stopPropagation(); moveHabit(pillarId, h.id, -1); });
+          if (moveDown) moveDown.addEventListener('click', (e) => { e.stopPropagation(); moveHabit(pillarId, h.id, 1); });
+          if (editBtn) editBtn.addEventListener('click', (e) => { e.stopPropagation(); openHabitSheet(pillarId, h); });
+          if (delBtn) delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteHabit(pillarId, h.id); });
+        } else {
+          btn.querySelector('.check').addEventListener('click', (e) => {
+            e.stopPropagation();
             toggleHabit(pillarId, h.id, e);
-          }
-        });
+          });
+          btn.addEventListener('click', (e) => {
+            if (pillarId === 'craft' && h.id === 'deep'){
+              openTimer();
+            } else {
+              toggleHabit(pillarId, h.id, e);
+            }
+          });
+        }
         habitsEl.appendChild(btn);
       });
+
+      if (editMode){
+        const addRow = document.createElement('button');
+        addRow.className = 'add-habit-row';
+        addRow.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add habit';
+        addRow.addEventListener('click', () => openHabitSheet(pillarId, null));
+        habitsEl.appendChild(addRow);
+      }
     }
 
     if (journalEl && document.activeElement !== journalEl){
@@ -1143,7 +1389,8 @@ input:checked + .slider::before{transform:translateX(20px)}
       const key = todayKey();
       const day = getDay(pid, key);
       const total = p.habits.length;
-      const pct = total === 0 ? 0 : day.done.length / total;
+      const validDone = day.done.filter(id => p.habits.some(h => h.id === id)).length;
+      const pct = total === 0 ? 0 : validDone / total;
       const label = config ? config.label : pid;
 
       const btn = document.createElement('button');
@@ -1181,10 +1428,11 @@ input:checked + .slider::before{transform:translateX(20px)}
     let total7 = 0;
     ['body','craft','rel'].forEach(pid => {
       const p = pillars[pid];
+      const validIds = p.habits.map(h => h.id);
       for (let i = 0; i < 7; i++){
         const k = dateKeyOffset(-i);
         const d = p.days[k];
-        if (d && d.done) total7 += d.done.length;
+        if (d && d.done) total7 += d.done.filter(id => validIds.includes(id)).length;
       }
     });
     countUp(totalStat, total7);
@@ -1193,11 +1441,13 @@ input:checked + .slider::before{transform:translateX(20px)}
       if (!chartEl) return;
       const p = pillars[id];
       const total = p.habits.length;
+      const validIds = p.habits.map(h => h.id);
       chartEl.innerHTML = '';
       for (let i = 6; i >= 0; i--){
         const k = dateKeyOffset(-i);
         const d = p.days[k];
-        const pct = d && d.done ? d.done.length / total : 0;
+        const count = d && d.done ? d.done.filter(id => validIds.includes(id)).length : 0;
+        const pct = total === 0 ? 0 : count / total;
         const bar = document.createElement('div');
         bar.className = 'bar';
         bar.style.height = Math.max(5, pct * 100) + '%';
@@ -1319,6 +1569,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   function renderCalendar(){
     const p = pillars[calendarPillar];
     const total = p.habits.length;
+    const validIds = p.habits.map(h => h.id);
     const year = calendarMonth.getFullYear();
     const month = calendarMonth.getMonth();
     const monthLabel = calendarMonth.toLocaleDateString(undefined, { month:'long', year:'numeric' });
@@ -1347,14 +1598,14 @@ input:checked + .slider::before{transform:translateX(20px)}
     for (let day = 1; day <= daysInMonth; day++){
       const dk = `${year}-${pad(month+1)}-${pad(day)}`;
       const d = p.days[dk];
-      const doneCount = d && d.done ? d.done.length : 0;
-      const pct = total === 0 ? 0 : doneCount / total;
+      const count = d && d.done ? d.done.filter(id => validIds.includes(id)).length : 0;
+      const pct = total === 0 ? 0 : count / total;
       const hasJournal = d && d.journal && d.journal.trim().length > 0;
       const classes = ['cal-day'];
       if (pct >= 1) classes.push('full');
       else if (pct > 0) classes.push('partial');
       if (dk === today) classes.push('today');
-      if (doneCount > 0 || hasJournal) classes.push('has-activity');
+      if (count > 0 || hasJournal) classes.push('has-activity');
       html += `
         <button class="${classes.join(' ')}" data-day="${dk}">
           <span class="num">${day}</span>
@@ -1392,7 +1643,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     const dateObj = new Date(dateKey + 'T12:00:00');
     const dateLabel = dateObj.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
     const total = p.habits.length;
-    const doneCount = d && d.done ? d.done.length : 0;
+    const validIds = p.habits.map(h => h.id);
+    const doneCount = d && d.done ? d.done.filter(id => validIds.includes(id)).length : 0;
     const pillarColor = getPillarColor(pillarId);
     const pillarSoft = getPillarSoft(pillarId);
 
@@ -1415,7 +1667,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (!d || (doneCount === 0 && (!d.journal || !d.journal.trim()))){
       html += `<div class="day-detail-empty">Nothing logged this day.</div>`;
     } else {
-      html += `<div class="section-header">Habits (${doneCount} of ${total})</div>`;
+      html += `<div class="section-header"><span>Habits (${doneCount} of ${total})</span></div>`;
       html += `<div class="group" style="--pillar:${pillarColor};--pillar-soft:${pillarSoft}">`;
       p.habits.forEach(h => {
         const isDone = d.done && d.done.includes(h.id);
@@ -1432,10 +1684,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       html += `</div>`;
 
       if (d.journal && d.journal.trim()){
-        html += `<div class="section-header">Journal</div>`;
+        html += `<div class="section-header"><span>Journal</span></div>`;
         html += `<div class="day-detail-journal">${escapeHtml(d.journal.trim())}</div>`;
       } else {
-        html += `<div class="section-header">Journal</div>`;
+        html += `<div class="section-header"><span>Journal</span></div>`;
         html += `<div class="day-detail-journal empty">No journal entry.</div>`;
       }
 
@@ -1592,9 +1844,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     vibrate(15);
   });
 
-  // ============================================
-  // NOTIFICATIONS UI
-  // ============================================
   const notifBtn = document.getElementById('notifBtn');
   const notifStatus = document.getElementById('notifStatus');
   const testNotifBtn = document.getElementById('testNotifBtn');
@@ -1625,41 +1874,25 @@ input:checked + .slider::before{transform:translateX(20px)}
       if (!('Notification' in window)) return;
       const perm = await Notification.requestPermission();
       updateNotifUI();
-      if (perm === 'granted'){
-        vibrate(12);
-        syncRemindersToSW();
-      }
+      if (perm === 'granted'){ vibrate(12); syncRemindersToSW(); }
     });
   }
 
   if (testNotifBtn){
     testNotifBtn.addEventListener('click', async () => {
-      if (!('Notification' in window)){
-        alert('Notifications not supported on this browser.');
-        return;
-      }
+      if (!('Notification' in window)){ alert('Notifications not supported on this browser.'); return; }
       if (Notification.permission !== 'granted'){
         const perm = await Notification.requestPermission();
         updateNotifUI();
-        if (perm !== 'granted'){
-          alert('You need to allow notifications first.');
-          return;
-        }
+        if (perm !== 'granted'){ alert('You need to allow notifications first.'); return; }
       }
       if (swRegistration && swRegistration.active){
-        // Trigger via SW
         swRegistration.active.postMessage({
           type: 'SCHEDULE_REMINDERS',
-          reminders: [{
-            id: 'test_' + Date.now(),
-            title: 'Test notification — this is how reminders will look',
-            done: false,
-            nextFireAt: Date.now() + 2000
-          }]
+          reminders: [{ id: 'test_' + Date.now(), title: 'Test notification — this is how reminders will look', done: false, nextFireAt: Date.now() + 2000 }]
         });
       } else {
-        // Fallback: direct notification
-        new Notification('Spur', { body: 'Test notification — this is how reminders will look' });
+        new Notification('Reminder', { body: 'Test notification — this is how reminders will look' });
       }
       vibrate(8);
     });
@@ -1667,12 +1900,9 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   updateNotifUI();
   if ('Notification' in window && navigator.permissions){
-    navigator.permissions.query({ name: 'notifications' }).then(p => {
-      p.onchange = updateNotifUI;
-    }).catch(() => {});
+    navigator.permissions.query({ name: 'notifications' }).then(p => { p.onchange = updateNotifUI; }).catch(() => {});
   }
 
-  // Timer
   const timerSheet = document.getElementById('timerSheet');
   const timerOverlay = document.getElementById('timerOverlay');
   const timerRing = document.getElementById('timerRing');
@@ -1737,10 +1967,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (!timerRunning) return;
     if (timerPaused){
       timerPaused = false; if (pauseBtn) pauseBtn.textContent = 'Pause';
-      timerInterval = setInterval(() => {
-        timerRemaining--; updateTimerVisual();
-        if (timerRemaining <= 0) finishTimer();
-      }, 1000);
+      timerInterval = setInterval(() => { timerRemaining--; updateTimerVisual(); if (timerRemaining <= 0) finishTimer(); }, 1000);
     } else {
       timerPaused = true; if (pauseBtn) pauseBtn.textContent = 'Resume';
       clearInterval(timerInterval);
@@ -1752,11 +1979,12 @@ input:checked + .slider::before{transform:translateX(20px)}
     clearInterval(timerInterval); timerRunning = false;
     vibrate([100, 50, 100, 50, 100]);
     if ('Notification' in window && Notification.permission === 'granted'){
-      try { new Notification('Deep work complete', { body: `${selectedMinutes} minutes done. Nice.`, tag: 'spur-timer' }); } catch(e){}
+      try { new Notification('Craft', { body: `${selectedMinutes} minutes of deep work done.`, tag: 'spur-timer' }); } catch(e){}
     }
     const key = todayKey();
     const day = getDay('craft', key);
-    if (!day.done.includes('deep')){
+    const deepHabit = pillars.craft.habits.find(h => h.id === 'deep');
+    if (deepHabit && !day.done.includes('deep')){
       day.done.push('deep');
       day.doneAt['deep'] = Date.now();
       save(PILLAR_KEY, pillars);
@@ -1788,7 +2016,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   }
 
-  // Money
   const moneySheet = document.getElementById('moneySheet');
   const moneyOverlay = document.getElementById('moneyOverlay');
   const moneyBtn = document.getElementById('moneyBtn');
@@ -1855,39 +2082,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     vibrate(15);
   });
 
-  // Theme / Export / Reset
-  const darkToggle = document.getElementById('darkToggle');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  let savedTheme = null;
-  try { savedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
-
-  function applyTheme(t){
-    document.documentElement.setAttribute('data-theme', t);
-    if (darkToggle) darkToggle.checked = (t === 'dark');
-    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', t === 'dark' ? '#000000' : '#F2F2F7');
-  }
-  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-  if (darkToggle){
-    darkToggle.addEventListener('change', () => { applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); });
-  }
-
-  const exportBtn = document.getElementById('exportBtn');
-  if (exportBtn){
-    exportBtn.addEventListener('click', () => {
-      const data = JSON.stringify({ reminders, pillars, money, exportedAt: new Date().toISOString() }, null, 2);
-      if (navigator.clipboard){
-        navigator.clipboard.writeText(data).then(() => alert('Data copied')).catch(() => prompt('Copy your data:', data));
-      } else {
-        prompt('Copy your data:', data);
-      }
-      vibrate(8);
-    });
-  }
-  // ============================================
   // IMPORT
-  // ============================================
   const importSheet = document.getElementById('importSheet');
   const importOverlay = document.getElementById('importOverlay');
   const importText = document.getElementById('importText');
@@ -1907,12 +2102,10 @@ input:checked + .slider::before{transform:translateX(20px)}
     setTimeout(() => importText && importText.focus(), 350);
     vibrate(5);
   }
-
   function closeImport(){
     if (importSheet) importSheet.classList.remove('active');
     if (importOverlay) importOverlay.classList.remove('active');
   }
-
   function summarizeImport(data){
     const rCount = (data.reminders || []).length;
     let days = 0, journals = 0;
@@ -1930,20 +2123,13 @@ input:checked + .slider::before{transform:translateX(20px)}
     const mCount = (data.money || []).length;
     return { rCount, days, journals, mCount };
   }
-
   function updatePreview(){
     if (!importText || !importPreview) return;
     const txt = importText.value.trim();
-    if (!txt){
-      importPreview.style.display = 'none';
-      parsedImport = null;
-      return;
-    }
+    if (!txt){ importPreview.style.display = 'none'; parsedImport = null; return; }
     try {
       const data = JSON.parse(txt);
-      if (typeof data !== 'object' || data === null){
-        throw new Error('Not an object');
-      }
+      if (typeof data !== 'object' || data === null) throw new Error('Not an object');
       parsedImport = data;
       const s = summarizeImport(data);
       const when = data.exportedAt ? new Date(data.exportedAt).toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric', year:'numeric' }) : 'unknown';
@@ -1963,49 +2149,33 @@ input:checked + .slider::before{transform:translateX(20px)}
       importPreview.style.display = 'block';
     }
   }
-
-  if (importText){
-    importText.addEventListener('input', updatePreview);
-  }
-
+  if (importText) importText.addEventListener('input', updatePreview);
   if (importBtn) importBtn.addEventListener('click', openImport);
   if (importOverlay) importOverlay.addEventListener('click', closeImport);
   if (cancelImportBtn) cancelImportBtn.addEventListener('click', closeImport);
 
   if (doImportBtn){
     doImportBtn.addEventListener('click', () => {
-      if (!parsedImport){
-        alert('Nothing valid to import. Paste your export first.');
-        return;
-      }
+      if (!parsedImport){ alert('Nothing valid to import. Paste your export first.'); return; }
       const s = summarizeImport(parsedImport);
       const ok = confirm(
         `Restore this backup?\n\n` +
-        `• ${s.rCount} reminders\n` +
-        `• ${s.days} habit-days\n` +
-        `• ${s.journals} journal entries\n` +
-        `• ${s.mCount} money logs\n\n` +
+        `• ${s.rCount} reminders\n• ${s.days} habit-days\n• ${s.journals} journal entries\n• ${s.mCount} money logs\n\n` +
         `This will REPLACE all current data. Cannot be undone.`
       );
       if (!ok) return;
-
       try {
-        // Reminders
         if (Array.isArray(parsedImport.reminders)){
           reminders = parsedImport.reminders;
           save(REM_KEY, reminders);
         }
-
-        // Pillars
         if (parsedImport.pillars && typeof parsedImport.pillars === 'object'){
           const incoming = parsedImport.pillars;
           Object.keys(PILLARS).forEach(id => {
             if (incoming[id] && incoming[id].days){
-              pillars[id] = {
-                habits: PILLARS[id].habits,
-                days: incoming[id].days || {}
-              };
-              // Ensure doneAt exists
+              const inHabits = (incoming[id].habits && incoming[id].habits.length) ? incoming[id].habits : PILLARS[id].habits;
+              ensureHabitIds(inHabits);
+              pillars[id] = { habits: inHabits, days: incoming[id].days || {} };
               Object.keys(pillars[id].days).forEach(k => {
                 const d = pillars[id].days[k];
                 if (!d.done) d.done = [];
@@ -2013,26 +2183,18 @@ input:checked + .slider::before{transform:translateX(20px)}
                 if (!d.doneAt) d.doneAt = {};
               });
             } else {
-              pillars[id] = { habits: PILLARS[id].habits, days: {} };
+              pillars[id] = { habits: JSON.parse(JSON.stringify(PILLARS[id].habits)), days: {} };
             }
           });
           save(PILLAR_KEY, pillars);
         }
-
-        // Money
         if (Array.isArray(parsedImport.money)){
           money = parsedImport.money;
           save(MONEY_KEY, money);
         }
-
-        // Refresh everything
         renderReminders();
-        renderPillar('body');
-        renderPillar('craft');
-        renderPillar('rel');
-        renderTodayStrip();
-        renderActivity();
-
+        renderPillar('body'); renderPillar('craft'); renderPillar('rel');
+        renderTodayStrip(); renderActivity();
         closeImport();
         vibrate([80, 40, 80, 40, 120]);
         setTimeout(() => {
@@ -2043,13 +2205,44 @@ input:checked + .slider::before{transform:translateX(20px)}
       }
     });
   }
+
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn){
+    exportBtn.addEventListener('click', () => {
+      const data = JSON.stringify({ reminders, pillars, money, exportedAt: new Date().toISOString() }, null, 2);
+      if (navigator.clipboard){
+        navigator.clipboard.writeText(data).then(() => alert('Data copied')).catch(() => prompt('Copy your data:', data));
+      } else {
+        prompt('Copy your data:', data);
+      }
+      vibrate(8);
+    });
+  }
+
+  const darkToggle = document.getElementById('darkToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
+
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    if (darkToggle) darkToggle.checked = (t === 'dark');
+    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', t === 'dark' ? '#000000' : '#F2F2F7');
+  }
+  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+  if (darkToggle){
+    darkToggle.addEventListener('change', () => { applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); });
+  }
+
   const resetBtn = document.getElementById('resetBtn');
   if (resetBtn){
     resetBtn.addEventListener('click', () => {
       if (confirm('Reset all Spur data? This cannot be undone.')){
         reminders = []; money = [];
         pillars = {};
-        Object.keys(PILLARS).forEach(id => { pillars[id] = { habits: PILLARS[id].habits, days: {} }; });
+        Object.keys(PILLARS).forEach(id => { pillars[id] = { habits: JSON.parse(JSON.stringify(PILLARS[id].habits)), days: {} }; });
         save(REM_KEY, reminders); save(MONEY_KEY, money); save(PILLAR_KEY, pillars);
         renderReminders();
         renderPillar('body'); renderPillar('craft'); renderPillar('rel');
@@ -2063,12 +2256,9 @@ input:checked + .slider::before{transform:translateX(20px)}
   renderPillar('body'); renderPillar('craft'); renderPillar('rel');
   renderTodayStrip(); renderActivity();
 
-  // Re-sync on visibility change
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) syncRemindersToSW();
-  });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncRemindersToSW(); });
 
-  console.log('%cSpur v0.10','color:#FF2D55;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.12','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
