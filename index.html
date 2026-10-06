@@ -1885,7 +1885,164 @@ input:checked + .slider::before{transform:translateX(20px)}
       vibrate(8);
     });
   }
+  // ============================================
+  // IMPORT
+  // ============================================
+  const importSheet = document.getElementById('importSheet');
+  const importOverlay = document.getElementById('importOverlay');
+  const importText = document.getElementById('importText');
+  const importPreview = document.getElementById('importPreview');
+  const importBtn = document.getElementById('importBtn');
+  const doImportBtn = document.getElementById('doImport');
+  const cancelImportBtn = document.getElementById('cancelImport');
 
+  let parsedImport = null;
+
+  function openImport(){
+    if (importSheet) importSheet.classList.add('active');
+    if (importOverlay) importOverlay.classList.add('active');
+    if (importText) importText.value = '';
+    if (importPreview){ importPreview.style.display = 'none'; importPreview.innerHTML = ''; }
+    parsedImport = null;
+    setTimeout(() => importText && importText.focus(), 350);
+    vibrate(5);
+  }
+
+  function closeImport(){
+    if (importSheet) importSheet.classList.remove('active');
+    if (importOverlay) importOverlay.classList.remove('active');
+  }
+
+  function summarizeImport(data){
+    const rCount = (data.reminders || []).length;
+    let days = 0, journals = 0;
+    const pillarsData = data.pillars || {};
+    Object.keys(pillarsData).forEach(pid => {
+      const pd = pillarsData[pid];
+      if (pd && pd.days){
+        Object.keys(pd.days).forEach(k => {
+          const d = pd.days[k];
+          if (d && d.done && d.done.length > 0) days++;
+          if (d && d.journal && d.journal.trim()) journals++;
+        });
+      }
+    });
+    const mCount = (data.money || []).length;
+    return { rCount, days, journals, mCount };
+  }
+
+  function updatePreview(){
+    if (!importText || !importPreview) return;
+    const txt = importText.value.trim();
+    if (!txt){
+      importPreview.style.display = 'none';
+      parsedImport = null;
+      return;
+    }
+    try {
+      const data = JSON.parse(txt);
+      if (typeof data !== 'object' || data === null){
+        throw new Error('Not an object');
+      }
+      parsedImport = data;
+      const s = summarizeImport(data);
+      const when = data.exportedAt ? new Date(data.exportedAt).toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric', year:'numeric' }) : 'unknown';
+      importPreview.innerHTML = `
+        <strong>Backup contents</strong><br>
+        • ${s.rCount} reminder${s.rCount === 1 ? '' : 's'}<br>
+        • ${s.days} habit-day${s.days === 1 ? '' : 's'}<br>
+        • ${s.journals} journal entr${s.journals === 1 ? 'y' : 'ies'}<br>
+        • ${s.mCount} money log${s.mCount === 1 ? '' : 's'}<br>
+        <span style="color:var(--text-2)">Exported: ${when}</span><br><br>
+        <span style="color:var(--destructive)">This will REPLACE all current Spur data.</span>
+      `;
+      importPreview.style.display = 'block';
+    } catch(e){
+      parsedImport = null;
+      importPreview.innerHTML = `<span style="color:var(--destructive)">Could not parse this. Make sure you pasted the full JSON from your export.</span>`;
+      importPreview.style.display = 'block';
+    }
+  }
+
+  if (importText){
+    importText.addEventListener('input', updatePreview);
+  }
+
+  if (importBtn) importBtn.addEventListener('click', openImport);
+  if (importOverlay) importOverlay.addEventListener('click', closeImport);
+  if (cancelImportBtn) cancelImportBtn.addEventListener('click', closeImport);
+
+  if (doImportBtn){
+    doImportBtn.addEventListener('click', () => {
+      if (!parsedImport){
+        alert('Nothing valid to import. Paste your export first.');
+        return;
+      }
+      const s = summarizeImport(parsedImport);
+      const ok = confirm(
+        `Restore this backup?\n\n` +
+        `• ${s.rCount} reminders\n` +
+        `• ${s.days} habit-days\n` +
+        `• ${s.journals} journal entries\n` +
+        `• ${s.mCount} money logs\n\n` +
+        `This will REPLACE all current data. Cannot be undone.`
+      );
+      if (!ok) return;
+
+      try {
+        // Reminders
+        if (Array.isArray(parsedImport.reminders)){
+          reminders = parsedImport.reminders;
+          save(REM_KEY, reminders);
+        }
+
+        // Pillars
+        if (parsedImport.pillars && typeof parsedImport.pillars === 'object'){
+          const incoming = parsedImport.pillars;
+          Object.keys(PILLARS).forEach(id => {
+            if (incoming[id] && incoming[id].days){
+              pillars[id] = {
+                habits: PILLARS[id].habits,
+                days: incoming[id].days || {}
+              };
+              // Ensure doneAt exists
+              Object.keys(pillars[id].days).forEach(k => {
+                const d = pillars[id].days[k];
+                if (!d.done) d.done = [];
+                if (typeof d.journal !== 'string') d.journal = '';
+                if (!d.doneAt) d.doneAt = {};
+              });
+            } else {
+              pillars[id] = { habits: PILLARS[id].habits, days: {} };
+            }
+          });
+          save(PILLAR_KEY, pillars);
+        }
+
+        // Money
+        if (Array.isArray(parsedImport.money)){
+          money = parsedImport.money;
+          save(MONEY_KEY, money);
+        }
+
+        // Refresh everything
+        renderReminders();
+        renderPillar('body');
+        renderPillar('craft');
+        renderPillar('rel');
+        renderTodayStrip();
+        renderActivity();
+
+        closeImport();
+        vibrate([80, 40, 80, 40, 120]);
+        setTimeout(() => {
+          alert(`Restored.\n\n• ${s.rCount} reminders\n• ${s.days} habit-days\n• ${s.journals} journal entries\n• ${s.mCount} money logs`);
+        }, 300);
+      } catch(e){
+        alert('Import failed: ' + (e.message || 'unknown error'));
+      }
+    });
+  }
   const resetBtn = document.getElementById('resetBtn');
   if (resetBtn){
     resetBtn.addEventListener('click', () => {
