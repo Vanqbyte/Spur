@@ -73,8 +73,10 @@ button{font-family:inherit}
 .row-icon{width:32px;height:32px;border-radius:var(--r-icon);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
 .row-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .row-body{flex:1;min-width:0}
-.row-title{font-size:16px;font-weight:500;letter-spacing:-.35px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .25s var(--ease)}
-.row-sub{font-size:14px;color:var(--text-2);letter-spacing:-.15px;margin-top:2px}
+.row-title{font-size:16px;font-weight:500;letter-spacing:-.35px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .25s var(--ease),text-decoration-color .25s var(--ease);text-decoration:line-through transparent}
+.row.done .row-title{color:var(--text-3);text-decoration-color:var(--text-3)}
+.row-sub{font-size:14px;color:var(--text-2);letter-spacing:-.15px;margin-top:2px;transition:opacity .25s var(--ease)}
+.row.done .row-sub{opacity:.5}
 .row-value{font-size:16px;color:var(--text-2);letter-spacing:-.35px}
 .check{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--text-3);flex-shrink:0;cursor:pointer;transition:all .25s var(--spring);position:relative}
 .check.done{background:var(--pillar,var(--accent));border-color:var(--pillar,var(--accent));transform:scale(1.04);animation:checkPop .35s var(--spring)}
@@ -185,7 +187,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
 
-/* Floating soft dot — refined feedback */
+/* Floating soft dot */
 .float-dot{position:fixed;pointer-events:none;width:6px;height:6px;border-radius:50%;z-index:200;animation:floatDot .9s var(--ease) forwards}
 @keyframes floatDot{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1;transform:translateY(-4px) scale(1)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
 
@@ -202,6 +204,12 @@ input:checked + .slider::before{transform:translateX(20px)}
 .today-pillar.t-craft{color:var(--craft)}
 .today-pillar.t-rel{color:var(--rel)}
 
+/* Reminders — done section */
+.reminders-group{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
+.done-separator{font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;padding:14px 16px 8px;border-top:.5px solid var(--hairline)}
+.reminders-group .row{animation:rowSlideIn .35s var(--spring)}
+@keyframes rowSlideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
 /* Calendar view */
 .cal-header{display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px}
 .cal-title{font-size:20px;font-weight:700;letter-spacing:-.4px}
@@ -214,26 +222,24 @@ input:checked + .slider::before{transform:translateX(20px)}
 .cal-day{aspect-ratio:1;background:var(--surface);border-radius:10px;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;position:relative;padding:0;transition:transform .15s var(--spring)}
 .cal-day:active{transform:scale(.94)}
 .cal-day.empty{background:transparent;cursor:default;pointer-events:none}
-.cal-day.other-month{opacity:.3}
 .cal-day .num{font-size:14px;font-weight:600;color:var(--text);line-height:1}
-.cal-day.today{border:2px solid var(--accent)}
-.cal-day.has-activity{background:var(--surface)}
-.cal-day.full{background:var(--pillar,var(--accent));color:#fff}
+.cal-day.today{border:2px solid var(--cal-pillar,var(--accent))}
+.cal-day.full{background:var(--cal-pillar,var(--accent));color:#fff}
 .cal-day.full .num{color:#fff}
-.cal-day.partial{background:var(--pillar-soft,var(--accent-soft))}
+.cal-day.partial{background:var(--cal-pillar-soft,var(--accent-soft))}
 .cal-day .cal-dots{position:absolute;bottom:4px;display:flex;gap:3px}
-.cal-dot{width:5px;height:5px;border-radius:50%;background:var(--pillar,var(--accent))}
+.cal-dot{width:5px;height:5px;border-radius:50%;background:var(--cal-pillar,var(--accent))}
 .cal-day.full .cal-dot{background:#fff}
 .cal-legend{display:flex;gap:14px;justify-content:center;padding:16px 0 0;font-size:12px;color:var(--text-2)}
 .cal-legend span{display:flex;align-items:center;gap:5px}
-.cal-legend .leg-dot{width:8px;height:8px;border-radius:50%;background:var(--pillar,var(--accent))}
-.cal-legend .leg-dot.soft{background:var(--pillar-soft,var(--accent-soft))}
+.cal-legend .leg-dot{width:8px;height:8px;border-radius:50%;background:var(--cal-pillar,var(--accent))}
+.cal-legend .leg-dot.soft{background:var(--cal-pillar-soft,var(--accent-soft))}
 
 /* Day detail */
 .day-detail-header{padding:0 0 12px}
 .day-detail-date{font-size:22px;font-weight:700;letter-spacing:-.5px}
 .day-detail-weekday{font-size:13px;color:var(--text-2);margin-top:2px}
-.day-detail-streak{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 10px;background:var(--pillar-soft,var(--accent-soft));color:var(--pillar,var(--accent));border-radius:999px;font-size:12px;font-weight:600}
+.day-detail-streak{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:600}
 .day-detail-streak svg{width:12px;height:12px;fill:currentColor}
 .day-detail-journal{background:var(--surface);border-radius:var(--r-nested);padding:14px 16px;margin-top:12px;font-size:15px;color:var(--text);line-height:1.5;letter-spacing:-.2px;white-space:pre-wrap}
 .day-detail-journal.empty{color:var(--text-3);font-style:italic}
@@ -314,7 +320,7 @@ input:checked + .slider::before{transform:translateX(20px)}
           <div class="today-strip" id="todayStrip"></div>
 
           <div class="section-header">Reminders</div>
-          <div class="group" id="remindersList"></div>
+          <div class="reminders-group" id="remindersGroup"></div>
           <div class="empty" id="emptyReminders">No reminders yet.<br>Tap + to add your first.</div>
         </div>
       </section>
@@ -488,7 +494,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
             </button>
           </div>
-          <div class="version">Spur v0.9</div>
+          <div class="version">Spur v0.9.1</div>
         </div>
       </section>
     </main>
@@ -523,7 +529,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
-<!-- Reminder sheet -->
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="addSheet">
   <div class="sheet-handle"></div>
@@ -545,7 +550,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
-<!-- Timer sheet -->
 <div class="overlay" id="timerOverlay"></div>
 <div class="sheet" id="timerSheet">
   <div class="sheet-handle"></div>
@@ -577,7 +581,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
-<!-- Money sheet -->
 <div class="overlay" id="moneyOverlay"></div>
 <div class="sheet" id="moneySheet">
   <div class="sheet-handle"></div>
@@ -599,7 +602,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
-<!-- Calendar sheet -->
 <div class="overlay" id="calendarOverlay"></div>
 <div class="sheet" id="calendarSheet">
   <div class="sheet-handle"></div>
@@ -611,7 +613,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   <div class="sheet-body" id="calendarBody"></div>
 </div>
 
-<!-- Day detail sheet -->
 <div class="overlay" id="dayOverlay"></div>
 <div class="sheet" id="daySheet">
   <div class="sheet-handle"></div>
@@ -817,9 +818,12 @@ input:checked + .slider::before{transform:translateX(20px)}
     return p.days[key];
   }
   function getPillarColor(pillarId){
-    const el = document.getElementById('screen-' + pillarId);
-    if (!el) return '#007AFF';
-    return getComputedStyle(el).getPropertyValue('--pillar').trim() || '#007AFF';
+    const map = { body: '#007AFF', craft: '#5856D6', rel: '#FF2D55' };
+    return map[pillarId] || '#007AFF';
+  }
+  function getPillarSoft(pillarId){
+    const map = { body: 'rgba(0,122,255,.12)', craft: 'rgba(88,86,214,.12)', rel: 'rgba(255,45,85,.12)' };
+    return map[pillarId] || 'rgba(0,122,255,.12)';
   }
 
   const navItems = document.querySelectorAll('.tab, .sidebar-item');
@@ -867,7 +871,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     save(PILLAR_KEY, pillars);
 
     if (!wasDone){
-      // Soft dot + row wash
       if (event){
         const rect = event.target.getBoundingClientRect();
         floatDot(rect.left + rect.width/2 - 3, rect.top - 2, getPillarColor(pillarId));
@@ -1073,7 +1076,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   }
 
-  // Activity
   const bodyStreakStat = document.getElementById('bodyStreakStat');
   const craftStreakStat = document.getElementById('craftStreakStat');
   const relStreakStat = document.getElementById('relStreakStat');
@@ -1198,7 +1200,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   });
 
   // ============================================
-  // HISTORY — Calendar + Day detail
+  // HISTORY — Calendar + Day detail (with inline pillar color)
   // ============================================
   const calendarSheet = document.getElementById('calendarSheet');
   const calendarOverlay = document.getElementById('calendarOverlay');
@@ -1218,6 +1220,9 @@ input:checked + .slider::before{transform:translateX(20px)}
     calendarMonth = new Date();
     calendarMonth.setDate(1);
     calendarTitle.textContent = PILLARS[pillarId].label + ' History';
+    // Set color directly on calendarBody so all nested elements resolve
+    calendarBody.style.setProperty('--cal-pillar', getPillarColor(pillarId));
+    calendarBody.style.setProperty('--cal-pillar-soft', getPillarSoft(pillarId));
     renderCalendar();
     calendarSheet.classList.add('active');
     calendarOverlay.classList.add('active');
@@ -1317,16 +1322,17 @@ input:checked + .slider::before{transform:translateX(20px)}
     const doneCount = d && d.done ? d.done.length : 0;
 
     const pillarColor = getPillarColor(pillarId);
+    const pillarSoft = getPillarSoft(pillarId);
 
     let html = `
-      <div class="day-detail-header" style="--pillar:${pillarColor};--pillar-soft:${pillarColor}26">
+      <div class="day-detail-header">
         <div class="day-detail-date">${dateObj.getDate()} ${dateObj.toLocaleDateString(undefined,{month:'short'})}</div>
         <div class="day-detail-weekday">${dateLabel}</div>
     `;
 
     if (doneCount > 0){
       const streakThatDay = computeStreakUpTo(pillarId, dateKey);
-      html += `<div class="day-detail-streak">
+      html += `<div class="day-detail-streak" style="background:${pillarSoft};color:${pillarColor}">
         <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
         ${streakThatDay} day streak
       </div>`;
@@ -1337,9 +1343,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     if (!d || (doneCount === 0 && (!d.journal || !d.journal.trim()))){
       html += `<div class="day-detail-empty">Nothing logged this day.</div>`;
     } else {
-      // Habits
       html += `<div class="section-header">Habits (${doneCount} of ${total})</div>`;
-      html += `<div class="group" style="--pillar:${pillarColor};--pillar-soft:${pillarColor}26">`;
+      html += `<div class="group" style="--pillar:${pillarColor};--pillar-soft:${pillarSoft}">`;
       p.habits.forEach(h => {
         const isDone = d.done && d.done.includes(h.id);
         html += `
@@ -1348,13 +1353,12 @@ input:checked + .slider::before{transform:translateX(20px)}
             <div class="row-body">
               <div class="row-title" style="${isDone ? '' : 'color:var(--text-3)'}">${escapeHtml(h.label)}</div>
             </div>
-            <div class="check ${isDone ? 'done' : ''}" style="cursor:default;pointer-events:none"></div>
+            <div class="check ${isDone ? 'done' : ''}" style="cursor:default;pointer-events:none;${isDone ? `background:${pillarColor};border-color:${pillarColor}` : ''}"></div>
           </div>
         `;
       });
       html += `</div>`;
 
-      // Journal
       if (d.journal && d.journal.trim()){
         html += `<div class="section-header">Journal</div>`;
         html += `<div class="day-detail-journal">${escapeHtml(d.journal.trim())}</div>`;
@@ -1363,7 +1367,6 @@ input:checked + .slider::before{transform:translateX(20px)}
         html += `<div class="day-detail-journal empty">No journal entry.</div>`;
       }
 
-      // Actions
       html += `<div class="day-detail-actions">
         <button id="viewMonthBtn">View month</button>
       </div>`;
@@ -1398,47 +1401,74 @@ input:checked + .slider::before{transform:translateX(20px)}
     btn.addEventListener('click', () => openCalendar(btn.dataset.history));
   });
 
-  // Reminders
-  const listEl = document.getElementById('remindersList');
+  // ============================================
+  // REMINDERS — done items sink to bottom
+  // ============================================
+  const remindersGroup = document.getElementById('remindersGroup');
   const emptyReminders = document.getElementById('emptyReminders');
   const todayBadge = document.getElementById('todayBadge');
   const sidebarBadge = document.getElementById('sidebarBadge');
 
   function renderReminders(){
-    if (!listEl) return;
-    listEl.innerHTML = '';
+    if (!remindersGroup) return;
+    remindersGroup.innerHTML = '';
+
     if (reminders.length === 0){
       if (emptyReminders) emptyReminders.style.display = 'block';
     } else {
       if (emptyReminders) emptyReminders.style.display = 'none';
-      reminders.forEach(r => {
-        const row = document.createElement('div');
-        row.className = 'row';
-        row.innerHTML = `
-          <div class="row-body">
-            <div class="row-title" style="${r.done ? 'color:var(--text-2);text-decoration:line-through' : ''}">${escapeHtml(r.title)}</div>
-            <div class="row-sub">${formatTime(r.time)} · ${r.repeat}</div>
-          </div>
-          <div class="check ${r.done ? 'done' : ''}"></div>
-        `;
-        row.querySelector('.check').addEventListener('click', (e) => {
-          e.stopPropagation();
-          r.done = !r.done;
-          save(REM_KEY, reminders);
-          renderReminders();
-          if (r.done) vibrate(12); else vibrate(8);
-        });
-        listEl.appendChild(row);
-      });
+
+      const open = reminders.filter(r => !r.done);
+      const done = reminders.filter(r => r.done);
+
+      // Open reminders first
+      open.forEach(r => remindersGroup.appendChild(makeReminderRow(r)));
+
+      // Done separator + done reminders at bottom
+      if (done.length > 0){
+        const sep = document.createElement('div');
+        sep.className = 'done-separator';
+        sep.textContent = 'Done · ' + done.length;
+        remindersGroup.appendChild(sep);
+        done.forEach(r => remindersGroup.appendChild(makeReminderRow(r)));
+      }
     }
+
     const total = reminders.length;
-    const done = reminders.filter(r => r.done).length;
-    const pending = total - done;
+    const doneCount = reminders.filter(r => r.done).length;
+    const pending = total - doneCount;
     [todayBadge, sidebarBadge].forEach(b => {
       if (!b) return;
       if (pending > 0){ b.textContent = pending; b.style.display = 'inline-block'; }
       else { b.style.display = 'none'; }
     });
+  }
+
+  function makeReminderRow(r){
+    const row = document.createElement('button');
+    row.className = 'row' + (r.done ? ' done' : '');
+    row.innerHTML = `
+      <div class="row-body">
+        <div class="row-title">${escapeHtml(r.title)}</div>
+        <div class="row-sub">${formatTime(r.time)} · ${r.repeat}</div>
+      </div>
+      <div class="check ${r.done ? 'done' : ''}"></div>
+    `;
+    row.querySelector('.check').addEventListener('click', (e) => {
+      e.stopPropagation();
+      r.done = !r.done;
+      save(REM_KEY, reminders);
+      renderReminders();
+      if (r.done) vibrate(12); else vibrate(8);
+    });
+    // Tapping the row itself toggles too
+    row.addEventListener('click', () => {
+      r.done = !r.done;
+      save(REM_KEY, reminders);
+      renderReminders();
+      if (r.done) vibrate(12); else vibrate(8);
+    });
+    return row;
   }
 
   const sheet = document.getElementById('addSheet');
@@ -1758,7 +1788,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   renderTodayStrip();
   renderActivity();
 
-  console.log('%cSpur v0.9','color:#FF2D55;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.9.1','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
