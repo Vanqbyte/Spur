@@ -703,6 +703,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       time: r.time,
       done: r.done,
       repeat: r.repeat,
+      pillar: r.pillar || 'Reminder',
       nextFireAt: computeNextFireAt(r)
     }));
     swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
