@@ -1,6 +1,6 @@
-// Spur Service Worker — handles notifications + offline caching
+// Spur Service Worker — notifications with follow-ups + offline caching
 
-const CACHE = 'spur-v10';
+const CACHE = 'spur-v10-1';
 const ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', (e) => {
@@ -17,7 +17,6 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
-// Offline caching — network first, cache fallback
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
@@ -34,67 +33,120 @@ self.addEventListener('fetch', (e) => {
 // ============================================
 // NOTIFICATIONS
 // ============================================
-let reminderTimer = null;
 let pendingReminders = [];
+let scheduledTimers = new Map(); // id → setTimeout handle
 
-// Listen for reminders sent from the main app
+// Follow-up intervals: 1 hour and 4 hours
+const FOLLOWUP_1_MS = 60 * 60 * 1000;       // +1 hr
+const FOLLOWUP_2_MS = 4 * 60 * 60 * 1000;   // +4 hrs
+
 self.addEventListener('message', (e) => {
   const data = e.data || {};
 
   if (data.type === 'SCHEDULE_REMINDERS'){
     pendingReminders = data.reminders || [];
-    scheduleNext();
+    rescheduleAll();
+  }
+
+  if (data.type === 'CANCEL_REMINDER'){
+    const id = data.id;
+    clearTimersFor(id);
+    pendingReminders = pendingReminders.filter(r => r.id !== id);
   }
 
   if (data.type === 'SKIP_WAITING'){
-    self.skipWaiting();
+    self.skip,Waiting();
   }
 });
 
-function scheduleNext(){
-  if (reminderTimer) clearTimeout(reminderTimer);
+function clearTimersFor(id){
+  // Cancel all timers scheduled for this reminder id
+  for (const [key, handle] of scheduledTimers.entries()){
+    if (key.startsWith(id + '::')){
+      clearTimeout(handle);
+      scheduledTimers.delete(key);
+    }
+  }
+}
 
+function clearAllTimers(){
+  for (const handle of scheduledTimers.values()) clearTimeout(handle);
+  scheduledTimers.clear();
+}
+
+function scheduleTimer(key, when callback){
+  const delay = Math.max(0, when - Date.now());
+  // Don't schedule things more than 24h out — they may drift on mobile
+  if (delay > 24 * 60 * 60 * 1000) return;
+  const handle = setTimeout(callback, delay);
+  scheduledTimers.set(key, handle);
+}
+
+function rescheduleAll(){
+  clearAllTimers();
   const now = Date.now();
-  let nextTime = Infinity;
-  let nextReminder = null;
 
   pendingReminders.forEach(r => {
     if (r.done) return;
     if (!r.nextFireAt) return;
-    if (r.nextFireAt > now && r.nextFireAt < nextTime){
-      nextTime = r.nextFireAt;
-      nextReminder = r;
+
+    // Primary fire
+    if (r.nextFireAt > now){
+      scheduleTimer(r.id + '::main', r.nextFireAt, () => fireMain(r));
+    }
+
+    // Follow-ups (Once reminders only)
+    if (r.repeat === 'Once'){
+      const follow1 = r.nextFireAt + FOLLOWUP_1_MS;
+      const follow2 = r.nextFireAt + FOLLOWUP_2_MS;
+
+      if (follow1 > now){
+        scheduleTimer(r.id + '::f1', follow1, () => fireFollowup(r, '1h later'));
+      }
+      if (follow2 > now){
+        scheduleTimer(r.id + '::f2', follow2, () => fireFollowup(r, '4h later'));
+      }
     }
   });
-
-  if (!nextReminder) return;
-
-  const delay = Math.max(0, nextTime - now);
-  reminderTimer = setTimeout(() => {
-    fireNotification(nextReminder);
-    // remove from pending after firing
-    pendingReminders = pendingReminders.filter(r => r.id !== nextReminder.id);
-    // schedule next
-    scheduleNext();
-  }, delay);
 }
 
-function fireNotification(r){
-  const title = 'Spur';
+function fireMain(r){
+  showNotif(r, r.title, null);
+  scheduledTimers.delete(r.id + '::main');
+}
+
+function fireFollowup(r, suffix){
+  // Only fire if the reminder is still in our pending list AND not done
+  const still = pendingReminders.find(x => x.id === r.id);
+  if (!still || still.done){
+    scheduledTimers.delete(r.id + '::' + (suffix.includes('1h') ? 'f1' : 'f2'));
+    return;
+  }
+  showNotif(r, r.title, suffix);
+  scheduledTimers.delete(r.id + '::' + (suffix.includes('1h') ? 'f1' : 'f2'));
+}
+
+function showNotif(r, body, followupSuffix){
+  // Title = context label (Reminder / Body / Craft / People)
+  const context = r.pillar || 'Reminder';
+
+  // Body combines title + optional follow-up note
+  let fullBody = body;
+  if (followupSuffix){
+    fullBody = `${body} · ${followupSuffix}`;
+  }
+
   const options = {
-    body: r.title,
-    tag: 'spur-' + r.id,
+    body: fullBody,
+    tag: 'spur-' + r.id + (followupSuffix ? '-' + followupSuffix : ''),
     renotify: true,
     requireInteraction: false,
-    data: { url: './', id: r.id },
-    icon: undefined,
-    badge: undefined,
-    silent: false
+    data: { url: './', id: r.id }
   };
-  self.registration.showNotification(title, options);
+
+  self.registration.showNotification(context, options);
 }
 
-// When user clicks a notification → focus or open the app
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url) || './';
