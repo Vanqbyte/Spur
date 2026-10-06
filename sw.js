@@ -2,6 +2,7 @@
 
 const CACHE = 'spur-v10-1';
 const ASSETS = ['./', './index.html'];
+// Version files are intentionally NOT precached — the loader handles freshness.
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {}));
