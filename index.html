@@ -304,7 +304,592 @@ input:checked + .slider::before{transform:translateX(20px)}
 </div></div>
 
 <script>
-/* PART B — see next message */
+(function(){
+  'use strict';
+
+  // ============================================
+  // STORAGE
+  // ============================================
+  const REM_KEY = 'spur-reminders';
+  const THEME_KEY = 'spur-theme';
+  const BODY_KEY = 'spur-body';        // { habits: [...], days: { 'YYYY-MM-DD': { done: [ids], journal: '' } } }
+  const BODY_COLOR = '#4A90D9';
+
+  function load(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+    catch(e){ return fallback; }
+  }
+  function save(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
+  }
+
+  let reminders = load(REM_KEY, []);
+
+  // Default Body setup
+  const DEFAULT_HABITS = [
+    { id: 'gym',    icon: '🏋️', label: 'Workout / Gym',           color: '#FF3B30' },
+    { id: 'water',  icon: '💧', label: 'Drink 8 glasses of water', color: '#00C7BE' },
+    { id: 'journal',icon: '📓', label: 'Journal how body feels',   color: '#AF52DE' },
+  ];
+
+  let body = load(BODY_KEY, null);
+  if (!body || !body.habits) {
+    body = { habits: DEFAULT_HABITS, days: {} };
+    save(BODY_KEY, body);
+  }
+
+  // ============================================
+  // DATE HELPERS
+  // ============================================
+  function todayKey(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function dateKeyOffset(offset){
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function shortDay(dateStr){
+    const d = new Date(dateStr + 'T12:00:00');
+    return ['S','M','T','W','T','F','S'][d.getDay()];
+  }
+
+  // ============================================
+  // HELPERS
+  // ============================================
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[c]);
+  }
+  function formatTime(t){
+    if (!t) return '';
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr = h % 12 || 12;
+    return `${hr}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+  function vibrate(ms){ if (navigator.vibrate) navigator.vibrate(ms); }
+
+  // ============================================
+  // CLOCK
+  // ============================================
+  function updateClock(){
+    const n = new Date();
+    let h = n.getHours();
+    const m = String(n.getMinutes()).padStart(2,'0');
+    h = h % 12 || 12;
+    const el = document.getElementById('clock');
+    if (el) el.textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // ============================================
+  // TAB NAVIGATION
+  // ============================================
+  const tabs = document.querySelectorAll('.tab');
+  const screens = document.querySelectorAll('.screen');
+  const navTitle = document.getElementById('navTitle');
+  const navRight = document.getElementById('navRight');
+  const titles = { today:'Today', body:'Body', activity:'Activity', settings:'Settings' };
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.screen;
+      tabs.forEach(x => x.classList.toggle('active', x === tab));
+      screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
+      if (navTitle) navTitle.textContent = titles[t] || 'Spur';
+      if (navRight) navRight.style.visibility = (t === 'today') ? 'visible' : 'hidden';
+      const sc = document.querySelector('.screens');
+      if (sc) sc.scrollTop = 0;
+      vibrate(5);
+    });
+  });
+
+  // ============================================
+  // BODY — LOGIC
+  // ============================================
+  function getDay(key){
+    if (!body.days[key]) body.days[key] = { done: [], journal: '' };
+    if (!body.days[key].done) body.days[key].done = [];
+    if (typeof body.days[key].journal !== 'string') body.days[key].journal = '';
+    return body.days[key];
+  }
+
+  // Streak calculation — gentle
+  // Walks backward from today. Each day is "done" if all habits completed.
+  // Grace: a single missed day does NOT break the streak.
+  // Reset: two consecutive missed days resets to 0.
+  function computeStreak(){
+    let streak = 0;
+    let consecutiveMisses = 0;
+    for (let i = 0; i < 365; i++){
+      const key = dateKeyOffset(-i);
+      const day = body.days[key];
+      const isDone = day && day.done && day.done.length === body.habits.length;
+
+      if (isDone){
+        // Only count if we haven't already broken via 2 misses
+        if (consecutiveMisses >= 2) break;
+        streak++;
+        consecutiveMisses = 0;
+      } else {
+        // Today not yet done shouldn't immediately count as a miss
+        if (i === 0){
+          continue;
+        }
+        consecutiveMisses++;
+        if (consecutiveMisses >= 2) break;
+      }
+    }
+    return streak;
+  }
+
+  // ============================================
+  // BODY — RENDER
+  // ============================================
+  const ring = document.getElementById('bodyRing');
+  const ringLabel = document.getElementById('ringLabel');
+  const bodyStatus = document.getElementById('bodyStatus');
+  const bodyStreakEl = document.getElementById('bodyStreak');
+  const streakBar = document.getElementById('streakBar');
+  const habitsList = document.getElementById('habitsList');
+  const journalInput = document.getElementById('journalInput');
+  const journalSaved = document.getElementById('journalSaved');
+  const bodyStreakStat = document.getElementById('bodyStreakStat');
+  const weekAvgStat = document.getElementById('weekAvgStat');
+  const bodyChart = document.getElementById('bodyChart');
+  const journalHistory = document.getElementById('journalHistory');
+
+  const RING_CIRC = 213.6; // 2πr with r=34
+
+  function renderBody(){
+    const key = todayKey();
+    const day = getDay(key);
+    const total = body.habits.length;
+    const doneCount = day.done.length;
+    const pct = total === 0 ? 0 : doneCount / total;
+
+    // Ring
+    if (ring){
+      ring.setAttribute('stroke-dashoffset', String(RING_CIRC * (1 - pct)));
+    }
+    if (ringLabel) ringLabel.textContent = Math.round(pct * 100) + '%';
+    if (bodyStatus) bodyStatus.textContent = `${doneCount} of ${total} done today`;
+
+    const streak = computeStreak();
+    if (bodyStreakEl) bodyStreakEl.textContent = `🔥 ${streak} day streak`;
+    if (bodyStreakStat) bodyStreakStat.textContent = streak;
+
+    // Streak bar (last 7 days incl. today)
+    if (streakBar){
+      streakBar.innerHTML = '';
+      for (let i = 6; i >= 0; i--){
+        const k = dateKeyOffset(-i);
+        const d = body.days[k];
+        const done = d && d.done && d.done.length === total;
+        const partial = d && d.done && d.done.length > 0 && !done;
+        const el = document.createElement('div');
+        el.className = 'streak-day';
+        if (done) el.classList.add('done');
+        else if (partial) el.classList.add('grace');
+        if (i === 0) el.classList.add('today');
+        el.innerHTML = `<div class="icon">${done ? '✓' : partial ? '·' : ''}</div><div>${shortDay(k)}</div>`;
+        streakBar.appendChild(el);
+      }
+    }
+
+    // Habits list
+    if (habitsList){
+      habitsList.innerHTML = '';
+      body.habits.forEach(h => {
+        const isDone = day.done.includes(h.id);
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div class="row-icon" style="background:${h.color}">${h.icon}</div>
+          <div class="row-body">
+            <div class="row-title" style="${isDone ? 'color:var(--text-secondary)' : ''}">${escapeHtml(h.label)}</div>
+          </div>
+          <div class="row-check ${isDone ? 'done' : ''}" style="${isDone ? 'background:' + BODY_COLOR + ';border-color:' + BODY_COLOR : ''}"></div>
+        `;
+        const check = row.querySelector('.row-check');
+        check.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleHabit(h.id);
+        });
+        habitsList.appendChild(row);
+      });
+    }
+
+    // Journal
+    if (journalInput && document.activeElement !== journalInput){
+      journalInput.value = day.journal || '';
+    }
+
+    // Weekly average
+    let sum = 0, n = 0;
+    for (let i = 0; i < 7; i++){
+      const k = dateKeyOffset(-i);
+      const d = body.days[k];
+      if (d && d.done){
+        sum += d.done.length / total;
+        n++;
+      }
+    }
+    if (weekAvgStat){
+      weekAvgStat.textContent = n === 0 ? '0%' : Math.round((sum / 7) * 100) + '%';
+    }
+
+    // Chart
+    if (bodyChart){
+      bodyChart.innerHTML = '';
+      for (let i = 6; i >= 0; i--){
+        const k = dateKeyOffset(-i);
+        const d = body.days[k];
+        const pct = d && d.done ? d.done.length / total : 0;
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = Math.max(6, pct * 100) + '%';
+        bar.style.background = `linear-gradient(180deg,${BODY_COLOR},#6FA8DC)`;
+        bar.innerHTML = `<span>${shortDay(k)}</span>`;
+        bodyChart.appendChild(bar);
+      }
+    }
+
+    // Journal history
+    if (journalHistory){
+      journalHistory.innerHTML = '';
+      const entries = Object.keys(body.days)
+        .filter(k => body.days[k].journal && body.days[k].journal.trim())
+        .sort()
+        .reverse()
+        .slice(0, 7);
+      if (entries.length === 0){
+        journalHistory.innerHTML = `<div class="row"><div class="row-body"><div class="row-sub">No journal entries yet.</div></div></div>`;
+      } else {
+        entries.forEach(k => {
+          const row = document.createElement('div');
+          row.className = 'row';
+          const d = new Date(k + 'T12:00:00');
+          const label = d.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
+          row.innerHTML = `
+            <div class="row-icon" style="background:${BODY_COLOR}">📓</div>
+            <div class="row-body">
+              <div class="row-title">${escapeHtml(body.days[k].journal)}</div>
+              <div class="row-sub">${label}</div>
+            </div>
+          `;
+          journalHistory.appendChild(row);
+        });
+      }
+    }
+  }
+
+  function toggleHabit(id){
+    const key = todayKey();
+    const day = getDay(key);
+    const idx = day.done.indexOf(id);
+    if (idx === -1) day.done.push(id);
+    else day.done.splice(idx, 1);
+    save(BODY_KEY, body);
+    renderBody();
+    vibrate(10);
+  }
+
+  // Journal debounced save
+  let journalTimer = null;
+  if (journalInput){
+    journalInput.addEventListener('input', () => {
+      clearTimeout(journalTimer);
+      journalTimer = setTimeout(() => {
+        const key = todayKey();
+        const day = getDay(key);
+        day.journal = journalInput.value;
+        save(BODY_KEY, body);
+        if (journalSaved){
+          journalSaved.textContent = 'Saved ✓';
+          setTimeout(() => { journalSaved.textContent = ''; }, 1500);
+        }
+        renderBody();
+      }, 400);
+    });
+  }
+
+  // ============================================
+  // REMINDERS (Today tab) — same as Round 2
+  // ============================================
+  const listEl = document.getElementById('remindersList');
+  const emptyHint = document.getElementById('emptyHint');
+  const todayBadge = document.getElementById('todayBadge');
+
+  function renderReminders(){
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    if (reminders.length === 0){
+      if (emptyHint) emptyHint.style.display = 'block';
+    } else {
+      if (emptyHint) emptyHint.style.display = 'none';
+
+      reminders.forEach(r => {
+        const wrap = document.createElement('div');
+        wrap.className = 'swipe-wrap';
+
+        const del = document.createElement('div');
+        del.className = 'swipe-delete';
+        del.textContent = 'Delete';
+        del.addEventListener('click', () => removeReminder(r.id));
+
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div class="row-icon" style="background:${r.color}">${r.icon}</div>
+          <div class="row-body">
+            <div class="row-title" style="${r.done ? 'text-decoration:line-through;color:var(--text-secondary)' : ''}">${escapeHtml(r.title)}</div>
+            <div class="row-sub">${formatTime(r.time)} · ${r.repeat}</div>
+          </div>
+          <div class="row-check ${r.done ? 'done' : ''}"></div>
+        `;
+
+        const check = row.querySelector('.row-check');
+        check.addEventListener('click', (e) => {
+          e.stopPropagation();
+          r.done = !r.done;
+          save(REM_KEY, reminders);
+          renderReminders();
+          vibrate(8);
+        });
+
+        let startX = 0, currentX = 0, swiping = false;
+        row.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          currentX = 0;
+          swiping = true;
+          row.style.transition = 'none';
+        }, { passive: true });
+
+        row.addEventListener('touchmove', (e) => {
+          if (!swiping) return;
+          currentX = e.touches[0].clientX - startX;
+          if (currentX < 0 && currentX > -80) {
+            row.style.transform = `translateX(${currentX}px)`;
+          } else if (currentX <= -80) {
+            row.style.transform = 'translateX(-80px)';
+          }
+        }, { passive: true });
+
+        row.addEventListener('touchend', () => {
+          swiping = false;
+          row.style.transition = 'transform .25s ease';
+          if (currentX < -40) row.style.transform = 'translateX(-80px)';
+          else row.style.transform = 'translateX(0)';
+        });
+
+        row.addEventListener('click', () => {
+          if (currentX !== 0){
+            row.style.transform = 'translateX(0)';
+            currentX = 0;
+          }
+        });
+
+        wrap.appendChild(del);
+        wrap.appendChild(row);
+        listEl.appendChild(wrap);
+      });
+    }
+
+    // Badge
+    const total = reminders.length;
+    const done = reminders.filter(r => r.done).length;
+    const pending = total - done;
+    if (todayBadge){
+      if (pending > 0){
+        todayBadge.textContent = pending;
+        todayBadge.style.display = 'inline-block';
+      } else {
+        todayBadge.style.display = 'none';
+      }
+    }
+  }
+
+  function removeReminder(id){
+    reminders = reminders.filter(r => r.id !== id);
+    save(REM_KEY, reminders);
+    renderReminders();
+    vibrate(15);
+  }
+
+  // ============================================
+  // ADD REMINDER SHEET
+  // ============================================
+  const sheet = document.getElementById('addSheet');
+  const overlay = document.getElementById('sheetOverlay');
+  const titleInput = document.getElementById('reminderTitle');
+  const timeInput = document.getElementById('reminderTime');
+  const iconPicker = document.getElementById('iconPicker');
+
+  let selectedIcon = '🔥';
+  let selectedColor = '#FF9500';
+  let selectedRepeat = 'Once';
+
+  function openSheet(){
+    if (sheet) sheet.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    if (titleInput) titleInput.value = '';
+    if (timeInput) timeInput.value = '09:00';
+    selectedRepeat = 'Once';
+    selectedIcon = '🔥';
+    selectedColor = '#FF9500';
+    document.querySelectorAll('.repeat-opt').forEach(b => {
+      b.classList.toggle('selected', b.dataset.repeat === 'Once');
+    });
+    document.querySelectorAll('.icon-opt').forEach(b => {
+      b.classList.toggle('selected', b.dataset.icon === '🔥');
+    });
+    setTimeout(() => titleInput && titleInput.focus(), 350);
+    vibrate(5);
+  }
+
+  function closeSheet(){
+    if (sheet) sheet.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  if (navRight) navRight.addEventListener('click', openSheet);
+  if (overlay) overlay.addEventListener('click', closeSheet);
+  const cancelBtn = document.getElementById('cancelSheet');
+  if (cancelBtn) cancelBtn.addEventListener('click', closeSheet);
+
+  document.querySelectorAll('.repeat-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.repeat-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedRepeat = btn.dataset.repeat;
+      vibrate(5);
+    });
+  });
+
+  if (iconPicker){
+    iconPicker.querySelectorAll('.icon-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        iconPicker.querySelectorAll('.icon-opt').forEach(b => b.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedIcon = opt.dataset.icon;
+        selectedColor = opt.dataset.color;
+        vibrate(5);
+      });
+    });
+  }
+
+  const saveBtn = document.getElementById('saveReminder');
+  if (saveBtn){
+    saveBtn.addEventListener('click', () => {
+      const title = (titleInput && titleInput.value.trim()) || 'Untitled';
+      const time = (timeInput && timeInput.value) || '09:00';
+
+      reminders.push({
+        id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+        title, time,
+        repeat: selectedRepeat,
+        icon: selectedIcon,
+        color: selectedColor,
+        done: false,
+        createdAt: Date.now()
+      });
+
+      save(REM_KEY, reminders);
+      renderReminders();
+      closeSheet();
+      vibrate(15);
+    });
+  }
+
+  // ============================================
+  // THEME
+  // ============================================
+  const darkToggle = document.getElementById('darkToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
+
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    if (darkToggle) darkToggle.checked = (t === 'dark');
+    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', t === 'dark' ? '#1C1C1E' : '#007AFF');
+  }
+
+  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+  if (darkToggle){
+    darkToggle.addEventListener('change', () => {
+      applyTheme(darkToggle.checked ? 'dark' : 'light');
+      vibrate(8);
+    });
+  }
+
+  // ============================================
+  // EXPORT / RESET
+  // ============================================
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn){
+    exportBtn.addEventListener('click', () => {
+      const data = JSON.stringify({
+        reminders,
+        body,
+        exportedAt: new Date().toISOString()
+      }, null, 2);
+      if (navigator.clipboard){
+        navigator.clipboard.writeText(data).then(() => alert('Data copied ✅')).catch(() => prompt('Copy your data:', data));
+      } else {
+        prompt('Copy your data:', data);
+      }
+      vibrate(8);
+    });
+  }
+
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Reset all Spur data? This cannot be undone.')){
+        reminders = [];
+        body = { habits: DEFAULT_HABITS, days: {} };
+        save(REM_KEY, reminders);
+        save(BODY_KEY, body);
+        renderReminders();
+        renderBody();
+        vibrate(20);
+      }
+    });
+  }
+
+  // ============================================
+  // SERVICE WORKER
+  // ============================================
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+
+  // ============================================
+  // INIT
+  // ============================================
+  renderReminders();
+  renderBody();
+
+  console.log('%c🚀 Spur v0.3 — Body Pillar','color:#4A90D9;font-weight:bold;font-size:14px');
+})();
 </script>
 </body>
 </html>
