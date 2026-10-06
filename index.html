@@ -80,13 +80,11 @@ button{font-family:inherit}
 .row.done .row-title{color:var(--text-3)}
 .row.done .row-sub{opacity:.5}
 .row-value{font-size:16px;color:var(--text-2);letter-spacing:-.35px}
-
 .check{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--text-3);flex-shrink:0;cursor:pointer;transition:all .25s var(--spring);position:relative}
 .check.done{background:var(--pillar,var(--accent));border-color:var(--pillar,var(--accent));transform:scale(1.04);animation:checkPop .35s var(--spring)}
 .check.done::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 .check.settled{background:var(--settled);border-color:var(--settled);animation:none}
 @keyframes checkPop{0%{transform:scale(.85);box-shadow:0 0 0 0 var(--pillar-soft,var(--accent-soft))}60%{transform:scale(1.12);box-shadow:0 0 0 8px transparent}100%{transform:scale(1.04);box-shadow:0 0 0 0 transparent}}
-
 .hero{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:24px 20px;display:flex;align-items:center;gap:20px;position:relative;transition:box-shadow .5s var(--ease)}
 .hero.flash{animation:heroFlash .9s var(--ease)}
 @keyframes heroFlash{0%,100%{box-shadow:var(--shadow-card)}30%{box-shadow:0 0 0 3px var(--pillar,var(--accent)),0 8px 24px var(--pillar-soft,var(--accent-soft))}}
@@ -191,10 +189,8 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary strong{color:var(--text);font-weight:600}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
-
 .float-dot{position:fixed;pointer-events:none;width:6px;height:6px;border-radius:50%;z-index:200;animation:floatDot .9s var(--ease) forwards}
 @keyframes floatDot{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1;transform:translateY(-4px) scale(1)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
-
 .today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
 .today-pillar{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;font-family:inherit;text-align:center}
 .today-pillar:active{transform:scale(.97)}
@@ -207,12 +203,10 @@ input:checked + .slider::before{transform:translateX(20px)}
 .today-pillar.t-body{color:var(--body)}
 .today-pillar.t-craft{color:var(--craft)}
 .today-pillar.t-rel{color:var(--rel)}
-
 .reminders-group{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
 .done-separator{font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;padding:14px 16px 8px;border-top:.5px solid var(--hairline)}
 .reminders-group .row{animation:rowSlideIn .35s var(--spring)}
 @keyframes rowSlideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-
 .cal-header{display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px}
 .cal-title{font-size:20px;font-weight:700;letter-spacing:-.4px}
 .cal-nav{display:flex;gap:4px}
@@ -236,7 +230,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 .cal-legend span{display:flex;align-items:center;gap:5px}
 .cal-legend .leg-dot{width:8px;height:8px;border-radius:50%;background:var(--cal-pillar,var(--accent))}
 .cal-legend .leg-dot.soft{background:var(--cal-pillar-soft,var(--accent-soft))}
-
 .day-detail-header{padding:0 0 12px}
 .day-detail-date{font-size:22px;font-weight:700;letter-spacing:-.5px}
 .day-detail-weekday{font-size:13px;color:var(--text-2);margin-top:2px}
@@ -247,7 +240,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 .day-detail-empty{text-align:center;color:var(--text-2);font-size:15px;padding:40px 24px;line-height:1.5}
 .day-detail-actions{padding-top:16px;display:flex;gap:8px}
 .day-detail-actions button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--hairline);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;cursor:pointer}
-
 .version{text-align:center;font-size:12px;color:var(--text-3);padding:32px 16px 16px}
 @media (max-width:767px){.sidebar{display:none}.app{grid-template-columns:0 1fr}}
 @media (min-width:768px) and (max-width:1023px){
@@ -475,6 +467,27 @@ input:checked + .slider::before{transform:translateX(20px)}
       <section class="screen" id="screen-settings">
         <h1 class="large-title">Settings</h1>
         <div class="content">
+          <div class="section-header">Notifications</div>
+          <div class="group">
+            <div class="row" id="notifRow" style="cursor:default">
+              <div class="row-icon" style="background:var(--accent)">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+              </div>
+              <div class="row-body">
+                <div class="row-title">Reminder alerts</div>
+                <div class="row-sub" id="notifStatus">Checking…</div>
+              </div>
+              <button class="lt-btn" id="notifBtn" style="padding:8px 14px;background:var(--accent);color:#fff;border-radius:9px;font-weight:600">Enable</button>
+            </div>
+            <button class="row" id="testNotifBtn">
+              <div class="row-icon" style="background:#5856D6">
+                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>
+              </div>
+              <div class="row-body"><div class="row-title">Send a test notification</div></div>
+              <div class="row-value">›</div>
+            </button>
+          </div>
+
           <div class="section-header">Appearance</div>
           <div class="group">
             <div class="row">
@@ -483,17 +496,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <label class="switch"><input type="checkbox" id="darkToggle"><span class="slider"></span></label>
             </div>
           </div>
-          <div class="section-header">Settled</div>
-          <div class="group">
-            <div class="row" style="cursor:default">
-              <div class="row-icon" style="background:var(--settled)"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="row-body">
-                <div class="row-title">Lock-in time</div>
-                <div class="row-sub">Checks settle to gold after this delay</div>
-              </div>
-              <div class="row-value">30s</div>
-            </div>
-          </div>
+
           <div class="section-header">Data</div>
           <div class="group">
             <button class="row" id="exportBtn">
@@ -506,7 +509,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
             </button>
           </div>
-          <div class="version">Spur v0.9.2</div>
+          <div class="version">Spur v0.10</div>
         </div>
       </section>
     </main>
@@ -644,8 +647,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   const THEME_KEY = 'spur-theme';
   const PILLAR_KEY = 'spur-pillars';
   const MONEY_KEY = 'spur-money';
-
-  const SETTLE_MS = 30 * 1000; // 30 seconds
+  const SETTLE_MS = 30 * 1000;
 
   function load(key, fallback){
     try { return JSON.parse(localStorage.getItem(key)) || fallback; }
@@ -657,6 +659,54 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   let reminders = load(REM_KEY, []);
   let money = load(MONEY_KEY, []);
+
+  // ============================================
+  // SERVICE WORKER REGISTRATION
+  // ============================================
+  let swRegistration = null;
+  if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      swRegistration = reg;
+      syncRemindersToSW();
+    }).catch((err) => {
+      console.warn('SW registration failed', err);
+    });
+  }
+
+  function computeNextFireAt(reminder){
+    if (reminder.done) return null;
+    const now = new Date();
+    const [h, m] = (reminder.time || '09:00').split(':').map(Number);
+    const fire = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+
+    if (reminder.repeat === 'Once'){
+      // Fire only if in the future today
+      if (fire.getTime() > now.getTime()) return fire.getTime();
+      return null;
+    }
+    if (reminder.repeat === 'Daily'){
+      if (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 1);
+      return fire.getTime();
+    }
+    if (reminder.repeat === 'Weekly'){
+      while (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 7);
+      return fire.getTime();
+    }
+    return null;
+  }
+
+  function syncRemindersToSW(){
+    if (!swRegistration || !swRegistration.active) return;
+    const payload = reminders.map(r => ({
+      id: r.id,
+      title: r.title,
+      time: r.time,
+      done: r.done,
+      repeat: r.repeat,
+      nextFireAt: computeNextFireAt(r)
+    }));
+    swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
+  }
 
   const ICONS = {
     dumbbell: '<svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l1-1 2 2-1 1zM17 14l1-1 2 2-1 1zM4.5 13.5l-2 2 2 2 2-2zM17.5 10.5l2-2-2-2-2 2zM14 4l-1 1 2 2 1-1z"/></svg>',
@@ -673,32 +723,23 @@ input:checked + .slider::before{transform:translateX(20px)}
   };
 
   const PILLARS = {
-    body: {
-      label: 'Body',
-      habits: [
-        { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
-        { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
-        { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
-      ]
-    },
-    craft: {
-      label: 'Craft',
-      habits: [
-        { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
-        { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
-        { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
-        { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
-      ]
-    },
-    rel: {
-      label: 'People',
-      habits: [
-        { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
-        { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
-        { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
-        { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
-      ]
-    }
+    body: { label: 'Body', habits: [
+      { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
+      { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
+      { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
+    ]},
+    craft: { label: 'Craft', habits: [
+      { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
+      { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
+      { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
+      { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
+    ]},
+    rel: { label: 'People', habits: [
+      { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
+      { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
+      { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
+      { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
+    ]}
   };
 
   let pillars = load(PILLAR_KEY, null);
@@ -715,26 +756,12 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
 
   function pad(n){ return String(n).padStart(2,'0'); }
-  function dateKey(d){
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-  }
+  function dateKey(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
   function todayKey(){ return dateKey(new Date()); }
-  function dateKeyOffset(offset){
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    return dateKey(d);
-  }
-  function monthKey(){
-    const d = new Date();
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
-  }
-  function shortDay(dateStr){
-    const d = new Date(dateStr + 'T12:00:00');
-    return ['S','M','T','W','T','F','S'][d.getDay()];
-  }
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-  }
+  function dateKeyOffset(offset){ const d = new Date(); d.setDate(d.getDate() + offset); return dateKey(d); }
+  function monthKey(){ const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}`; }
+  function shortDay(dateStr){ const d = new Date(dateStr + 'T12:00:00'); return ['S','M','T','W','T','F','S'][d.getDay()]; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
   function formatTime(t){
     if (!t) return '';
     const [h, m] = t.split(':').map(Number);
@@ -880,16 +907,12 @@ input:checked + .slider::before{transform:translateX(20px)}
     }, { passive:true });
   }
 
-  // ============================================
-  // HABIT TOGGLE with Settled logic
-  // ============================================
   function toggleHabit(pillarId, habitId, event){
     const key = todayKey();
     const day = getDay(pillarId, key);
     const idx = day.done.indexOf(habitId);
     const wasDone = idx !== -1;
 
-    // If was done AND settled → confirm to unlock
     if (wasDone){
       const doneAt = day.doneAt[habitId];
       if (isSettled(doneAt)){
@@ -906,7 +929,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       return;
     }
 
-    // Mark done
     day.done.push(habitId);
     day.doneAt[habitId] = Date.now();
     save(PILLAR_KEY, pillars);
@@ -925,11 +947,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     renderTodayStrip();
     renderActivity();
     setTimeout(() => checkCompletion(pillarId), 250);
-
-    // Schedule a re-render after settle time
-    setTimeout(() => {
-      renderPillar(pillarId);
-    }, SETTLE_MS + 100);
+    setTimeout(() => renderPillar(pillarId), SETTLE_MS + 100);
   }
 
   function checkCompletion(pillarId){
@@ -1287,18 +1305,11 @@ input:checked + .slider::before{transform:translateX(20px)}
     let html = `
       <div class="cal-header">
         <div class="cal-title">${monthLabel}</div>
-        <div class="cal-nav">
-          <button id="calPrev">‹</button>
-          <button id="calNext">›</button>
-        </div>
+        <div class="cal-nav"><button id="calPrev">‹</button><button id="calNext">›</button></div>
       </div>
       <div class="cal-weekdays">
-        <div class="cal-weekday">S</div>
-        <div class="cal-weekday">M</div>
-        <div class="cal-weekday">T</div>
-        <div class="cal-weekday">W</div>
-        <div class="cal-weekday">T</div>
-        <div class="cal-weekday">F</div>
+        <div class="cal-weekday">S</div><div class="cal-weekday">M</div><div class="cal-weekday">T</div>
+        <div class="cal-weekday">W</div><div class="cal-weekday">T</div><div class="cal-weekday">F</div>
         <div class="cal-weekday">S</div>
       </div>
       <div class="cal-grid">
@@ -1319,7 +1330,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       else if (pct > 0) classes.push('partial');
       if (dk === today) classes.push('today');
       if (doneCount > 0 || hasJournal) classes.push('has-activity');
-
       html += `
         <button class="${classes.join(' ')}" data-day="${dk}">
           <span class="num">${day}</span>
@@ -1347,9 +1357,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       renderCalendar();
     });
     calendarBody.querySelectorAll('.cal-day[data-day]').forEach(el => {
-      el.addEventListener('click', () => {
-        openDayDetail(calendarPillar, el.dataset.day);
-      });
+      el.addEventListener('click', () => { openDayDetail(calendarPillar, el.dataset.day); });
     });
   }
 
@@ -1360,7 +1368,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     const dateLabel = dateObj.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
     const total = p.habits.length;
     const doneCount = d && d.done ? d.done.length : 0;
-
     const pillarColor = getPillarColor(pillarId);
     const pillarSoft = getPillarSoft(pillarId);
 
@@ -1407,9 +1414,7 @@ input:checked + .slider::before{transform:translateX(20px)}
         html += `<div class="day-detail-journal empty">No journal entry.</div>`;
       }
 
-      html += `<div class="day-detail-actions">
-        <button id="viewMonthBtn">View month</button>
-      </div>`;
+      html += `<div class="day-detail-actions"><button id="viewMonthBtn">View month</button></div>`;
     }
 
     dayBody.innerHTML = html;
@@ -1417,10 +1422,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 
     const viewMonthBtn = document.getElementById('viewMonthBtn');
     if (viewMonthBtn){
-      viewMonthBtn.addEventListener('click', () => {
-        closeDayDetail();
-        openCalendar(pillarId);
-      });
+      viewMonthBtn.addEventListener('click', () => { closeDayDetail(); openCalendar(pillarId); });
     }
 
     daySheet.classList.add('active');
@@ -1441,9 +1443,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     btn.addEventListener('click', () => openCalendar(btn.dataset.history));
   });
 
-  // ============================================
-  // REMINDERS with Settled logic
-  // ============================================
   const remindersGroup = document.getElementById('remindersGroup');
   const emptyReminders = document.getElementById('emptyReminders');
   const todayBadge = document.getElementById('todayBadge');
@@ -1480,11 +1479,12 @@ input:checked + .slider::before{transform:translateX(20px)}
       if (pending > 0){ b.textContent = pending; b.style.display = 'inline-block'; }
       else { b.style.display = 'none'; }
     });
+
+    syncRemindersToSW();
   }
 
   function toggleReminder(r){
     if (r.done){
-      // Unchecking a done reminder
       if (isSettled(r.doneAt)){
         const proceed = confirm('Unlock this reminder? It was settled 30+ seconds ago.');
         if (!proceed) return;
@@ -1511,17 +1511,12 @@ input:checked + .slider::before{transform:translateX(20px)}
       </div>
       <div class="check ${r.done ? 'done' : ''} ${settled ? 'settled' : ''}"></div>
     `;
-    row.querySelector('.check').addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleReminder(r);
-    });
+    row.querySelector('.check').addEventListener('click', (e) => { e.stopPropagation(); toggleReminder(r); });
     row.addEventListener('click', () => toggleReminder(r));
     return row;
   }
 
-  // Re-render reminders after settle time so colors update
   setInterval(() => {
-    // Only re-render if there are any done reminders that might have just settled
     const anySettling = reminders.some(r => r.done && !isSettled(r.doneAt) && r.doneAt);
     if (anySettling) renderReminders();
   }, 5000);
@@ -1572,6 +1567,86 @@ input:checked + .slider::before{transform:translateX(20px)}
     vibrate(15);
   });
 
+  // ============================================
+  // NOTIFICATIONS UI
+  // ============================================
+  const notifBtn = document.getElementById('notifBtn');
+  const notifStatus = document.getElementById('notifStatus');
+  const testNotifBtn = document.getElementById('testNotifBtn');
+
+  function updateNotifUI(){
+    if (!notifStatus || !notifBtn) return;
+    if (!('Notification' in window)){
+      notifStatus.textContent = 'Not supported on this browser';
+      notifBtn.style.display = 'none';
+      return;
+    }
+    const perm = Notification.permission;
+    if (perm === 'granted'){
+      notifStatus.textContent = 'Enabled';
+      notifBtn.style.display = 'none';
+    } else if (perm === 'denied'){
+      notifStatus.textContent = 'Blocked in browser settings';
+      notifBtn.style.display = 'none';
+    } else {
+      notifStatus.textContent = 'Not enabled yet';
+      notifBtn.style.display = 'inline-block';
+      notifBtn.textContent = 'Enable';
+    }
+  }
+
+  if (notifBtn){
+    notifBtn.addEventListener('click', async () => {
+      if (!('Notification' in window)) return;
+      const perm = await Notification.requestPermission();
+      updateNotifUI();
+      if (perm === 'granted'){
+        vibrate(12);
+        syncRemindersToSW();
+      }
+    });
+  }
+
+  if (testNotifBtn){
+    testNotifBtn.addEventListener('click', async () => {
+      if (!('Notification' in window)){
+        alert('Notifications not supported on this browser.');
+        return;
+      }
+      if (Notification.permission !== 'granted'){
+        const perm = await Notification.requestPermission();
+        updateNotifUI();
+        if (perm !== 'granted'){
+          alert('You need to allow notifications first.');
+          return;
+        }
+      }
+      if (swRegistration && swRegistration.active){
+        // Trigger via SW
+        swRegistration.active.postMessage({
+          type: 'SCHEDULE_REMINDERS',
+          reminders: [{
+            id: 'test_' + Date.now(),
+            title: 'Test notification — this is how reminders will look',
+            done: false,
+            nextFireAt: Date.now() + 2000
+          }]
+        });
+      } else {
+        // Fallback: direct notification
+        new Notification('Spur', { body: 'Test notification — this is how reminders will look' });
+      }
+      vibrate(8);
+    });
+  }
+
+  updateNotifUI();
+  if ('Notification' in window && navigator.permissions){
+    navigator.permissions.query({ name: 'notifications' }).then(p => {
+      p.onchange = updateNotifUI;
+    }).catch(() => {});
+  }
+
   // Timer
   const timerSheet = document.getElementById('timerSheet');
   const timerOverlay = document.getElementById('timerOverlay');
@@ -1591,11 +1666,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   let timerPaused = false;
   let selectedMinutes = 25;
 
-  function fmtClock(sec){
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${pad(m)}:${pad(s)}`;
-  }
+  function fmtClock(sec){ const m = Math.floor(sec / 60); const s = sec % 60; return `${pad(m)}:${pad(s)}`; }
   function updateTimerVisual(){
     if (timerTime) timerTime.textContent = fmtClock(timerRemaining);
     const pct = 1 - (timerRemaining / timerDuration);
@@ -1614,8 +1685,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
   function resetTimer(){
     clearInterval(timerInterval);
-    timerRunning = false;
-    timerPaused = false;
+    timerRunning = false; timerPaused = false;
     timerDuration = selectedMinutes * 60;
     timerRemaining = timerDuration;
     if (startBtn) startBtn.style.display = 'inline-block';
@@ -1626,11 +1696,8 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
   function startTimer(){
     if (timerRunning) return;
-    if ('Notification' in window && Notification.permission === 'default'){
-      Notification.requestPermission().catch(() => {});
-    }
-    timerRunning = true;
-    timerPaused = false;
+    if ('Notification' in window && Notification.permission === 'default'){ Notification.requestPermission().catch(() => {}); }
+    timerRunning = true; timerPaused = false;
     if (startBtn) startBtn.style.display = 'none';
     if (timerPresets) timerPresets.style.display = 'none';
     if (timerActions) timerActions.style.display = 'flex';
@@ -1644,36 +1711,23 @@ input:checked + .slider::before{transform:translateX(20px)}
   function pauseTimer(){
     if (!timerRunning) return;
     if (timerPaused){
-      timerPaused = false;
-      if (pauseBtn) pauseBtn.textContent = 'Pause';
+      timerPaused = false; if (pauseBtn) pauseBtn.textContent = 'Pause';
       timerInterval = setInterval(() => {
-        timerRemaining--;
-        updateTimerVisual();
+        timerRemaining--; updateTimerVisual();
         if (timerRemaining <= 0) finishTimer();
       }, 1000);
     } else {
-      timerPaused = true;
-      if (pauseBtn) pauseBtn.textContent = 'Resume';
+      timerPaused = true; if (pauseBtn) pauseBtn.textContent = 'Resume';
       clearInterval(timerInterval);
     }
     vibrate(5);
   }
-  function stopTimer(){
-    clearInterval(timerInterval);
-    timerRunning = false;
-    timerPaused = false;
-  }
+  function stopTimer(){ clearInterval(timerInterval); timerRunning = false; timerPaused = false; }
   function finishTimer(){
-    clearInterval(timerInterval);
-    timerRunning = false;
+    clearInterval(timerInterval); timerRunning = false;
     vibrate([100, 50, 100, 50, 100]);
     if ('Notification' in window && Notification.permission === 'granted'){
-      try {
-        new Notification('Deep work complete', {
-          body: `${selectedMinutes} minutes done. Nice.`,
-          tag: 'spur-timer'
-        });
-      } catch(e){}
+      try { new Notification('Deep work complete', { body: `${selectedMinutes} minutes done. Nice.`, tag: 'spur-timer' }); } catch(e){}
     }
     const key = todayKey();
     const day = getDay('craft', key);
@@ -1760,10 +1814,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   document.getElementById('saveMoney').addEventListener('click', () => {
     const amt = parseFloat(moneyAmount && moneyAmount.value);
-    if (!amt || amt <= 0){
-      if (moneyAmount) moneyAmount.focus();
-      return;
-    }
+    if (!amt || amt <= 0){ if (moneyAmount) moneyAmount.focus(); return; }
     money.push({
       id: 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
       date: todayKey(),
@@ -1794,10 +1845,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
   applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
   if (darkToggle){
-    darkToggle.addEventListener('change', () => {
-      applyTheme(darkToggle.checked ? 'dark' : 'light');
-      vibrate(8);
-    });
+    darkToggle.addEventListener('change', () => { applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); });
   }
 
   const exportBtn = document.getElementById('exportBtn');
@@ -1817,34 +1865,28 @@ input:checked + .slider::before{transform:translateX(20px)}
   if (resetBtn){
     resetBtn.addEventListener('click', () => {
       if (confirm('Reset all Spur data? This cannot be undone.')){
-        reminders = [];
-        money = [];
+        reminders = []; money = [];
         pillars = {};
-        Object.keys(PILLARS).forEach(id => {
-          pillars[id] = { habits: PILLARS[id].habits, days: {} };
-        });
-        save(REM_KEY, reminders);
-        save(MONEY_KEY, money);
-        save(PILLAR_KEY, pillars);
+        Object.keys(PILLARS).forEach(id => { pillars[id] = { habits: PILLARS[id].habits, days: {} }; });
+        save(REM_KEY, reminders); save(MONEY_KEY, money); save(PILLAR_KEY, pillars);
         renderReminders();
-        renderPillar('body');
-        renderPillar('craft');
-        renderPillar('rel');
-        renderTodayStrip();
-        renderActivity();
+        renderPillar('body'); renderPillar('craft'); renderPillar('rel');
+        renderTodayStrip(); renderActivity();
         vibrate(20);
       }
     });
   }
 
   renderReminders();
-  renderPillar('body');
-  renderPillar('craft');
-  renderPillar('rel');
-  renderTodayStrip();
-  renderActivity();
+  renderPillar('body'); renderPillar('craft'); renderPillar('rel');
+  renderTodayStrip(); renderActivity();
 
-  console.log('%cSpur v0.9.2','color:#FF2D55;font-weight:600;font-size:14px');
+  // Re-sync on visibility change
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) syncRemindersToSW();
+  });
+
+  console.log('%cSpur v0.10','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
