@@ -552,7 +552,22 @@ input:checked + .slider::before{transform:translateX(20px)}
     </nav>
   </div>
 </div>
-
+<div class="overlay" id="importOverlay"></div>
+<div class="sheet" id="importSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn" id="cancelImport">Cancel</button>
+    <h2 class="sheet-title">Import Data</h2>
+    <button class="sheet-btn bold" id="doImport">Restore</button>
+  </div>
+  <div class="sheet-body">
+    <div class="field">
+      <div class="field-label">Paste your export</div>
+      <textarea class="field-input" id="importText" placeholder='Paste the JSON from your exported backup…' rows="8" style="font-family:ui-monospace,Menlo,monospace;font-size:13px;min-height:180px;resize:vertical;line-height:1.4"></textarea>
+    </div>
+    <div class="money-summary" id="importPreview" style="display:none"></div>
+  </div>
+</div>
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="addSheet">
   <div class="sheet-handle"></div>
