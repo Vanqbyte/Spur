@@ -9,58 +9,37 @@
 <title>Spur</title>
 <link rel="manifest" href="manifest.json" />
 <style>
-/* ============================================
-   Spur v0.5 — Design tokens
-   ============================================ */
 :root{
-  /* Accent — one, used sparingly */
   --accent:#007AFF;
   --accent-soft:rgba(0,122,255,.12);
   --accent-hover:rgba(0,122,255,.08);
 
-  /* Semantic */
+  --body:#007AFF;
+  --body-soft:rgba(0,122,255,.12);
+  --craft:#5856D6;
+  --craft-soft:rgba(88,86,214,.12);
+
   --success:#34C759;
   --destructive:#FF3B30;
 
-  /* Surfaces */
   --bg:#F2F2F7;
   --surface:#FFFFFF;
-  --surface-raised:#FFFFFF;
   --surface-inset:rgba(120,120,128,.08);
 
-  /* Text */
   --text:#000000;
   --text-2:rgba(60,60,67,.62);
   --text-3:rgba(60,60,67,.34);
 
-  /* Lines */
   --hairline:rgba(60,60,67,.16);
-  --hairline-strong:rgba(60,60,67,.24);
-
-  /* Shadow — whisper, not shout */
   --shadow-card:0 1px 3px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.02);
-  --shadow-float:0 4px 16px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
 
-  /* Radii */
   --r-card:14px;
   --r-nested:10px;
   --r-icon:8px;
-  --r-pill:999px;
 
-  /* Spacing rhythm */
-  --s-1:4px;
-  --s-2:8px;
-  --s-3:12px;
-  --s-4:16px;
-  --s-5:20px;
-  --s-6:24px;
-  --s-8:32px;
-
-  /* Safe areas */
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
 
-  /* Motion */
   --spring:cubic-bezier(.32,.72,0,1);
   --ease:cubic-bezier(.4,0,.2,1);
 
@@ -72,9 +51,13 @@
   --accent-soft:rgba(10,132,255,.18);
   --accent-hover:rgba(10,132,255,.12);
 
+  --body:#0A84FF;
+  --body-soft:rgba(10,132,255,.18);
+  --craft:#7B79E0;
+  --craft-soft:rgba(123,121,224,.18);
+
   --bg:#000000;
   --surface:#1C1C1E;
-  --surface-raised:#2C2C2E;
   --surface-inset:rgba(120,120,128,.16);
 
   --text:#FFFFFF;
@@ -82,29 +65,20 @@
   --text-3:rgba(235,235,245,.3);
 
   --hairline:rgba(84,84,88,.5);
-  --hairline-strong:rgba(84,84,88,.65);
-
   --shadow-card:0 1px 3px rgba(0,0,0,.4);
-  --shadow-float:0 4px 16px rgba(0,0,0,.5);
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{
   margin:0;padding:0;
   font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  height:100%;
-  overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  background:var(--bg);color:var(--text);
+  height:100%;overflow:hidden;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   overscroll-behavior:none;
 }
 button{font-family:inherit}
 
-/* ============================================
-   App shell — responsive
-   ============================================ */
 .app{
   position:fixed;inset:0;
   display:grid;
@@ -113,158 +87,116 @@ button{font-family:inherit}
   background:var(--bg);
 }
 
-/* Sidebar (desktop / tablet) */
+/* ---------- Sidebar ---------- */
 .sidebar{
   grid-area:sidebar;
   background:var(--bg);
   border-right:.5px solid var(--hairline);
-  padding:var(--s-4);
-  padding-top:calc(var(--s-4) + var(--safe-top));
+  padding:16px;
+  padding-top:calc(16px + var(--safe-top));
   overflow-y:auto;
   display:none;
   flex-direction:column;
   gap:2px;
 }
 .sidebar-brand{
-  font-size:20px;
-  font-weight:700;
-  letter-spacing:-.4px;
-  padding:8px 12px 20px;
-  color:var(--text);
+  font-size:20px;font-weight:700;letter-spacing:-.4px;
+  padding:8px 12px 20px;color:var(--text);
 }
 .sidebar-item{
   display:flex;align-items:center;gap:12px;
-  padding:10px 12px;
-  border-radius:9px;
+  padding:10px 12px;border-radius:9px;
   border:none;background:none;
   font-size:15px;font-weight:500;
-  color:var(--text-2);
-  cursor:pointer;
-  text-align:left;
-  letter-spacing:-.2px;
+  color:var(--text-2);cursor:pointer;
+  text-align:left;letter-spacing:-.2px;
   transition:background .12s,color .12s;
-  width:100%;
+  width:100%;position:relative;
 }
 .sidebar-item:hover{background:var(--surface-inset)}
 .sidebar-item.active{
   background:var(--accent-soft);
-  color:var(--accent);
-  font-weight:600;
+  color:var(--accent);font-weight:600;
 }
 .sidebar-item svg{
   width:18px;height:18px;
   stroke:currentColor;stroke-width:1.8;
-  fill:none;
-  flex-shrink:0;
+  fill:none;flex-shrink:0;
 }
 .sidebar-item .badge{
   margin-left:auto;
-  background:var(--destructive);
-  color:#fff;
+  background:var(--destructive);color:#fff;
   font-size:11px;font-weight:600;
-  padding:1px 7px;
-  border-radius:9px;
+  padding:1px 7px;border-radius:9px;
   min-width:18px;text-align:center;
 }
 
-/* Main pane */
 .main{
   grid-area:main;
   display:flex;flex-direction:column;
-  overflow:hidden;
-  position:relative;
-  min-width:0;
+  overflow:hidden;position:relative;min-width:0;
 }
 
-/* ============================================
-   Nav bar
-   ============================================ */
+/* ---------- Nav ---------- */
 .nav{
   position:relative;
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px var(--s-4) 10px;
+  padding:12px 16px 10px;
   padding-top:calc(12px + var(--safe-top));
   background:rgba(249,249,249,.82);
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:.5px solid var(--hairline);
-  flex-shrink:0;
-  min-height:44px;
-  z-index:5;
+  flex-shrink:0;min-height:44px;z-index:5;
 }
 [data-theme="dark"] .nav{background:rgba(28,28,30,.82)}
 
 .nav-title{
-  position:absolute;
-  left:50%;transform:translateX(-50%);
-  font-size:17px;font-weight:600;
-  letter-spacing:-.4px;
-  margin:0;
-  opacity:0;
+  position:absolute;left:50%;transform:translateX(-50%);
+  font-size:17px;font-weight:600;letter-spacing:-.4px;
+  margin:0;opacity:0;
   transition:opacity .25s var(--ease);
 }
 .nav-title.visible{opacity:1}
 .nav-btn{
-  background:none;border:none;
-  padding:8px;
-  color:var(--accent);
-  cursor:pointer;
+  background:none;border:none;padding:8px;
+  color:var(--accent);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  border-radius:8px;
-  min-width:38px;height:38px;
+  border-radius:8px;min-width:38px;height:38px;
   transition:background .12s;
 }
 .nav-btn:hover{background:var(--accent-hover)}
 .nav-btn:active{transform:scale(.94)}
 .nav-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
 
-/* ============================================
-   Screens
-   ============================================ */
+/* ---------- Screens ---------- */
 .screens{
-  flex:1;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;scroll-behavior:smooth;
 }
 .screen{display:none}
 .screen.active{display:block;animation:screen-in .3s var(--ease)}
 @keyframes screen-in{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 
 .content{
-  max-width:680px;
-  margin:0 auto;
-  padding:0 var(--s-4);
+  max-width:680px;margin:0 auto;
+  padding:0 16px;
   padding-bottom:calc(120px + var(--safe-bottom));
 }
 
-/* ============================================
-   Typography
-   ============================================ */
 .large-title{
-  font-size:34px;
-  font-weight:700;
-  letter-spacing:-.5px;
-  margin:0;
-  padding:12px var(--s-4) 8px;
-  max-width:680px;
-  margin-left:auto;margin-right:auto;
+  font-size:34px;font-weight:700;letter-spacing:-.5px;
+  margin:0;padding:12px 16px 8px;
+  max-width:680px;margin-left:auto;margin-right:auto;
   line-height:1.15;
 }
 
 .section-header{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text-2);
-  letter-spacing:.02em;
-  text-transform:uppercase;
-  padding:var(--s-6) 0 var(--s-2);
+  font-size:13px;font-weight:600;color:var(--text-2);
+  letter-spacing:.02em;text-transform:uppercase;
+  padding:24px 0 8px;
 }
 
-/* ============================================
-   Groups & rows
-   ============================================ */
 .group{
   background:var(--surface);
   border-radius:var(--r-card);
@@ -273,331 +205,237 @@ button{font-family:inherit}
 }
 
 .row{
-  display:flex;align-items:center;gap:var(--s-3);
-  padding:13px var(--s-4);
-  min-height:52px;
-  position:relative;
-  cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;min-height:52px;
+  position:relative;cursor:pointer;
   background:var(--surface);
   transition:background .1s var(--ease);
   border:none;width:100%;text-align:left;font:inherit;color:inherit;
 }
 .row:hover{background:var(--surface-inset)}
 .row:active{background:var(--surface-inset)}
-
 .row + .row::before{
-  content:"";
-  position:absolute;
-  top:0;left:calc(var(--s-4) + 40px);
-  right:0;height:.5px;
+  content:"";position:absolute;
+  top:0;left:56px;right:0;height:.5px;
   background:var(--hairline);
 }
 
 .row-icon{
-  width:32px;height:32px;
-  border-radius:var(--r-icon);
+  width:32px;height:32px;border-radius:var(--r-icon);
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  color:#fff;
+  flex-shrink:0;color:#fff;
   box-shadow:0 1px 2px rgba(0,0,0,.08);
 }
 .row-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 .row-body{flex:1;min-width:0}
 .row-title{
-  font-size:16px;
-  font-weight:500;
-  color:var(--text);
-  letter-spacing:-.35px;
-  line-height:1.3;
+  font-size:16px;font-weight:500;color:var(--text);
+  letter-spacing:-.35px;line-height:1.3;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .row-sub{
-  font-size:14px;
-  color:var(--text-2);
-  letter-spacing:-.15px;
-  margin-top:2px;
-  line-height:1.3;
+  font-size:14px;color:var(--text-2);
+  letter-spacing:-.15px;margin-top:2px;line-height:1.3;
 }
 .row-value{
-  font-size:16px;
-  color:var(--text-2);
-  letter-spacing:-.35px;
-  font-variant-numeric:tabular-nums;
+  font-size:16px;color:var(--text-2);
+  letter-spacing:-.35px;font-variant-numeric:tabular-nums;
 }
 
-/* Check circle */
 .check{
-  width:24px;height:24px;
-  border-radius:50%;
+  width:24px;height:24px;border-radius:50%;
   border:1.8px solid var(--text-3);
   flex-shrink:0;cursor:pointer;
   transition:all .22s var(--spring);
   position:relative;
 }
 .check.done{
-  background:var(--accent);
-  border-color:var(--accent);
+  background:var(--pillar,var(--accent));
+  border-color:var(--pillar,var(--accent));
   transform:scale(1.02);
 }
 .check.done::after{
-  content:"";
-  position:absolute;
-  left:7px;top:3px;
-  width:5px;height:10px;
-  border:solid #fff;
-  border-width:0 2px 2px 0;
+  content:"";position:absolute;
+  left:7px;top:3px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;
   transform:rotate(45deg);
 }
 
-/* ============================================
-   Hero (Body progress)
-   ============================================ */
+/* ---------- Hero ---------- */
 .hero{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-6) var(--s-5);
-  display:flex;align-items:center;gap:var(--s-5);
+  padding:24px 20px;
+  display:flex;align-items:center;gap:20px;
 }
-.ring{
-  position:relative;
-  width:88px;height:88px;flex-shrink:0;
-}
+.ring{position:relative;width:88px;height:88px;flex-shrink:0}
 .ring svg{transform:rotate(-90deg);display:block}
-.ring-track{fill:none;stroke:var(--accent-soft);stroke-width:6}
+.ring-track{fill:none;stroke:var(--pillar-soft,var(--accent-soft));stroke-width:6}
 .ring-fill{
-  fill:none;
-  stroke:var(--accent);
-  stroke-width:6;
+  fill:none;stroke:var(--pillar,var(--accent));stroke-width:6;
   stroke-linecap:round;
   transition:stroke-dashoffset .8s var(--spring);
 }
 .ring-label{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:20px;
-  font-weight:600;
-  letter-spacing:-.6px;
+  font-size:20px;font-weight:600;letter-spacing:-.6px;
   font-variant-numeric:tabular-nums;
 }
 .hero-info{flex:1;min-width:0}
 .hero-number{
-  font-size:26px;
-  font-weight:600;
-  letter-spacing:-.7px;
-  font-variant-numeric:tabular-nums;
-  line-height:1.15;
+  font-size:26px;font-weight:600;letter-spacing:-.7px;
+  font-variant-numeric:tabular-nums;line-height:1.15;
 }
 .hero-label{
-  font-size:15px;
-  color:var(--text-2);
-  letter-spacing:-.2px;
-  margin-top:2px;
+  font-size:15px;color:var(--text-2);
+  letter-spacing:-.2px;margin-top:2px;
 }
 .hero-streak{
-  margin-top:10px;
-  font-size:14px;
-  font-weight:500;
-  color:var(--accent);
+  margin-top:10px;font-size:14px;font-weight:500;
+  color:var(--pillar,var(--accent));
   letter-spacing:-.15px;
   display:flex;align-items:center;gap:5px;
 }
 .hero-streak svg{width:13px;height:13px;fill:currentColor;stroke:none}
 
-/* ============================================
-   Week strip
-   ============================================ */
+/* ---------- Week ---------- */
 .week{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-4) var(--s-3);
+  padding:16px 12px;
   display:flex;justify-content:space-between;gap:4px;
 }
-.day{
-  flex:1;
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px}
 .dot{
-  width:26px;height:26px;
-  border-radius:50%;
+  width:26px;height:26px;border-radius:50%;
   background:var(--surface-inset);
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;
-  color:var(--text-3);
+  font-size:12px;font-weight:700;color:var(--text-3);
   transition:all .3s var(--spring);
 }
-.dot.done{background:var(--accent);color:#fff;transform:scale(1.05)}
-.dot.partial{background:var(--accent-soft);color:var(--accent)}
-.dot.today{box-shadow:0 0 0 2px var(--accent)}
+.dot.done{background:var(--pillar,var(--accent));color:#fff;transform:scale(1.05)}
+.dot.partial{background:var(--pillar-soft,var(--accent-soft));color:var(--pillar,var(--accent))}
+.dot.today{box-shadow:0 0 0 2px var(--pillar,var(--accent))}
 .day-label{
-  font-size:11px;font-weight:600;
-  color:var(--text-2);
+  font-size:11px;font-weight:600;color:var(--text-2);
   letter-spacing:.02em;
 }
-.day.today .day-label{color:var(--accent)}
+.day.today .day-label{color:var(--pillar,var(--accent))}
 
-/* ============================================
-   Journal
-   ============================================ */
+/* ---------- Journal ---------- */
 .journal{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-4) var(--s-4);
+  padding:16px;
 }
 .journal textarea{
-  width:100%;
-  background:transparent;
-  border:none;
-  font-family:inherit;
-  font-size:16px;
-  color:var(--text);
-  outline:none;
-  resize:none;
-  min-height:52px;
-  letter-spacing:-.35px;
-  line-height:1.45;
+  width:100%;background:transparent;border:none;
+  font-family:inherit;font-size:16px;color:var(--text);
+  outline:none;resize:none;min-height:52px;
+  letter-spacing:-.35px;line-height:1.45;
 }
 .journal textarea::placeholder{color:var(--text-3)}
 .journal-meta{
   display:flex;justify-content:space-between;align-items:center;
-  margin-top:var(--s-2);
-  font-size:13px;
-  color:var(--text-3);
+  margin-top:8px;font-size:13px;color:var(--text-3);
   letter-spacing:-.08px;
 }
 .journal-saved{color:var(--success);font-weight:600}
 
-/* ============================================
-   Review / notes
-   ============================================ */
+/* ---------- Review ---------- */
 .review{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-4) var(--s-4) var(--s-4);
+  padding:16px;
 }
 .review-title{
   font-size:15px;font-weight:600;
-  letter-spacing:-.25px;
-  margin-bottom:6px;
+  letter-spacing:-.25px;margin-bottom:6px;
 }
 .review-text{
-  font-size:15px;
-  color:var(--text-2);
-  letter-spacing:-.2px;
-  line-height:1.5;
+  font-size:15px;color:var(--text-2);
+  letter-spacing:-.2px;line-height:1.5;
 }
 
 .note{
-  text-align:center;
-  color:var(--text-3);
-  font-size:13px;
-  padding:var(--s-4) var(--s-6) 0;
-  letter-spacing:-.08px;
-  line-height:1.5;
+  text-align:center;color:var(--text-3);
+  font-size:13px;padding:16px 24px 0;
+  letter-spacing:-.08px;line-height:1.5;
 }
 
-/* ============================================
-   Stats (Activity)
-   ============================================ */
-.stat-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:var(--s-3);
-}
+/* ---------- Stats / Chart ---------- */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .stat{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-4);
+  padding:16px;
 }
 .stat-value{
-  font-size:32px;
-  font-weight:600;
-  letter-spacing:-1px;
-  font-variant-numeric:tabular-nums;
-  line-height:1.1;
+  font-size:32px;font-weight:600;letter-spacing:-1px;
+  font-variant-numeric:tabular-nums;line-height:1.1;
 }
 .stat-label{
-  font-size:13px;
-  color:var(--text-2);
-  margin-top:4px;
-  letter-spacing:-.08px;
+  font-size:13px;color:var(--text-2);
+  margin-top:4px;letter-spacing:-.08px;
 }
 
-/* Chart */
 .chart-wrap{
   background:var(--surface);
   border-radius:var(--r-card);
   box-shadow:var(--shadow-card);
-  padding:var(--s-5) var(--s-4) calc(var(--s-5) + 24px);
-  height:180px;
+  padding:20px 16px 44px;height:180px;
 }
 .chart{
   display:flex;align-items:flex-end;justify-content:space-between;
   height:100%;gap:10px;
 }
 .bar{
-  flex:1;
-  background:var(--accent);
+  flex:1;background:var(--pillar,var(--accent));
   border-radius:6px 6px 3px 3px;
-  position:relative;
-  min-height:5px;
-  transition:height .7s var(--spring);
-  opacity:.9;
+  position:relative;min-height:5px;
+  transition:height .7s var(--spring);opacity:.9;
 }
 .bar span{
-  position:absolute;
-  bottom:-24px;left:50%;
+  position:absolute;bottom:-24px;left:50%;
   transform:translateX(-50%);
-  font-size:11px;font-weight:600;
-  color:var(--text-2);
+  font-size:11px;font-weight:600;color:var(--text-2);
   letter-spacing:.02em;
 }
 
-/* ============================================
-   Switch
-   ============================================ */
+/* ---------- Switch ---------- */
 .switch{position:relative;display:inline-block;width:51px;height:31px;flex-shrink:0}
 .switch input{opacity:0;width:0;height:0}
 .slider{
   position:absolute;cursor:pointer;inset:0;
   background:rgba(120,120,128,.2);
-  border-radius:31px;
-  transition:.28s var(--spring);
+  border-radius:31px;transition:.28s var(--spring);
 }
 .slider::before{
-  content:"";
-  position:absolute;
-  height:27px;width:27px;
-  left:2px;bottom:2px;
-  background:#fff;
-  border-radius:50%;
+  content:"";position:absolute;
+  height:27px;width:27px;left:2px;bottom:2px;
+  background:#fff;border-radius:50%;
   transition:.28s var(--spring);
-  box-shadow:0 2px 5px rgba(0,0,0,.18), 0 1px 1px rgba(0,0,0,.1);
+  box-shadow:0 2px 5px rgba(0,0,0,.18),0 1px 1px rgba(0,0,0,.1);
 }
 input:checked + .slider{background:var(--success)}
 input:checked + .slider::before{transform:translateX(20px)}
 
-/* ============================================
-   Empty
-   ============================================ */
+/* ---------- Empty ---------- */
 .empty{
-  text-align:center;
-  color:var(--text-2);
-  font-size:15px;
-  padding:56px var(--s-6);
-  letter-spacing:-.2px;
-  line-height:1.5;
+  text-align:center;color:var(--text-2);font-size:15px;
+  padding:56px 24px;letter-spacing:-.2px;line-height:1.5;
 }
 
-/* ============================================
-   Tab bar (phone / tablet)
-   ============================================ */
+/* ---------- Tab bar ---------- */
 .tabbar{
-  position:absolute;
-  left:0;right:0;bottom:0;
+  position:absolute;left:0;right:0;bottom:0;
   display:flex;
   background:rgba(249,249,249,.86);
   backdrop-filter:saturate(180%) blur(22px);
@@ -610,15 +448,11 @@ input:checked + .slider::before{transform:translateX(20px)}
 [data-theme="dark"] .tabbar{background:rgba(28,28,30,.86)}
 
 .tab{
-  flex:1;
-  background:none;border:none;
+  flex:1;background:none;border:none;
   display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:6px 0;
-  color:var(--text-2);
-  font-size:10px;font-weight:600;
-  letter-spacing:.02em;
-  cursor:pointer;
-  position:relative;
+  padding:6px 0;color:var(--text-2);
+  font-size:10px;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;position:relative;
   transition:color .15s var(--ease);
 }
 .tab.active{color:var(--accent)}
@@ -630,206 +464,124 @@ input:checked + .slider::before{transform:translateX(20px)}
 }
 .tab:active svg{transform:scale(.88)}
 .tab .badge{
-  position:absolute;
-  top:2px;right:calc(50% - 20px);
-  background:var(--destructive);
-  color:#fff;
-  font-size:11px;font-weight:600;
-  border-radius:9px;
-  padding:1px 6px;
-  min-width:18px;
-  text-align:center;
-  line-height:14px;
-  letter-spacing:-.1px;
+  position:absolute;top:2px;right:calc(50% - 20px);
+  background:var(--destructive);color:#fff;
+  font-size:11px;font-weight:600;border-radius:9px;
+  padding:1px 6px;min-width:18px;text-align:center;
+  line-height:14px;letter-spacing:-.1px;
 }
 
-/* ============================================
-   Sheet
-   ============================================ */
+/* ---------- Sheet ---------- */
 .overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.4);
-  opacity:0;pointer-events:none;
-  transition:opacity .3s var(--ease);
-  z-index:100;
-  backdrop-filter:blur(1px);
+  position:fixed;inset:0;background:rgba(0,0,0,.4);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+  z-index:100;backdrop-filter:blur(1px);
   -webkit-backdrop-filter:blur(1px);
 }
 .overlay.active{opacity:1;pointer-events:auto}
-
 .sheet{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  background:var(--bg);
-  border-radius:20px 20px 0 0;
+  position:fixed;left:0;right:0;bottom:0;
+  background:var(--bg);border-radius:20px 20px 0 0;
   transform:translateY(100%);
   transition:transform .38s var(--spring);
   z-index:101;
-  padding-bottom:calc(var(--s-4) + var(--safe-bottom));
-  max-height:88%;
-  display:flex;flex-direction:column;
-  overflow:hidden;
+  padding-bottom:calc(16px + var(--safe-bottom));
+  max-height:88%;display:flex;flex-direction:column;overflow:hidden;
 }
 .sheet.active{transform:translateY(0)}
 .sheet-handle{
-  width:36px;height:5px;
-  background:var(--text-3);
-  border-radius:3px;
-  margin:8px auto 4px;
+  width:36px;height:5px;background:var(--text-3);
+  border-radius:3px;margin:8px auto 4px;
 }
 .sheet-header{
   display:flex;justify-content:space-between;align-items:center;
-  padding:var(--s-2) var(--s-4) var(--s-3);
-  border-bottom:.5px solid var(--hairline);
+  padding:8px 16px 12px;border-bottom:.5px solid var(--hairline);
 }
-.sheet-title{
-  font-size:17px;font-weight:600;
-  letter-spacing:-.4px;
-  margin:0;
-}
+.sheet-title{font-size:17px;font-weight:600;letter-spacing:-.4px;margin:0}
 .sheet-btn{
-  background:none;border:none;
-  color:var(--accent);
-  font-size:16px;
-  padding:6px 4px;
-  cursor:pointer;
-  letter-spacing:-.35px;
-  border-radius:6px;
-  transition:opacity .15s;
+  background:none;border:none;color:var(--accent);
+  font-size:16px;padding:6px 4px;cursor:pointer;
+  letter-spacing:-.35px;border-radius:6px;transition:opacity .15s;
 }
 .sheet-btn:hover{opacity:.7}
-.sheet-btn:active{opacity:.5}
 .sheet-btn.bold{font-weight:600}
-
-.sheet-body{
-  padding:var(--s-5) var(--s-4);
-  overflow-y:auto;
-}
-
-.field{margin-bottom:var(--s-5)}
+.sheet-body{padding:20px 16px;overflow-y:auto}
+.field{margin-bottom:20px}
 .field-label{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text-2);
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  margin-bottom:var(--s-2);
-  padding-left:4px;
+  font-size:13px;font-weight:600;color:var(--text-2);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:8px;padding-left:4px;
 }
 .field-input{
-  width:100%;
-  background:var(--surface);
-  border:1px solid var(--hairline);
-  border-radius:var(--r-nested);
-  padding:12px 14px;
-  font-size:16px;
-  font-family:inherit;
-  color:var(--text);
-  outline:none;
-  letter-spacing:-.35px;
+  width:100%;background:var(--surface);
+  border:1px solid var(--hairline);border-radius:var(--r-nested);
+  padding:12px 14px;font-size:16px;font-family:inherit;
+  color:var(--text);outline:none;letter-spacing:-.35px;
   transition:border-color .15s,box-shadow .15s;
 }
 .field-input:focus{
   border-color:var(--accent);
   box-shadow:0 0 0 3px var(--accent-soft);
 }
-
 .chip-row{display:flex;gap:8px;flex-wrap:wrap}
 .chip{
-  background:var(--surface);
-  border:1px solid var(--hairline);
-  border-radius:var(--r-nested);
-  padding:10px 16px;
-  font-size:15px;
-  color:var(--text);
-  cursor:pointer;
-  letter-spacing:-.2px;
-  transition:all .15s var(--spring);
+  background:var(--surface);border:1px solid var(--hairline);
+  border-radius:var(--r-nested);padding:10px 16px;
+  font-size:15px;color:var(--text);cursor:pointer;
+  letter-spacing:-.2px;transition:all .15s var(--spring);
 }
 .chip:hover{background:var(--surface-inset)}
 .chip.selected{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-  font-weight:500;
-  transform:scale(1.02);
+  background:var(--accent);color:#fff;border-color:var(--accent);
+  font-weight:500;transform:scale(1.02);
 }
-
-/* ============================================
-   Version
-   ============================================ */
 .version{
-  text-align:center;
-  font-size:12px;
-  color:var(--text-3);
-  padding:var(--s-8) var(--s-4) var(--s-4);
-  letter-spacing:-.05px;
+  text-align:center;font-size:12px;color:var(--text-3);
+  padding:32px 16px 16px;letter-spacing:-.05px;
 }
 
-/* ============================================
-   Responsive
-   ============================================ */
-/* Phone: tab bar visible */
+/* ---------- Responsive ---------- */
 @media (max-width:767px){
   .sidebar{display:none}
   .app{grid-template-columns:0 1fr}
 }
-/* Tablet: two-pane with icon-only sidebar */
 @media (min-width:768px) and (max-width:1023px){
   .app{grid-template-columns:88px 1fr}
   .sidebar{display:flex}
   .sidebar-brand{
-    font-size:11px;font-weight:700;
-    letter-spacing:.06em;
-    text-align:center;
-    padding:8px 0 20px;
+    font-size:11px;font-weight:700;letter-spacing:.06em;
+    text-align:center;padding:8px 0 20px;
   }
   .sidebar-item{
-    flex-direction:column;
-    gap:5px;
-    padding:10px 6px;
-    font-size:10px;
-    font-weight:600;
-    text-align:center;
+    flex-direction:column;gap:5px;padding:10px 6px;
+    font-size:10px;font-weight:600;text-align:center;
     letter-spacing:.02em;
   }
   .sidebar-item svg{width:22px;height:22px}
   .sidebar-item .badge{
-    position:absolute;
-    top:4px;right:14px;
+    position:absolute;top:4px;right:14px;
     margin-left:0;
   }
-  .sidebar-item{position:relative}
   .tabbar{display:none}
   .nav{display:none}
   .large-title{
-    font-size:38px;
-    padding:var(--s-6) var(--s-5) var(--s-3);
-    max-width:760px;
+    font-size:38px;padding:24px 20px 12px;max-width:760px;
   }
-  .content{max-width:760px;padding:0 var(--s-5);padding-bottom:var(--s-8)}
+  .content{max-width:760px;padding:0 20px;padding-bottom:32px}
 }
-
-/* Desktop: full sidebar */
 @media (min-width:1024px){
   .app{grid-template-columns:240px 1fr}
   .sidebar{display:flex}
   .tabbar{display:none}
   .nav{display:none}
   .large-title{
-    font-size:40px;
-    padding:var(--s-8) var(--s-6) var(--s-4);
-    max-width:780px;
+    font-size:40px;padding:32px 24px 16px;max-width:780px;
   }
   .content{
-    max-width:780px;
-    padding:0 var(--s-6);
-    padding-bottom:var(--s-8);
+    max-width:780px;padding:0 24px;padding-bottom:32px;
   }
-  .sidebar{padding:var(--s-5) var(--s-3)}
+  .sidebar{padding:20px 12px}
 }
-
-/* Reduce motion */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.001ms !important;
@@ -842,7 +594,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 
 <div class="app">
 
-  <!-- ==================== SIDEBAR (Tablet / Desktop) ==================== -->
   <aside class="sidebar">
     <div class="sidebar-brand">Spur</div>
     <button class="sidebar-item active" data-screen="today">
@@ -854,6 +605,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
       <span>Body</span>
     </button>
+    <button class="sidebar-item" data-screen="craft">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+      <span>Craft</span>
+    </button>
     <button class="sidebar-item" data-screen="activity">
       <svg viewBox="0 0 24 24"><path d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg>
       <span>Activity</span>
@@ -864,10 +619,8 @@ input:checked + .slider::before{transform:translateX(20px)}
     </button>
   </aside>
 
-  <!-- ==================== MAIN ==================== -->
   <div class="main">
 
-    <!-- Nav bar (phone only) -->
     <header class="nav">
       <button class="nav-btn" style="visibility:hidden" aria-hidden="true"></button>
       <h1 class="nav-title" id="navTitle">Today</h1>
@@ -878,7 +631,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 
     <main class="screens" id="screens">
 
-      <!-- ==================== TODAY ==================== -->
       <section class="screen active" id="screen-today">
         <h1 class="large-title">Today</h1>
         <div class="content">
@@ -888,11 +640,9 @@ input:checked + .slider::before{transform:translateX(20px)}
         </div>
       </section>
 
-      <!-- ==================== BODY ==================== -->
-      <section class="screen" id="screen-body">
+      <section class="screen" id="screen-body" style="--pillar:var(--body);--pillar-soft:var(--body-soft)">
         <h1 class="large-title">Body</h1>
         <div class="content">
-
           <div class="hero">
             <div class="ring">
               <svg width="88" height="88" viewBox="0 0 88 88">
@@ -900,10 +650,10 @@ input:checked + .slider::before{transform:translateX(20px)}
                 <circle class="ring-fill" id="bodyRing" cx="44" cy="44" r="38"
                   stroke-dasharray="238.76" stroke-dashoffset="238.76"/>
               </svg>
-              <div class="ring-label" id="ringLabel">0%</div>
+              <div class="ring-label" id="bodyRingLabel">0%</div>
             </div>
             <div class="hero-info">
-              <div class="hero-number" id="heroNumber">0 of 3</div>
+              <div class="hero-number" id="bodyHeroNumber">0 of 3</div>
               <div class="hero-label">habits done today</div>
               <div class="hero-streak" id="bodyStreak">
                 <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
@@ -913,17 +663,17 @@ input:checked + .slider::before{transform:translateX(20px)}
           </div>
 
           <div class="section-header">Today's Habits</div>
-          <div class="group" id="habitsList"></div>
+          <div class="group" id="bodyHabits"></div>
 
           <div class="section-header">Last 7 Days</div>
-          <div class="week" id="weekStrip"></div>
+          <div class="week" id="bodyWeek"></div>
 
           <div class="section-header">Body Journal</div>
           <div class="journal">
-            <textarea id="journalInput" placeholder="How does your body feel today?" rows="2"></textarea>
+            <textarea id="bodyJournal" placeholder="How does your body feel today?" rows="2"></textarea>
             <div class="journal-meta">
-              <span id="journalDate"></span>
-              <span class="journal-saved" id="journalSaved"></span>
+              <span id="bodyJournalDate"></span>
+              <span class="journal-saved" id="bodyJournalSaved"></span>
             </div>
           </div>
 
@@ -937,7 +687,53 @@ input:checked + .slider::before{transform:translateX(20px)}
         </div>
       </section>
 
-      <!-- ==================== ACTIVITY ==================== -->
+      <section class="screen" id="screen-craft" style="--pillar:var(--craft);--pillar-soft:var(--craft-soft)">
+        <h1 class="large-title">Craft</h1>
+        <div class="content">
+          <div class="hero">
+            <div class="ring">
+              <svg width="88" height="88" viewBox="0 0 88 88">
+                <circle class="ring-track" cx="44" cy="44" r="38"/>
+                <circle class="ring-fill" id="craftRing" cx="44" cy="44" r="38"
+                  stroke-dasharray="238.76" stroke-dashoffset="238.76"/>
+              </svg>
+              <div class="ring-label" id="craftRingLabel">0%</div>
+            </div>
+            <div class="hero-info">
+              <div class="hero-number" id="craftHeroNumber">0 of 4</div>
+              <div class="hero-label">habits done today</div>
+              <div class="hero-streak" id="craftStreak">
+                <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
+                <span>Start your streak today</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-header">Today's Habits</div>
+          <div class="group" id="craftHabits"></div>
+
+          <div class="section-header">Last 7 Days</div>
+          <div class="week" id="craftWeek"></div>
+
+          <div class="section-header">Craft Journal</div>
+          <div class="journal">
+            <textarea id="craftJournal" placeholder="What did you build, learn, or earn today?" rows="2"></textarea>
+            <div class="journal-meta">
+              <span id="craftJournalDate"></span>
+              <span class="journal-saved" id="craftJournalSaved"></span>
+            </div>
+          </div>
+
+          <div class="section-header">Weekly Review</div>
+          <div class="review">
+            <div class="review-title">Sunday reflection</div>
+            <div class="review-text">Did you do focused work? Did you learn something real? Did you ship? Did money move in the right direction?</div>
+          </div>
+
+          <div class="note">Gentle streaks — miss one day is grace, miss two resets.</div>
+        </div>
+      </section>
+
       <section class="screen" id="screen-activity">
         <h1 class="large-title">Activity</h1>
         <div class="content">
@@ -947,20 +743,22 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="stat-label">Body streak</div>
             </div>
             <div class="stat">
-              <div class="stat-value" id="weekAvgStat">0%</div>
-              <div class="stat-label">7-day average</div>
+              <div class="stat-value" id="craftStreakStat">0</div>
+              <div class="stat-label">Craft streak</div>
             </div>
           </div>
 
           <div class="section-header">Body This Week</div>
-          <div class="chart-wrap"><div class="chart" id="bodyChart"></div></div>
+          <div class="chart-wrap" style="--pillar:var(--body)"><div class="chart" id="bodyChart"></div></div>
+
+          <div class="section-header">Craft This Week</div>
+          <div class="chart-wrap" style="--pillar:var(--craft)"><div class="chart" id="craftChart"></div></div>
 
           <div class="section-header">Recent Journal</div>
           <div class="group" id="journalHistory"></div>
         </div>
       </section>
 
-      <!-- ==================== SETTINGS ==================== -->
       <section class="screen" id="screen-settings">
         <h1 class="large-title">Settings</h1>
         <div class="content">
@@ -992,13 +790,12 @@ input:checked + .slider::before{transform:translateX(20px)}
             </button>
           </div>
 
-          <div class="version">Spur v0.5</div>
+          <div class="version">Spur v0.6</div>
         </div>
       </section>
 
     </main>
 
-    <!-- ==================== TAB BAR (Phone) ==================== -->
     <nav class="tabbar">
       <button class="tab active" data-screen="today">
         <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a2 2 0 01-2 2h-4v-6h-6v6H5a2 2 0 01-2-2z"/></svg>
@@ -1008,6 +805,10 @@ input:checked + .slider::before{transform:translateX(20px)}
       <button class="tab" data-screen="body">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         <span>Body</span>
+      </button>
+      <button class="tab" data-screen="craft">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+        <span>Craft</span>
       </button>
       <button class="tab" data-screen="activity">
         <svg viewBox="0 0 24 24"><path d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg>
@@ -1021,7 +822,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
-<!-- ==================== SHEET ==================== -->
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="addSheet">
   <div class="sheet-handle"></div>
@@ -1055,11 +855,11 @@ input:checked + .slider::before{transform:translateX(20px)}
   'use strict';
 
   // ============================================
-  // STORAGE
+  // STORAGE KEYS
   // ============================================
   const REM_KEY = 'spur-reminders';
   const THEME_KEY = 'spur-theme';
-  const BODY_KEY = 'spur-body';
+  const PILLAR_KEY = 'spur-pillars';
 
   function load(key, fallback){
     try { return JSON.parse(localStorage.getItem(key)) || fallback; }
@@ -1071,23 +871,61 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   let reminders = load(REM_KEY, []);
 
-  // Icon SVG set
+  // ============================================
+  // ICON LIBRARY
+  // ============================================
   const ICONS = {
     dumbbell: '<svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l1-1 2 2-1 1zM17 14l1-1 2 2-1 1zM4.5 13.5l-2 2 2 2 2-2zM17.5 10.5l2-2-2-2-2 2zM14 4l-1 1 2 2 1-1z"/></svg>',
     drop: '<svg viewBox="0 0 24 24"><path d="M12 2.5s6 7 6 11.5a6 6 0 11-12 0c0-4.5 6-11.5 6-11.5z"/></svg>',
-    book: '<svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 004 22.5zM4 4.5v18"/></svg>'
+    book: '<svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 004 22.5zM4 4.5v18"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>',
+    brain: '<svg viewBox="0 0 24 24"><path d="M9.5 3A3.5 3.5 0 006 6.5v.3A3.5 3.5 0 004.5 13a3.5 3.5 0 003 3.46V18a3 3 0 003 3M14.5 3A3.5 3.5 0 0118 6.5v.3A3.5 3.5 0 0119.5 13a3.5 3.5 0 01-3 3.46V18a3 3 0 01-3 3M9 8h.01M15 8h.01M9 14h.01M15 14h.01"/></svg>',
+    coin: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.5 2.5-1.5s2.5.5 2.5 1.5-1 1.5-2.5 1.5-2.5.5-2.5 1.5 1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg>',
+    ship: '<svg viewBox="0 0 24 24"><path d="M12 2v12m0 0l-4-4m4 4l4-4M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3"/></svg>'
   };
 
-  const DEFAULT_HABITS = [
-    { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
-    { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
-    { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
-  ];
+  // ============================================
+  // PILLAR CONFIG
+  // ============================================
+  const PILLARS = {
+    body: {
+      id: 'body',
+      label: 'Body',
+      journalPlaceholder: 'How does your body feel today?',
+      reviewText: 'Which habit felt easiest? Which was hardest? What one tweak will you make next week?',
+      habits: [
+        { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
+        { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
+        { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
+      ]
+    },
+    craft: {
+      id: 'craft',
+      label: 'Craft',
+      journalPlaceholder: 'What did you build, learn, or earn today?',
+      reviewText: 'Did you do focused work? Did you learn something real? Did you ship? Did money move in the right direction?',
+      habits: [
+        { id:'deep',    icon:'bolt',  label:'Deep work block',      color:'#5856D6' },
+        { id:'learn',   icon:'brain', label:'Learn something',      color:'#007AFF' },
+        { id:'money',   icon:'coin',  label:'Track spending',       color:'#34C759' },
+        { id:'ship',    icon:'ship',  label:'Ship something',       color:'#FF9500' }
+      ]
+    }
+  };
 
-  let body = load(BODY_KEY, null);
-  if (!body || !body.habits) {
-    body = { habits: DEFAULT_HABITS, days: {} };
-    save(BODY_KEY, body);
+  // Load / initialize pillar data
+  let pillars = load(PILLAR_KEY, null);
+  if (!pillars || !pillars.body || !pillars.craft){
+    pillars = {};
+    Object.keys(PILLARS).forEach(id => {
+      pillars[id] = { habits: PILLARS[id].habits, days: {} };
+    });
+    save(PILLAR_KEY, pillars);
+  } else {
+    // Ensure new pillars are added if config grew
+    Object.keys(PILLARS).forEach(id => {
+      if (!pillars[id]) pillars[id] = { habits: PILLARS[id].habits, days: {} };
+    });
   }
 
   // ============================================
@@ -1119,7 +957,6 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
   function vibrate(ms){ if (navigator.vibrate) navigator.vibrate(ms); }
 
-  // Count-up animation for numbers
   function countUp(el, target, suffix){
     if (!el) return;
     const start = parseInt(el.textContent) || 0;
@@ -1131,32 +968,26 @@ input:checked + .slider::before{transform:translateX(20px)}
       i++;
       const v = Math.round(start + (diff * (i / steps)));
       el.textContent = v + (suffix || '');
-      if (i >= steps){
-        clearInterval(t);
-        el.textContent = target + (suffix || '');
-      }
+      if (i >= steps){ clearInterval(t); el.textContent = target + (suffix || ''); }
     }, 22);
   }
 
   // ============================================
-  // NAVIGATION — handles BOTH sidebar and tab bar
+  // NAVIGATION
   // ============================================
   const navItems = document.querySelectorAll('.tab, .sidebar-item');
   const screens = document.querySelectorAll('.screen');
   const navTitle = document.getElementById('navTitle');
   const navAdd = document.getElementById('navAdd');
   const screensEl = document.getElementById('screens');
-  const titles = { today:'Today', body:'Body', activity:'Activity', settings:'Settings' };
+  const titles = { today:'Today', body:'Body', craft:'Craft', activity:'Activity', settings:'Settings' };
 
   navItems.forEach(item => {
     item.addEventListener('click', () => {
       const t = item.dataset.screen;
       if (!t) return;
-
-      // sync all nav items
       document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
       document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.screen === t));
-
       screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + t));
       if (navTitle){
         navTitle.textContent = titles[t] || 'Spur';
@@ -1168,7 +999,6 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   });
 
-  // Large-title collapse on scroll
   if (screensEl && navTitle){
     screensEl.addEventListener('scroll', () => {
       navTitle.classList.toggle('visible', screensEl.scrollTop > 40);
@@ -1176,22 +1006,24 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
 
   // ============================================
-  // BODY LOGIC
+  // PILLAR LOGIC (generic)
   // ============================================
-  function getDay(key){
-    if (!body.days[key]) body.days[key] = { done: [], journal: '' };
-    if (!body.days[key].done) body.days[key].done = [];
-    if (typeof body.days[key].journal !== 'string') body.days[key].journal = '';
-    return body.days[key];
+  function getDay(pillarId, key){
+    const p = pillars[pillarId];
+    if (!p.days[key]) p.days[key] = { done: [], journal: '' };
+    if (!p.days[key].done) p.days[key].done = [];
+    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
+    return p.days[key];
   }
 
-  function computeStreak(){
-    let streak = 0;
-    let misses = 0;
+  function computeStreak(pillarId){
+    const p = pillars[pillarId];
+    const total = p.habits.length;
+    let streak = 0, misses = 0;
     for (let i = 0; i < 365; i++){
       const key = dateKeyOffset(-i);
-      const day = body.days[key];
-      const isDone = day && day.done && day.done.length === body.habits.length;
+      const day = p.days[key];
+      const isDone = day && day.done && day.done.length === total;
       if (isDone){
         if (misses >= 2) break;
         streak++;
@@ -1205,59 +1037,67 @@ input:checked + .slider::before{transform:translateX(20px)}
     return streak;
   }
 
-  // ============================================
-  // BODY RENDER
-  // ============================================
-  const ring = document.getElementById('bodyRing');
-  const ringLabel = document.getElementById('ringLabel');
-  const heroNumber = document.getElementById('heroNumber');
-  const bodyStreakEl = document.getElementById('bodyStreak');
-  const weekStrip = document.getElementById('weekStrip');
-  const habitsList = document.getElementById('habitsList');
-  const journalInput = document.getElementById('journalInput');
-  const journalSaved = document.getElementById('journalSaved');
-  const journalDate = document.getElementById('journalDate');
-  const bodyStreakStat = document.getElementById('bodyStreakStat');
-  const weekAvgStat = document.getElementById('weekAvgStat');
-  const bodyChart = document.getElementById('bodyChart');
-  const journalHistory = document.getElementById('journalHistory');
-
-  const RING_CIRC = 238.76; // 2π × r=38
-
-  if (journalDate){
-    const d = new Date();
-    journalDate.textContent = d.toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+  function toggleHabit(pillarId, habitId){
+    const key = todayKey();
+    const day = getDay(pillarId, key);
+    const idx = day.done.indexOf(habitId);
+    if (idx === -1) day.done.push(habitId);
+    else day.done.splice(idx, 1);
+    save(PILLAR_KEY, pillars);
+    renderPillar(pillarId);
+    renderActivity();
+    vibrate(10);
   }
 
-  function renderBody(){
+  // ============================================
+  // PILLAR RENDER (generic)
+  // ============================================
+  const RING_CIRC = 238.76; // 2π × r=38
+
+  function renderPillar(pillarId){
+    const config = PILLARS[pillarId];
+    const p = pillars[pillarId];
     const key = todayKey();
-    const day = getDay(key);
-    const total = body.habits.length;
+    const day = getDay(pillarId, key);
+    const total = p.habits.length;
     const doneCount = day.done.length;
     const pct = total === 0 ? 0 : doneCount / total;
 
+    const prefix = pillarId; // 'body' or 'craft'
+
+    const ring = document.getElementById(prefix + 'Ring');
+    const ringLabel = document.getElementById(prefix + 'RingLabel');
+    const heroNumber = document.getElementById(prefix + 'HeroNumber');
+    const streakEl = document.getElementById(prefix + 'Streak');
+    const weekEl = document.getElementById(prefix + 'Week');
+    const habitsEl = document.getElementById(prefix + 'Habits');
+    const journalEl = document.getElementById(prefix + 'Journal');
+    const journalSaved = document.getElementById(prefix + 'JournalSaved');
+    const journalDate = document.getElementById(prefix + 'JournalDate');
+
     if (ring) ring.setAttribute('stroke-dashoffset', String(RING_CIRC * (1 - pct)));
     if (ringLabel) ringLabel.textContent = Math.round(pct * 100) + '%';
-    if (heroNumber){
-      const prev = heroNumber.textContent;
-      heroNumber.textContent = `${doneCount} of ${total}`;
-    }
+    if (heroNumber) heroNumber.textContent = `${doneCount} of ${total}`;
 
-    const streak = computeStreak();
-    if (bodyStreakEl){
-      const span = bodyStreakEl.querySelector('span');
+    const streak = computeStreak(pillarId);
+    if (streakEl){
+      const span = streakEl.querySelector('span');
       const txt = streak === 0 ? 'Start your streak today' : `${streak} day streak`;
       if (span) span.textContent = txt;
-      else bodyStreakEl.textContent = txt;
+      else streakEl.textContent = txt;
     }
-    if (bodyStreakStat) countUp(bodyStreakStat, streak);
 
-    // 7-day week strip
-    if (weekStrip){
-      weekStrip.innerHTML = '';
+    if (journalDate){
+      const d = new Date();
+      journalDate.textContent = d.toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+    }
+
+    // Week strip
+    if (weekEl){
+      weekEl.innerHTML = '';
       for (let i = 6; i >= 0; i--){
         const k = dateKeyOffset(-i);
-        const d = body.days[k];
+        const d = p.days[k];
         const done = d && d.done && d.done.length === total;
         const partial = d && d.done && d.done.length > 0 && !done;
 
@@ -1277,19 +1117,19 @@ input:checked + .slider::before{transform:translateX(20px)}
 
         cell.appendChild(dot);
         cell.appendChild(label);
-        weekStrip.appendChild(cell);
+        weekEl.appendChild(cell);
       }
     }
 
     // Habits
-    if (habitsList){
-      habitsList.innerHTML = '';
-      body.habits.forEach(h => {
+    if (habitsEl){
+      habitsEl.innerHTML = '';
+      p.habits.forEach(h => {
         const isDone = day.done.includes(h.id);
         const btn = document.createElement('button');
         btn.className = 'row';
         btn.innerHTML = `
-          <div class="row-icon" style="background:${h.color}">${ICONS[h.icon] || ICONS.dumbbell}</div>
+          <div class="row-icon" style="background:${h.color}">${ICONS[h.icon] || ICONS.bolt}</div>
           <div class="row-body">
             <div class="row-title" style="${isDone ? 'color:var(--text-2)' : ''}">${escapeHtml(h.label)}</div>
           </div>
@@ -1297,62 +1137,79 @@ input:checked + .slider::before{transform:translateX(20px)}
         `;
         btn.querySelector('.check').addEventListener('click', (e) => {
           e.stopPropagation();
-          toggleHabit(h.id);
+          toggleHabit(pillarId, h.id);
         });
-        btn.addEventListener('click', () => toggleHabit(h.id));
-        habitsList.appendChild(btn);
+        btn.addEventListener('click', () => toggleHabit(pillarId, h.id));
+        habitsEl.appendChild(btn);
       });
     }
 
-    if (journalInput && document.activeElement !== journalInput){
-      journalInput.value = day.journal || '';
+    // Journal value
+    if (journalEl && document.activeElement !== journalEl){
+      journalEl.value = day.journal || '';
     }
+  }
 
-    // 7-day average
-    let sum = 0;
-    for (let i = 0; i < 7; i++){
-      const k = dateKeyOffset(-i);
-      const d = body.days[k];
-      if (d && d.done) sum += d.done.length / total;
-    }
-    if (weekAvgStat){
-      const pct7 = Math.round((sum / 7) * 100);
-      countUp(weekAvgStat, pct7, '%');
-    }
+  // ============================================
+  // ACTIVITY RENDER (stats + charts + history)
+  // ============================================
+  const bodyStreakStat = document.getElementById('bodyStreakStat');
+  const craftStreakStat = document.getElementById('craftStreakStat');
+  const bodyChart = document.getElementById('bodyChart');
+  const craftChart = document.getElementById('craftChart');
+  const journalHistory = document.getElementById('journalHistory');
 
-    // Chart
-    if (bodyChart){
-      bodyChart.innerHTML = '';
+  function renderActivity(){
+    // Streaks
+    countUp(bodyStreakStat, computeStreak('body'));
+    countUp(craftStreakStat, computeStreak('craft'));
+
+    // Charts
+    [['body', bodyChart], ['craft', craftChart]].forEach(([id, chartEl]) => {
+      if (!chartEl) return;
+      const p = pillars[id];
+      const total = p.habits.length;
+      chartEl.innerHTML = '';
       for (let i = 6; i >= 0; i--){
         const k = dateKeyOffset(-i);
-        const d = body.days[k];
-        const p = d && d.done ? d.done.length / total : 0;
+        const d = p.days[k];
+        const pct = d && d.done ? d.done.length / total : 0;
         const bar = document.createElement('div');
         bar.className = 'bar';
-        bar.style.height = Math.max(5, p * 100) + '%';
+        bar.style.height = Math.max(5, pct * 100) + '%';
         bar.innerHTML = `<span>${shortDay(k)}</span>`;
-        bodyChart.appendChild(bar);
+        chartEl.appendChild(bar);
       }
-    }
+    });
 
-    // Journal history
+    // Journal history — combined from both pillars
     if (journalHistory){
       journalHistory.innerHTML = '';
-      const entries = Object.keys(body.days)
-        .filter(k => body.days[k].journal && body.days[k].journal.trim())
-        .sort().reverse().slice(0, 7);
+      const entries = [];
+      Object.keys(pillars).forEach(pid => {
+        const p = pillars[pid];
+        Object.keys(p.days).forEach(k => {
+          const j = p.days[k].journal;
+          if (j && j.trim()){
+            entries.push({ pillar: pid, date: k, text: j.trim() });
+          }
+        });
+      });
+      entries.sort((a, b) => b.date.localeCompare(a.date));
+
       if (entries.length === 0){
         journalHistory.innerHTML = `<div class="row"><div class="row-body"><div class="row-title" style="color:var(--text-2);font-weight:400">No journal entries yet</div></div></div>`;
       } else {
-        entries.forEach(k => {
+        entries.slice(0, 10).forEach(e => {
           const row = document.createElement('div');
           row.className = 'row';
-          const d = new Date(k + 'T12:00:00');
+          const d = new Date(e.date + 'T12:00:00');
           const label = d.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
+          const pillLabel = PILLARS[e.pillar] ? PILLARS[e.pillar].label : e.pillar;
           row.innerHTML = `
             <div class="row-body">
-              <div class="row-title">${escapeHtml(body.days[k].journal)}</div>
-              <div class="row-sub">${label}</div>
+              <div class="row-title">${escapeHtml(e.text)}</div>
+              <div class="row-sub">${pillLabel} · ${label}</div>
             </div>
           `;
           journalHistory.appendChild(row);
@@ -1361,34 +1218,28 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
   }
 
-  function toggleHabit(id){
-    const key = todayKey();
-    const day = getDay(key);
-    const idx = day.done.indexOf(id);
-    if (idx === -1) day.done.push(id);
-    else day.done.splice(idx, 1);
-    save(BODY_KEY, body);
-    renderBody();
-    vibrate(10);
-  }
-
-  // Journal auto-save
-  let journalTimer = null;
-  if (journalInput){
-    journalInput.addEventListener('input', () => {
-      clearTimeout(journalTimer);
-      journalTimer = setTimeout(() => {
+  // ============================================
+  // JOURNAL AUTO-SAVE (per pillar)
+  // ============================================
+  ['body', 'craft'].forEach(pid => {
+    const el = document.getElementById(pid + 'Journal');
+    const savedEl = document.getElementById(pid + 'JournalSaved');
+    if (!el) return;
+    let timer = null;
+    el.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
         const key = todayKey();
-        getDay(key).journal = journalInput.value;
-        save(BODY_KEY, body);
-        if (journalSaved){
-          journalSaved.textContent = 'Saved';
-          setTimeout(() => { journalSaved.textContent = ''; }, 1500);
+        getDay(pid, key).journal = el.value;
+        save(PILLAR_KEY, pillars);
+        if (savedEl){
+          savedEl.textContent = 'Saved';
+          setTimeout(() => { savedEl.textContent = ''; }, 1500);
         }
-        renderBody();
+        renderActivity();
       }, 400);
     });
-  }
+  });
 
   // ============================================
   // REMINDERS
@@ -1416,7 +1267,6 @@ input:checked + .slider::before{transform:translateX(20px)}
           </div>
           <div class="check ${r.done ? 'done' : ''}"></div>
         `;
-
         const check = row.querySelector('.check');
         check.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1426,7 +1276,6 @@ input:checked + .slider::before{transform:translateX(20px)}
           vibrate(8);
         });
 
-        // Swipe-to-delete
         let startX = 0, currentX = 0, swiping = false;
         row.addEventListener('touchstart', (e) => {
           startX = e.touches[0].clientX;
@@ -1453,7 +1302,6 @@ input:checked + .slider::before{transform:translateX(20px)}
       });
     }
 
-    // Badges
     const total = reminders.length;
     const done = reminders.filter(r => r.done).length;
     const pending = total - done;
@@ -1469,7 +1317,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   }
 
   // ============================================
-  // ADD REMINDER SHEET
+  // SHEET
   // ============================================
   const sheet = document.getElementById('addSheet');
   const overlay = document.getElementById('overlay');
@@ -1514,8 +1362,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       reminders.push({
         id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
         title, time, repeat: selectedRepeat,
-        done: false,
-        createdAt: Date.now()
+        done: false, createdAt: Date.now()
       });
       save(REM_KEY, reminders);
       renderReminders();
@@ -1553,7 +1400,10 @@ input:checked + .slider::before{transform:translateX(20px)}
   const exportBtn = document.getElementById('exportBtn');
   if (exportBtn){
     exportBtn.addEventListener('click', () => {
-      const data = JSON.stringify({ reminders, body, exportedAt: new Date().toISOString() }, null, 2);
+      const data = JSON.stringify({
+        reminders, pillars,
+        exportedAt: new Date().toISOString()
+      }, null, 2);
       if (navigator.clipboard){
         navigator.clipboard.writeText(data)
           .then(() => alert('Data copied to clipboard'))
@@ -1570,11 +1420,16 @@ input:checked + .slider::before{transform:translateX(20px)}
     resetBtn.addEventListener('click', () => {
       if (confirm('Reset all Spur data? This cannot be undone.')){
         reminders = [];
-        body = { habits: DEFAULT_HABITS, days: {} };
+        pillars = {};
+        Object.keys(PILLARS).forEach(id => {
+          pillars[id] = { habits: PILLARS[id].habits, days: {} };
+        });
         save(REM_KEY, reminders);
-        save(BODY_KEY, body);
+        save(PILLAR_KEY, pillars);
         renderReminders();
-        renderBody();
+        renderPillar('body');
+        renderPillar('craft');
+        renderActivity();
         vibrate(20);
       }
     });
@@ -1593,9 +1448,11 @@ input:checked + .slider::before{transform:translateX(20px)}
   // INIT
   // ============================================
   renderReminders();
-  renderBody();
+  renderPillar('body');
+  renderPillar('craft');
+  renderActivity();
 
-  console.log('%cSpur v0.5','color:#007AFF;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.6A','color:#5856D6;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
