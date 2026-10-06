@@ -59,10 +59,15 @@ button{font-family:inherit}
 .screen.active{display:block;animation:screen-in .3s var(--ease)}
 @keyframes screen-in{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 .content{max-width:680px;margin:0 auto;padding:0 16px;padding-bottom:calc(120px + var(--safe-bottom))}
-.large-title{font-size:34px;font-weight:700;letter-spacing:-.5px;margin:0;padding:12px 16px 8px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.15}
+.large-title{font-size:34px;font-weight:700;letter-spacing:-.5px;margin:0;padding:12px 16px 8px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.15;display:flex;align-items:center;justify-content:space-between}
+.large-title-actions{display:flex;gap:4px}
+.lt-btn{background:none;border:none;color:var(--accent);font-size:15px;font-weight:500;padding:6px 10px;border-radius:8px;cursor:pointer;letter-spacing:-.2px}
+.lt-btn:active{background:var(--accent-soft)}
 .section-header{font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:.02em;text-transform:uppercase;padding:24px 0 8px}
 .group{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
-.row{display:flex;align-items:center;gap:12px;padding:13px 16px;min-height:52px;position:relative;cursor:pointer;background:var(--surface);border:none;width:100%;text-align:left;font:inherit;color:inherit}
+.row{display:flex;align-items:center;gap:12px;padding:13px 16px;min-height:52px;position:relative;cursor:pointer;background:var(--surface);border:none;width:100%;text-align:left;font:inherit;color:inherit;transition:background .3s var(--ease)}
+.row.wash{animation:rowWash .9s var(--ease)}
+@keyframes rowWash{0%,100%{background:var(--surface)}30%{background:var(--pillar-soft,var(--accent-soft))}}
 .row:active{background:var(--surface-inset)}
 .row + .row::before{content:"";position:absolute;top:0;left:56px;right:0;height:.5px;background:var(--hairline)}
 .row-icon{width:32px;height:32px;border-radius:var(--r-icon);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
@@ -97,7 +102,8 @@ button{font-family:inherit}
 .month-counter{margin-top:8px;font-size:12px;color:var(--text-2);letter-spacing:-.1px}
 .month-counter strong{color:var(--pillar,var(--accent));font-weight:600}
 .week{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px 12px;display:flex;justify-content:space-between;gap:4px}
-.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;cursor:pointer;background:none;border:none;padding:4px 0;font-family:inherit;border-radius:8px}
+.day:active{background:var(--surface-inset)}
 .dot{width:26px;height:26px;border-radius:50%;background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-3);transition:all .3s var(--spring);position:relative}
 .dot.done{background:var(--pillar,var(--accent));color:#fff;transform:scale(1.05)}
 .dot.partial{background:var(--pillar-soft,var(--accent-soft));color:var(--pillar,var(--accent))}
@@ -179,9 +185,9 @@ input:checked + .slider::before{transform:translateX(20px)}
 .money-summary .in{color:var(--success);font-weight:600}
 .money-summary .out{color:var(--destructive);font-weight:600}
 
-/* Floating plus */
-.float-plus{position:fixed;pointer-events:none;font-size:16px;font-weight:700;color:var(--pillar,var(--accent));z-index:200;animation:floatUp .9s var(--ease) forwards}
-@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.9)}20%{opacity:1;transform:translateY(-8px) scale(1.05)}100%{opacity:0;transform:translateY(-40px) scale(1)}}
+/* Floating soft dot — refined feedback */
+.float-dot{position:fixed;pointer-events:none;width:6px;height:6px;border-radius:50%;z-index:200;animation:floatDot .9s var(--ease) forwards}
+@keyframes floatDot{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1;transform:translateY(-4px) scale(1)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
 
 .today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
 .today-pillar{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;font-family:inherit;text-align:center}
@@ -195,6 +201,45 @@ input:checked + .slider::before{transform:translateX(20px)}
 .today-pillar.t-body{color:var(--body)}
 .today-pillar.t-craft{color:var(--craft)}
 .today-pillar.t-rel{color:var(--rel)}
+
+/* Calendar view */
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:0 4px 16px}
+.cal-title{font-size:20px;font-weight:700;letter-spacing:-.4px}
+.cal-nav{display:flex;gap:4px}
+.cal-nav button{background:var(--surface);border:1px solid var(--hairline);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);font-size:16px}
+.cal-nav button:active{background:var(--surface-inset)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.cal-weekday{text-align:center;font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;padding:6px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{aspect-ratio:1;background:var(--surface);border-radius:10px;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;position:relative;padding:0;transition:transform .15s var(--spring)}
+.cal-day:active{transform:scale(.94)}
+.cal-day.empty{background:transparent;cursor:default;pointer-events:none}
+.cal-day.other-month{opacity:.3}
+.cal-day .num{font-size:14px;font-weight:600;color:var(--text);line-height:1}
+.cal-day.today{border:2px solid var(--accent)}
+.cal-day.has-activity{background:var(--surface)}
+.cal-day.full{background:var(--pillar,var(--accent));color:#fff}
+.cal-day.full .num{color:#fff}
+.cal-day.partial{background:var(--pillar-soft,var(--accent-soft))}
+.cal-day .cal-dots{position:absolute;bottom:4px;display:flex;gap:3px}
+.cal-dot{width:5px;height:5px;border-radius:50%;background:var(--pillar,var(--accent))}
+.cal-day.full .cal-dot{background:#fff}
+.cal-legend{display:flex;gap:14px;justify-content:center;padding:16px 0 0;font-size:12px;color:var(--text-2)}
+.cal-legend span{display:flex;align-items:center;gap:5px}
+.cal-legend .leg-dot{width:8px;height:8px;border-radius:50%;background:var(--pillar,var(--accent))}
+.cal-legend .leg-dot.soft{background:var(--pillar-soft,var(--accent-soft))}
+
+/* Day detail */
+.day-detail-header{padding:0 0 12px}
+.day-detail-date{font-size:22px;font-weight:700;letter-spacing:-.5px}
+.day-detail-weekday{font-size:13px;color:var(--text-2);margin-top:2px}
+.day-detail-streak{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 10px;background:var(--pillar-soft,var(--accent-soft));color:var(--pillar,var(--accent));border-radius:999px;font-size:12px;font-weight:600}
+.day-detail-streak svg{width:12px;height:12px;fill:currentColor}
+.day-detail-journal{background:var(--surface);border-radius:var(--r-nested);padding:14px 16px;margin-top:12px;font-size:15px;color:var(--text);line-height:1.5;letter-spacing:-.2px;white-space:pre-wrap}
+.day-detail-journal.empty{color:var(--text-3);font-style:italic}
+.day-detail-empty{text-align:center;color:var(--text-2);font-size:15px;padding:40px 24px;line-height:1.5}
+.day-detail-actions{padding-top:16px;display:flex;gap:8px}
+.day-detail-actions button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--hairline);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;cursor:pointer}
 
 .version{text-align:center;font-size:12px;color:var(--text-3);padding:32px 16px 16px}
 @media (max-width:767px){.sidebar{display:none}.app{grid-template-columns:0 1fr}}
@@ -275,7 +320,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       </section>
 
       <section class="screen" id="screen-body" style="--pillar:var(--body);--pillar-soft:var(--body-soft)">
-        <h1 class="large-title">Body</h1>
+        <div class="large-title"><span>Body</span><div class="large-title-actions"><button class="lt-btn" data-history="body">History</button></div></div>
         <div class="content">
           <div class="hero" id="bodyHero">
             <div class="ring">
@@ -315,7 +360,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       </section>
 
       <section class="screen" id="screen-craft" style="--pillar:var(--craft);--pillar-soft:var(--craft-soft)">
-        <h1 class="large-title">Craft</h1>
+        <div class="large-title"><span>Craft</span><div class="large-title-actions"><button class="lt-btn" data-history="craft">History</button></div></div>
         <div class="content">
           <div class="hero" id="craftHero">
             <div class="ring">
@@ -359,7 +404,7 @@ input:checked + .slider::before{transform:translateX(20px)}
       </section>
 
       <section class="screen" id="screen-rel" style="--pillar:var(--rel);--pillar-soft:var(--rel-soft)">
-        <h1 class="large-title">People</h1>
+        <div class="large-title"><span>People</span><div class="large-title-actions"><button class="lt-btn" data-history="rel">History</button></div></div>
         <div class="content">
           <div class="hero" id="relHero">
             <div class="ring">
@@ -443,7 +488,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-body"><div class="row-title" style="color:var(--destructive)">Reset All</div></div>
             </button>
           </div>
-          <div class="version">Spur v0.8</div>
+          <div class="version">Spur v0.9</div>
         </div>
       </section>
     </main>
@@ -554,6 +599,30 @@ input:checked + .slider::before{transform:translateX(20px)}
   </div>
 </div>
 
+<!-- Calendar sheet -->
+<div class="overlay" id="calendarOverlay"></div>
+<div class="sheet" id="calendarSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn" id="closeCalendar">Close</button>
+    <h2 class="sheet-title" id="calendarTitle">History</h2>
+    <span style="width:60px"></span>
+  </div>
+  <div class="sheet-body" id="calendarBody"></div>
+</div>
+
+<!-- Day detail sheet -->
+<div class="overlay" id="dayOverlay"></div>
+<div class="sheet" id="daySheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn" id="closeDay">Close</button>
+    <h2 class="sheet-title" id="dayTitle">Day</h2>
+    <span style="width:60px"></span>
+  </div>
+  <div class="sheet-body" id="dayBody"></div>
+</div>
+
 <script>
 (function(){
   'use strict';
@@ -630,18 +699,19 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   }
 
-  function todayKey(){
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function dateKey(d){
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   }
+  function todayKey(){ return dateKey(new Date()); }
   function dateKeyOffset(offset){
     const d = new Date();
     d.setDate(d.getDate() + offset);
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return dateKey(d);
   }
   function monthKey(){
     const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
   }
   function shortDay(dateStr){
     const d = new Date(dateStr + 'T12:00:00');
@@ -655,7 +725,7 @@ input:checked + .slider::before{transform:translateX(20px)}
     const [h, m] = t.split(':').map(Number);
     const ampm = h >= 12 ? 'PM' : 'AM';
     const hr = h % 12 || 12;
-    return `${hr}:${String(m).padStart(2,'0')} ${ampm}`;
+    return `${hr}:${pad(m)} ${ampm}`;
   }
   function vibrate(ms){ if (navigator.vibrate) navigator.vibrate(ms); }
   function countUp(el, target, suffix){
@@ -675,13 +745,12 @@ input:checked + .slider::before{transform:translateX(20px)}
     const sign = n < 0 ? '-' : '';
     return sign + '₦' + Math.abs(Math.round(n)).toLocaleString();
   }
-  function floatPlus(x, y, color, text){
+  function floatDot(x, y, color){
     const el = document.createElement('div');
-    el.className = 'float-plus';
-    el.textContent = text || '+1';
+    el.className = 'float-dot';
     el.style.left = x + 'px';
     el.style.top = y + 'px';
-    el.style.color = color || 'var(--accent)';
+    el.style.background = color || 'var(--accent)';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 950);
   }
@@ -692,6 +761,29 @@ input:checked + .slider::before{transform:translateX(20px)}
     let streak = 0, misses = 0;
     for (let i = 0; i < 365; i++){
       const key = dateKeyOffset(-i);
+      const day = p.days[key];
+      const isDone = day && day.done && day.done.length === total;
+      if (isDone){
+        if (misses >= 2) break;
+        streak++; misses = 0;
+      } else {
+        if (i === 0) continue;
+        misses++;
+        if (misses >= 2) break;
+      }
+    }
+    return streak;
+  }
+  function computeStreakUpTo(pillarId, upToKey){
+    const p = pillars[pillarId];
+    if (!p) return 0;
+    const total = p.habits.length;
+    const upTo = new Date(upToKey + 'T12:00:00');
+    let streak = 0, misses = 0;
+    for (let i = 0; i < 365; i++){
+      const d = new Date(upTo);
+      d.setDate(d.getDate() - i);
+      const key = dateKey(d);
       const day = p.days[key];
       const isDone = day && day.done && day.done.length === total;
       if (isDone){
@@ -716,6 +808,18 @@ input:checked + .slider::before{transform:translateX(20px)}
       }
     });
     return count;
+  }
+  function getDay(pillarId, key){
+    const p = pillars[pillarId];
+    if (!p.days[key]) p.days[key] = { done: [], journal: '' };
+    if (!p.days[key].done) p.days[key].done = [];
+    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
+    return p.days[key];
+  }
+  function getPillarColor(pillarId){
+    const el = document.getElementById('screen-' + pillarId);
+    if (!el) return '#007AFF';
+    return getComputedStyle(el).getPropertyValue('--pillar').trim() || '#007AFF';
   }
 
   const navItems = document.querySelectorAll('.tab, .sidebar-item');
@@ -744,24 +848,13 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   });
   if (navLogo){
-    navLogo.addEventListener('click', () => {
-      navigateTo('today');
-      vibrate(5);
-    });
+    navLogo.addEventListener('click', () => { navigateTo('today'); vibrate(5); });
   }
 
   if (screensEl && navTitle){
     screensEl.addEventListener('scroll', () => {
       navTitle.classList.toggle('visible', screensEl.scrollTop > 40);
     }, { passive:true });
-  }
-
-  function getDay(pillarId, key){
-    const p = pillars[pillarId];
-    if (!p.days[key]) p.days[key] = { done: [], journal: '' };
-    if (!p.days[key].done) p.days[key].done = [];
-    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
-    return p.days[key];
   }
 
   function toggleHabit(pillarId, habitId, event){
@@ -773,20 +866,21 @@ input:checked + .slider::before{transform:translateX(20px)}
     else day.done.push(habitId);
     save(PILLAR_KEY, pillars);
 
-    // Feedback when marking done
     if (!wasDone){
-      // Floating +
+      // Soft dot + row wash
       if (event){
         const rect = event.target.getBoundingClientRect();
-        const c = getComputedStyle(document.getElementById('screen-' + pillarId)).getPropertyValue('--pillar').trim();
-        floatPlus(rect.left + rect.width/2 - 8, rect.top - 4, c, '+1');
+        floatDot(rect.left + rect.width/2 - 3, rect.top - 2, getPillarColor(pillarId));
+        const row = event.target.closest('.row');
+        if (row){
+          row.classList.add('wash');
+          setTimeout(() => row.classList.remove('wash'), 950);
+        }
       }
       vibrate(12);
       renderPillar(pillarId);
       renderTodayStrip();
       renderActivity();
-
-      // Check for full pillar completion
       setTimeout(() => checkCompletion(pillarId), 250);
     } else {
       vibrate(8);
@@ -803,21 +897,17 @@ input:checked + .slider::before{transform:translateX(20px)}
     const wasFullyDone = day.done.length === p.habits.length;
 
     if (wasFullyDone){
-      // Flash hero
       const hero = document.getElementById(pillarId + 'Hero');
       if (hero) hero.classList.add('flash');
       setTimeout(() => hero && hero.classList.remove('flash'), 1000);
 
-      // Show message
       const msg = document.getElementById(pillarId + 'Msg');
       if (msg){
-        const label = p.label + ' done.';
-        msg.textContent = label;
+        msg.textContent = p.label + ' done.';
         msg.classList.add('show');
         setTimeout(() => msg.classList.remove('show'), 1900);
       }
 
-      // Milestone check
       const streak = computeStreak(pillarId);
       if (streak === 7 || streak === 30 || streak === 100 || streak === 365){
         setTimeout(() => {
@@ -884,8 +974,9 @@ input:checked + .slider::before{transform:translateX(20px)}
         const partial = d && d.done && d.done.length > 0 && !done;
         const hasJournal = d && d.journal && d.journal.trim().length > 0;
 
-        const cell = document.createElement('div');
+        const cell = document.createElement('button');
         cell.className = 'day';
+        cell.type = 'button';
         if (i === 0) cell.classList.add('today');
 
         const dot = document.createElement('div');
@@ -905,6 +996,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 
         cell.appendChild(dot);
         cell.appendChild(label);
+        cell.addEventListener('click', () => openDayDetail(pillarId, k));
         weekEl.appendChild(cell);
       }
     }
@@ -1071,6 +1163,7 @@ input:checked + .slider::before{transform:translateX(20px)}
               <div class="row-sub">${pillLabel} · ${label}</div>
             </div>
           `;
+          row.addEventListener('click', () => openDayDetail(e.pillar, e.date));
           journalHistory.appendChild(row);
         });
       }
@@ -1104,6 +1197,207 @@ input:checked + .slider::before{transform:translateX(20px)}
     });
   });
 
+  // ============================================
+  // HISTORY — Calendar + Day detail
+  // ============================================
+  const calendarSheet = document.getElementById('calendarSheet');
+  const calendarOverlay = document.getElementById('calendarOverlay');
+  const calendarBody = document.getElementById('calendarBody');
+  const calendarTitle = document.getElementById('calendarTitle');
+  const daySheet = document.getElementById('daySheet');
+  const dayOverlay = document.getElementById('dayOverlay');
+  const dayBody = document.getElementById('dayBody');
+  const dayTitle = document.getElementById('dayTitle');
+
+  let calendarPillar = 'body';
+  let calendarMonth = new Date();
+  calendarMonth.setDate(1);
+
+  function openCalendar(pillarId){
+    calendarPillar = pillarId;
+    calendarMonth = new Date();
+    calendarMonth.setDate(1);
+    calendarTitle.textContent = PILLARS[pillarId].label + ' History';
+    renderCalendar();
+    calendarSheet.classList.add('active');
+    calendarOverlay.classList.add('active');
+    vibrate(5);
+  }
+  function closeCalendar(){
+    calendarSheet.classList.remove('active');
+    calendarOverlay.classList.remove('active');
+  }
+
+  function renderCalendar(){
+    const p = pillars[calendarPillar];
+    const total = p.habits.length;
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const monthLabel = calendarMonth.toLocaleDateString(undefined, { month:'long', year:'numeric' });
+    const firstDay = new Date(year, month, 1);
+    const startWeekday = firstDay.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = todayKey();
+
+    let html = `
+      <div class="cal-header">
+        <div class="cal-title">${monthLabel}</div>
+        <div class="cal-nav">
+          <button id="calPrev">‹</button>
+          <button id="calNext">›</button>
+        </div>
+      </div>
+      <div class="cal-weekdays">
+        <div class="cal-weekday">S</div>
+        <div class="cal-weekday">M</div>
+        <div class="cal-weekday">T</div>
+        <div class="cal-weekday">W</div>
+        <div class="cal-weekday">T</div>
+        <div class="cal-weekday">F</div>
+        <div class="cal-weekday">S</div>
+      </div>
+      <div class="cal-grid">
+    `;
+
+    for (let i = 0; i < startWeekday; i++){
+      html += `<div class="cal-day empty"></div>`;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++){
+      const dk = `${year}-${pad(month+1)}-${pad(day)}`;
+      const d = p.days[dk];
+      const doneCount = d && d.done ? d.done.length : 0;
+      const pct = total === 0 ? 0 : doneCount / total;
+      const hasJournal = d && d.journal && d.journal.trim().length > 0;
+      const classes = ['cal-day'];
+      if (pct >= 1) classes.push('full');
+      else if (pct > 0) classes.push('partial');
+      if (dk === today) classes.push('today');
+      if (doneCount > 0 || hasJournal) classes.push('has-activity');
+
+      html += `
+        <button class="${classes.join(' ')}" data-day="${dk}">
+          <span class="num">${day}</span>
+          ${hasJournal ? '<div class="cal-dots"><span class="cal-dot"></span></div>' : ''}
+        </button>
+      `;
+    }
+
+    html += `</div>`;
+    html += `
+      <div class="cal-legend">
+        <span><span class="leg-dot"></span> Full</span>
+        <span><span class="leg-dot soft"></span> Partial</span>
+      </div>
+    `;
+
+    calendarBody.innerHTML = html;
+
+    document.getElementById('calPrev').addEventListener('click', () => {
+      calendarMonth.setMonth(calendarMonth.getMonth() - 1);
+      renderCalendar();
+    });
+    document.getElementById('calNext').addEventListener('click', () => {
+      calendarMonth.setMonth(calendarMonth.getMonth() + 1);
+      renderCalendar();
+    });
+    calendarBody.querySelectorAll('.cal-day[data-day]').forEach(el => {
+      el.addEventListener('click', () => {
+        openDayDetail(calendarPillar, el.dataset.day);
+      });
+    });
+  }
+
+  function openDayDetail(pillarId, dateKey){
+    const p = pillars[pillarId];
+    const d = p.days[dateKey];
+    const dateObj = new Date(dateKey + 'T12:00:00');
+    const dateLabel = dateObj.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+    const total = p.habits.length;
+    const doneCount = d && d.done ? d.done.length : 0;
+
+    const pillarColor = getPillarColor(pillarId);
+
+    let html = `
+      <div class="day-detail-header" style="--pillar:${pillarColor};--pillar-soft:${pillarColor}26">
+        <div class="day-detail-date">${dateObj.getDate()} ${dateObj.toLocaleDateString(undefined,{month:'short'})}</div>
+        <div class="day-detail-weekday">${dateLabel}</div>
+    `;
+
+    if (doneCount > 0){
+      const streakThatDay = computeStreakUpTo(pillarId, dateKey);
+      html += `<div class="day-detail-streak">
+        <svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>
+        ${streakThatDay} day streak
+      </div>`;
+    }
+
+    html += `</div>`;
+
+    if (!d || (doneCount === 0 && (!d.journal || !d.journal.trim()))){
+      html += `<div class="day-detail-empty">Nothing logged this day.</div>`;
+    } else {
+      // Habits
+      html += `<div class="section-header">Habits (${doneCount} of ${total})</div>`;
+      html += `<div class="group" style="--pillar:${pillarColor};--pillar-soft:${pillarColor}26">`;
+      p.habits.forEach(h => {
+        const isDone = d.done && d.done.includes(h.id);
+        html += `
+          <div class="row" style="cursor:default">
+            <div class="row-icon" style="background:${h.color}">${ICONS[h.icon] || ICONS.bolt}</div>
+            <div class="row-body">
+              <div class="row-title" style="${isDone ? '' : 'color:var(--text-3)'}">${escapeHtml(h.label)}</div>
+            </div>
+            <div class="check ${isDone ? 'done' : ''}" style="cursor:default;pointer-events:none"></div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+
+      // Journal
+      if (d.journal && d.journal.trim()){
+        html += `<div class="section-header">Journal</div>`;
+        html += `<div class="day-detail-journal">${escapeHtml(d.journal.trim())}</div>`;
+      } else {
+        html += `<div class="section-header">Journal</div>`;
+        html += `<div class="day-detail-journal empty">No journal entry.</div>`;
+      }
+
+      // Actions
+      html += `<div class="day-detail-actions">
+        <button id="viewMonthBtn">View month</button>
+      </div>`;
+    }
+
+    dayBody.innerHTML = html;
+    dayTitle.textContent = PILLARS[pillarId].label;
+
+    const viewMonthBtn = document.getElementById('viewMonthBtn');
+    if (viewMonthBtn){
+      viewMonthBtn.addEventListener('click', () => {
+        closeDayDetail();
+        openCalendar(pillarId);
+      });
+    }
+
+    daySheet.classList.add('active');
+    dayOverlay.classList.add('active');
+    vibrate(5);
+  }
+  function closeDayDetail(){
+    daySheet.classList.remove('active');
+    dayOverlay.classList.remove('active');
+  }
+
+  document.getElementById('closeCalendar').addEventListener('click', closeCalendar);
+  calendarOverlay.addEventListener('click', closeCalendar);
+  document.getElementById('closeDay').addEventListener('click', closeDayDetail);
+  dayOverlay.addEventListener('click', closeDayDetail);
+
+  document.querySelectorAll('[data-history]').forEach(btn => {
+    btn.addEventListener('click', () => openCalendar(btn.dataset.history));
+  });
+
   // Reminders
   const listEl = document.getElementById('remindersList');
   const emptyReminders = document.getElementById('emptyReminders');
@@ -1132,8 +1426,7 @@ input:checked + .slider::before{transform:translateX(20px)}
           r.done = !r.done;
           save(REM_KEY, reminders);
           renderReminders();
-          if (r.done) vibrate(12);
-          else vibrate(8);
+          if (r.done) vibrate(12); else vibrate(8);
         });
         listEl.appendChild(row);
       });
@@ -1216,7 +1509,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   function fmtClock(sec){
     const m = Math.floor(sec / 60);
     const s = sec % 60;
-    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${pad(m)}:${pad(s)}`;
   }
   function updateTimerVisual(){
     if (timerTime) timerTime.textContent = fmtClock(timerRemaining);
@@ -1465,7 +1758,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   renderTodayStrip();
   renderActivity();
 
-  console.log('%cSpur v0.8','color:#FF2D55;font-weight:600;font-size:14px');
+  console.log('%cSpur v0.9','color:#FF2D55;font-weight:600;font-size:14px');
 })();
 </script>
 </body>
