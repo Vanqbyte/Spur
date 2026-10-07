@@ -1763,10 +1763,12 @@ input:checked + .slider::before{transform:translateX(20px)}
 
     el.addEventListener('focus', () => {
       if (cardEl) cardEl.classList.add('focused');
+      enterJournalingMode();
       autoResizeJournal(el, true);
     });
     el.addEventListener('blur', () => {
       if (cardEl) cardEl.classList.remove('focused');
+      exitJournalingMode();
       autoResizeJournal(el, false);
     });
 
