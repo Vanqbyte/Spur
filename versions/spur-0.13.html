@@ -2358,6 +2358,15 @@ input:checked + .slider::before{transform:translateX(20px)}
       vibrate(8);
     });
   }
+  const testReviewBtn = document.getElementById('testReviewBtn');
+if (testReviewBtn){
+  testReviewBtn.addEventListener('click', () => {
+    vibrate(8);
+    // Temporarily bypass the weekend check by opening the flow directly.
+    // If there's already a review this week, load its answers; otherwise blank.
+    startReview();
+  });
+}
   updateNotifUI();
   if ('Notification' in window && navigator.permissions){
     navigator.permissions.query({ name: 'notifications' }).then(p => { p.onchange = updateNotifUI; }).catch(() => {});
