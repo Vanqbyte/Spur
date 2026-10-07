@@ -1712,26 +1712,47 @@ input:checked + .slider::before{transform:translateX(20px)}
     }
   }
 
-  // Journal auto-resize
-  const JOURNAL_MIN = 52;
+  // ============================================
+  // TIERED JOURNAL AUTO-RESIZE
+  // 2 → 4 → 6 → 8 lines, driven by content
+  // ============================================
+  const LINE_HEIGHT = 23;
+  const JOURNAL_MIN = 52;        // 2 lines
+  const JOURNAL_TIER_2 = 92;     // 4 lines
+  const JOURNAL_TIER_3 = 138;    // 6 lines
+  const JOURNAL_TIER_4 = 184;    // 8 lines
   const JOURNAL_MAX = 600;
-  const JOURNAL_FOCUSED_MIN = 180;
+
+  function tierForContent(contentLines){
+    if (contentLines <= 2) return JOURNAL_MIN;
+    if (contentLines <= 5) return JOURNAL_TIER_2;
+    if (contentLines <= 8) return JOURNAL_TIER_3;
+    return JOURNAL_TIER_4;
+  }
 
   function autoResizeJournal(el, focused){
     if (!el) return;
-    // Reset height so scrollHeight is measured correctly
     el.style.height = 'auto';
     const contentH = el.scrollHeight;
-    let target;
-    if (focused){
-      target = Math.min(Math.max(contentH, JOURNAL_FOCUSED_MIN), JOURNAL_MAX);
-    } else {
-      // Collapse if content is short
-      target = Math.min(Math.max(contentH, JOURNAL_MIN), JOURNAL_MAX);
-      // Only shorten if truly short
-      if (contentH <= JOURNAL_MIN + 8) target = JOURNAL_MIN;
+    const contentLines = Math.max(1, Math.round(contentH / LINE_HEIGHT));
+    let target = tierForContent(contentLines);
+    if (focused && contentLines <= 2){
+      target = JOURNAL_TIER_2;
     }
+    if (contentH > target) target = contentH;
+    target = Math.min(target, JOURNAL_MAX);
     el.style.height = target + 'px';
+  }
+
+  // Journaling mode — hide nav + tabbar while writing
+  let journalFocusCount = 0;
+  function enterJournalingMode(){
+    journalFocusCount++;
+    if (journalFocusCount === 1) document.body.classList.add('journaling');
+  }
+  function exitJournalingMode(){
+    journalFocusCount = Math.max(0, journalFocusCount - 1);
+    if (journalFocusCount === 0) document.body.classList.remove('journaling');
   }
 
   ['body', 'craft', 'rel'].forEach(pid => {
