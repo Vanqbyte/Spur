@@ -183,7 +183,7 @@ input:checked + .slider{background:var(--success)}
 input:checked + .slider::before{transform:translateX(20px)}
 .empty{text-align:center;color:var(--text-2);font-size:15px;padding:56px 24px;line-height:1.5;animation:fadeIn .4s var(--ease)}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.tabbar{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(249,249,249,.86);backdrop-filter:saturate(180%) blur(22px);-webkit-backdrop-filter:saturate(180%) blur(22px);border-top:.5px solid var(--hairline);padding:6px 4px 4px;padding-bottom:calc(4px + var(--safe-bottom));z-index:20}
+.tabbar{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(249,249,249,.86);backdrop-filter:saturate(180%) blur(22px);-webkit-backdrop-filter:saturate(180%) blur(22px);border-top:.5px solid var(--hairline);padding:6px 4px 4px;padding-bottom:calc(4px + var(--safe-bottom));z-index:20;transition:transform .3s var(--spring),opacity .25s var(--ease)}
 [data-theme="dark"] .tabbar{background:rgba(28,28,30,.86)}
 .tab{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--text-2);font-size:10px;font-weight:600;cursor:pointer;position:relative;transition:color .15s var(--ease)}
 .tab.active{color:var(--accent)}
