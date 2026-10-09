@@ -735,7 +735,535 @@ input:checked + .slider::before{transform:translateX(20px)}
 </div>
 
 <script>
-/* ===== CHUNK 2: JS CONFIG ===== */
+(function(){
+  'use strict';
+
+  // ============================================
+  // STORAGE KEYS
+  // ============================================
+  const REM_KEY = 'spur-reminders';
+  const THEME_KEY = 'spur-theme';
+  const PILLAR_KEY = 'spur-pillars';
+  const MONEY_KEY = 'spur-money';
+  const REVIEW_KEY = 'spur-reviews';
+  const ACTIVE_KEY = 'spur-active-pillars';
+  const ONBOARDED_KEY = 'spur-onboarded';
+  const SETTLE_MS = 30 * 1000;
+  const NEW_REMINDER_MS = 24 * 60 * 60 * 1000;
+
+  function load(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+    catch(e){ return fallback; }
+  }
+  function save(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
+  }
+  function loadRaw(key, fallback){
+    try { return localStorage.getItem(key) || fallback; }
+    catch(e){ return fallback; }
+  }
+  function saveRaw(key, val){
+    try { localStorage.setItem(key, val); } catch(e){}
+  }
+
+  let reminders = load(REM_KEY, []);
+  let money = load(MONEY_KEY, []);
+  let reviews = load(REVIEW_KEY, []);
+
+  // ============================================
+  // ICONS
+  // ============================================
+  const ICONS = {
+    dumbbell: '<svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l1-1 2 2-1 1zM17 14l1-1 2 2-1 1zM4.5 13.5l-2 2 2 2 2-2zM17.5 10.5l2-2-2-2-2 2zM14 4l-1 1 2 2 1-1z"/></svg>',
+    drop: '<svg viewBox="0 0 24 24"><path d="M12 2.5s6 7 6 11.5a6 6 0 11-12 0c0-4.5 6-11.5 6-11.5z"/></svg>',
+    book: '<svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 004 22.5zM4 4.5v18"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>',
+    brain: '<svg viewBox="0 0 24 24"><path d="M9.5 3A3.5 3.5 0 006 6.5v.3A3.5 3.5 0 004.5 13a3.5 3.5 0 003 3.46V18a3 3 0 003 3M14.5 3A3.5 3.5 0 0118 6.5v.3A3.5 3.5 0 0119.5 13a3.5 3.5 0 01-3 3.46V18a3 3 0 01-3 3"/></svg>',
+    coin: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.5 2.5-1.5s2.5.5 2.5 1.5-1 1.5-2.5 1.5-2.5.5-2.5 1.5 1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg>',
+    ship: '<svg viewBox="0 0 24 24"><path d="M12 2v12m0 0l-4-4m4 4l4-4M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>',
+    chat: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+    eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+    shield: '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    heart: '<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 10-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+    star: '<svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>',
+    people: '<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    home: '<svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a2 2 0 01-2 2h-4v-6h-6v6H5a2 2 0 01-2-2z"/></svg>',
+    game: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/></svg>',
+    dove: '<svg viewBox="0 0 24 24"><path d="M12 2C8 6 4 8 4 12a8 8 0 0016 0c0-4-4-6-8-10z"/></svg>',
+    target: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>'
+  };
+
+  const ICON_KEYS = ['dumbbell','drop','book','bolt','brain','coin','ship','phone','chat','eye','shield','heart','star','people','home','game','dove','target'];
+  const COLOR_PALETTE = ['#FF3B30','#FF9500','#FFCC00','#34C759','#00C7BE','#007AFF','#5856D6','#AF52DE','#FF2D55','#8E8E93'];
+
+  // ============================================
+  // PILLAR LIBRARY
+  // ============================================
+  const PILLAR_LIBRARY = {
+    body: {
+      label: 'Health', layer: 'foundation', icon: 'heart', color: '#FF3B30',
+      description: 'Body, sleep, nutrition, movement, recovery',
+      defaults: [
+        { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
+        { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
+        { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
+      ],
+      suggestions: [
+        { icon:'dumbbell', label:'Workout / Gym' },
+        { icon:'drop',     label:'Drink 8 glasses of water' },
+        { icon:'book',     label:'Journal how body feels' },
+        { icon:'star',     label:'Sleep by a set time' },
+        { icon:'heart',    label:'Eat a real breakfast' },
+        { icon:'bolt',     label:'Move for 20 minutes' }
+      ]
+    },
+    craft: {
+      label: 'Craft', layer: 'expression', icon: 'bolt', color: '#5856D6',
+      description: 'Work, skill, career, deep work',
+      defaults: [
+        { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
+        { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
+        { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
+        { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
+      ],
+      suggestions: [
+        { icon:'bolt',  label:'Deep work block' },
+        { icon:'brain', label:'Learn something' },
+        { icon:'coin',  label:'Track spending' },
+        { icon:'ship',  label:'Ship something' },
+        { icon:'star',  label:'Work on the hardest task first' },
+        { icon:'book',  label:'Read for 20 minutes' }
+      ]
+    },
+    rel: {
+      label: 'People', layer: 'connection', icon: 'people', color: '#FF2D55',
+      description: 'Family, friends, partner, community',
+      defaults: [
+        { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
+        { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
+        { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
+        { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
+      ],
+      suggestions: [
+        { icon:'phone',  label:'Reach out to one person' },
+        { icon:'chat',   label:'One real conversation' },
+        { icon:'eye',    label:'Notice what someone needs' },
+        { icon:'shield', label:'Show up for yourself too' },
+        { icon:'heart',  label:'Express gratitude to someone' },
+        { icon:'book',   label:'Journal about a relationship' }
+      ]
+    },
+    mind: {
+      label: 'Mind', layer: 'foundation', icon: 'brain', color: '#AF52DE',
+      description: 'Learning, focus, thinking, curiosity',
+      defaults: [
+        { id:'read',    icon:'book',  label:'Read',               color:'#AF52DE' },
+        { id:'learn',   icon:'brain', label:'Learn something new', color:'#007AFF' },
+        { id:'reflect', icon:'eye',   label:'Reflect on today',    color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'book',  label:'Read 10 pages' },
+        { icon:'brain', label:'Learn something new' },
+        { icon:'eye',   label:'Reflect on today' },
+        { icon:'star',  label:'Practice a skill for 15 min' },
+        { icon:'bolt',  label:'Focus block without phone' },
+        { icon:'chat',  label:'Have a thoughtful conversation' }
+      ]
+    },
+    character: {
+      label: 'Character', layer: 'foundation', icon: 'shield', color: '#8E8E93',
+      description: 'Values, integrity, discipline, humility',
+      defaults: [
+        { id:'honest',      icon:'shield', label:'Act with integrity',      color:'#8E8E93' },
+        { id:'disciplined', icon:'bolt',   label:'Do the hard thing first', color:'#5856D6' },
+        { id:'kind',        icon:'heart',  label:'Show kindness',           color:'#FF2D55' }
+      ],
+      suggestions: [
+        { icon:'shield', label:'Act with integrity' },
+        { icon:'bolt',   label:'Do the hard thing first' },
+        { icon:'heart',  label:'Show kindness to someone' },
+        { icon:'star',   label:'Keep your word' },
+        { icon:'book',   label:'Reflect on your values' },
+        { icon:'eye',    label:'Pause before reacting' }
+      ]
+    },
+    env: {
+      label: 'Environment', layer: 'foundation', icon: 'home', color: '#00C7BE',
+      description: 'Home, space, order, surroundings',
+      defaults: [
+        { id:'tidy',  icon:'home', label:'Tidy one space',    color:'#00C7BE' },
+        { id:'reset', icon:'star', label:'Reset a room',      color:'#5856D6' },
+        { id:'prune', icon:'bolt', label:'Remove one thing',  color:'#8E8E93' }
+      ],
+      suggestions: [
+        { icon:'home',  label:'Tidy one space' },
+        { icon:'star',  label:'Reset a room' },
+        { icon:'bolt',  label:'Remove one thing you do not use' },
+        { icon:'book',  label:'Put something in its place' },
+        { icon:'heart', label:'Make your bed' }
+      ]
+    },
+    finance: {
+      label: 'Finance', layer: 'expression', icon: 'coin', color: '#34C759',
+      description: 'Money, saving, earning, stewardship',
+      defaults: [
+        { id:'track',    icon:'coin',  label:'Track spending',   color:'#34C759' },
+        { id:'save',     icon:'star',  label:'Save a little',    color:'#00C7BE' },
+        { id:'learnfin', icon:'brain', label:'Learn about money', color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'coin',  label:'Track spending' },
+        { icon:'star',  label:'Save a little' },
+        { icon:'brain', label:'Learn about money' },
+        { icon:'eye',   label:'Review your budget' },
+        { icon:'bolt',  label:'Avoid one impulse purchase' },
+        { icon:'ship',  label:'Work on an income stream' }
+      ]
+    },
+    play: {
+      label: 'Play', layer: 'expression', icon: 'game', color: '#FF9500',
+      description: 'Fun, rest, hobbies, joy',
+      defaults: [
+        { id:'hobby',   icon:'star',  label:'Do something for joy', color:'#FF9500' },
+        { id:'rest',    icon:'heart', label:'Rest without guilt',    color:'#AF52DE' },
+        { id:'outside', icon:'eye',   label:'Spend time outside',    color:'#34C759' }
+      ],
+      suggestions: [
+        { icon:'star',  label:'Do something for joy' },
+        { icon:'heart', label:'Rest without guilt' },
+        { icon:'eye',   label:'Spend time outside' },
+        { icon:'chat',  label:'Play with someone' },
+        { icon:'book',  label:'Read fiction' },
+        { icon:'bolt',  label:'Try something new' }
+      ]
+    },
+    spirit: {
+      label: 'Spirit', layer: 'connection', icon: 'dove', color: '#5E5CE6',
+      description: 'Faith, meditation, meaning, inner life',
+      defaults: [
+        { id:'meditate',  icon:'eye',   label:'Meditate / pray',    color:'#5E5CE6' },
+        { id:'gratitude', icon:'heart', label:'Practice gratitude',  color:'#FF2D55' },
+        { id:'reflect',   icon:'book',  label:'Reflect on meaning',  color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'eye',   label:'Meditate / pray' },
+        { icon:'heart', label:'Practice gratitude' },
+        { icon:'book',  label:'Reflect on meaning' },
+        { icon:'star',  label:'Sit in silence for 5 minutes' },
+        { icon:'bolt',  label:'Read something spiritual' },
+        { icon:'chat',  label:'Talk with someone about faith' }
+      ]
+    },
+    purpose: {
+      label: 'Purpose', layer: 'connection', icon: 'target', color: '#FF2D55',
+      description: 'Contribution, service, legacy',
+      defaults: [
+        { id:'serve',      icon:'heart', label:'Serve someone',           color:'#FF2D55' },
+        { id:'contribute', icon:'star',  label:'Contribute to something', color:'#5856D6' },
+        { id:'reflect',    icon:'book',  label:'Reflect on your why',     color:'#AF52DE' }
+      ],
+      suggestions: [
+        { icon:'heart', label:'Serve someone' },
+        { icon:'star',  label:'Contribute to something bigger' },
+        { icon:'book',  label:'Reflect on your why' },
+        { icon:'chat',  label:'Help someone with no reward' },
+        { icon:'bolt',  label:'Work on a meaningful project' }
+      ]
+    }
+  };
+
+  const LAYER_META = {
+    foundation: { label: 'Foundation', blurb: 'Tends to steady everything else.' },
+    expression: { label: 'Expression', blurb: 'How you build, earn, and enjoy.' },
+    connection: { label: 'Connection', blurb: 'How you relate, believe, and serve.' }
+  };
+
+  const LAYER_ORDER = ['foundation', 'expression', 'connection'];
+
+  // ============================================
+  // ACTIVE PILLARS
+  // ============================================
+  let activePillars = load(ACTIVE_KEY, null);
+  if (!activePillars || !Array.isArray(activePillars) || activePillars.length !== 3){
+    activePillars = ['body', 'craft', 'rel'];
+    save(ACTIVE_KEY, activePillars);
+  }
+
+  function getPillarLib(slotIdx){
+    const id = activePillars[slotIdx];
+    return id && PILLAR_LIBRARY[id] ? Object.assign({ id }, PILLAR_LIBRARY[id]) : null;
+  }
+  function getPillarId(slotIdx){ return activePillars[slotIdx]; }
+
+  // ============================================
+  // PILLAR DATA
+  // ============================================
+  let pillars = load(PILLAR_KEY, null);
+  if (!pillars) pillars = {};
+
+  function ensurePillarData(id){
+    const lib = PILLAR_LIBRARY[id];
+    if (!lib) return;
+    if (!pillars[id]){
+      pillars[id] = {
+        habits: JSON.parse(JSON.stringify(lib.defaults)),
+        days: {}
+      };
+    } else if (!pillars[id].habits){
+      pillars[id].habits = JSON.parse(JSON.stringify(lib.defaults));
+    }
+    if (!pillars[id].days) pillars[id].days = {};
+    pillars[id].habits.forEach(function(h, idx){
+      if (!h.id) h.id = 'h_' + idx + '_' + Math.random().toString(36).slice(2,6);
+      if (!h.icon) h.icon = 'bolt';
+      if (!h.color) h.color = lib.color || '#007AFF';
+    });
+  }
+  activePillars.forEach(ensurePillarData);
+  save(PILLAR_KEY, pillars);
+
+  function getPillarData(slotIdx){
+    const id = activePillars[slotIdx];
+    return id && pillars[id] ? pillars[id] : null;
+  }
+
+  // ============================================
+  // HELPERS
+  // ============================================
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function dateKey(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+  function todayKey(){ return dateKey(new Date()); }
+  function dateKeyOffset(offset){ const d = new Date(); d.setDate(d.getDate() + offset); return dateKey(d); }
+  function monthKey(){ const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth()+1); }
+  function shortDay(dateStr){ const d = new Date(dateStr + 'T12:00:00'); return ['S','M','T','W','T','F','S'][d.getDay()]; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function formatTime(t){
+    if (!t) return '';
+    const parts = t.split(':');
+    const h = Number(parts[0]), m = Number(parts[1]);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr = h % 12 || 12;
+    return hr + ':' + pad(m) + ' ' + ampm;
+  }
+  function vibrate(ms){ if (navigator.vibrate) navigator.vibrate(ms); }
+
+  function countUp(el, target, suffix){
+    if (!el) return;
+    const start = parseInt(el.textContent) || 0;
+    if (start === target){ el.textContent = target + (suffix || ''); return; }
+    const steps = 16; let i = 0;
+    const diff = target - start;
+    const stepMs = 320 / steps;
+    const t = setInterval(function(){
+      i++;
+      const v = Math.round(start + (diff * (i / steps)));
+      el.textContent = v + (suffix || '');
+      if (i >= steps){ clearInterval(t); el.textContent = target + (suffix || ''); }
+    }, stepMs);
+  }
+
+  function fmtMoney(n){
+    const sign = n < 0 ? '-' : '';
+    return sign + '₦' + Math.abs(Math.round(n)).toLocaleString();
+  }
+  function floatDot(x, y, color){
+    const el = document.createElement('div');
+    el.className = 'float-dot';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.background = color || 'var(--accent)';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 950);
+  }
+
+  function computeStreak(slotIdx){
+    const p = getPillarData(slotIdx);
+    if (!p) return 0;
+    const total = p.habits.length;
+    if (total === 0) return 0;
+    let streak = 0, misses = 0;
+    for (let i = 0; i < 365; i++){
+      const key = dateKeyOffset(-i);
+      const day = p.days[key];
+      const isDone = day && day.done && day.done.length === total;
+      if (isDone){
+        if (misses >= 2) break;
+        streak++; misses = 0;
+      } else {
+        if (i === 0) continue;
+        misses++;
+        if (misses >= 2) break;
+      }
+    }
+    return streak;
+  }
+  function computeStreakUpTo(slotIdx, upToKey){
+    const p = getPillarData(slotIdx);
+    if (!p) return 0;
+    const total = p.habits.length;
+    if (total === 0) return 0;
+    const upTo = new Date(upToKey + 'T12:00:00');
+    let streak = 0, misses = 0;
+    for (let i = 0; i < 365; i++){
+      const d = new Date(upTo);
+      d.setDate(d.getDate() - i);
+      const key = dateKey(d);
+      const day = p.days[key];
+      const isDone = day && day.done && day.done.length === total;
+      if (isDone){
+        if (misses >= 2) break;
+        streak++; misses = 0;
+      } else {
+        if (i === 0) continue;
+        misses++;
+        if (misses >= 2) break;
+      }
+    }
+    return streak;
+  }
+  function monthDaysShown(slotIdx){
+    const p = getPillarData(slotIdx);
+    if (!p) return 0;
+    const prefix = monthKey();
+    let count = 0;
+    Object.keys(p.days).forEach(function(k){
+      if (k.indexOf(prefix) === 0 && p.days[k].done && p.days[k].done.length > 0) count++;
+    });
+    return count;
+  }
+  function getDay(slotIdx, key){
+    const p = getPillarData(slotIdx);
+    if (!p) return { done: [], journal: '', doneAt: {} };
+    if (!p.days[key]) p.days[key] = { done: [], journal: '', doneAt: {} };
+    if (!p.days[key].done) p.days[key].done = [];
+    if (typeof p.days[key].journal !== 'string') p.days[key].journal = '';
+    if (!p.days[key].doneAt) p.days[key].doneAt = {};
+    return p.days[key];
+  }
+  function getSlotColor(slotIdx){
+    const map = { 0: '#007AFF', 1: '#5856D6', 2: '#FF2D55' };
+    return map[slotIdx] || '#007AFF';
+  }
+  function getSlotSoft(slotIdx){
+    const map = { 0: 'rgba(0,122,255,.12)', 1: 'rgba(88,86,214,.12)', 2: 'rgba(255,45,85,.12)' };
+    return map[slotIdx] || 'rgba(0,122,255,.12)';
+  }
+  function isSettled(ts){ return ts ? (Date.now() - ts) >= SETTLE_MS : false; }
+  function isNewReminder(r){ return r && !r.done && r.createdAt && (Date.now() - r.createdAt) < NEW_REMINDER_MS; }
+
+  function getWeekStart(d){ const date = new Date(d); date.setHours(0,0,0,0); date.setDate(date.getDate() - date.getDay()); return date; }
+  function getWeekEnd(d){ const s = getWeekStart(d); const e = new Date(s); e.setDate(e.getDate() + 6); return e; }
+  function weekKey(d){ return dateKey(getWeekStart(d)); }
+  function formatWeekLabel(weekStartKey){
+    const start = new Date(weekStartKey + 'T12:00:00');
+    const end = new Date(start); end.setDate(end.getDate() + 6);
+    const sameMonth = start.getMonth() === end.getMonth();
+    const sMonth = start.toLocaleDateString(undefined, { month:'short' });
+    const eMonth = end.toLocaleDateString(undefined, { month:'short' });
+    if (sameMonth) return sMonth + ' ' + start.getDate() + ' – ' + end.getDate();
+    return sMonth + ' ' + start.getDate() + ' – ' + eMonth + ' ' + end.getDate();
+  }
+  function isReviewWindow(){
+    const now = new Date();
+    const day = now.getDay();
+    if (day === 0) return true;
+    if (day === 6 && now.getHours() >= 17) return true;
+    return false;
+  }
+  function currentWeekReview(){
+    return reviews.find(function(r){ return r.weekStart === weekKey(new Date()); });
+  }
+  function saveReview(answers){
+    const now = new Date();
+    const ws = weekKey(now);
+    const we = dateKey(getWeekEnd(now));
+    const existingIdx = reviews.findIndex(function(r){ return r.weekStart === ws; });
+    const entry = { weekStart: ws, weekEnd: we, answers: answers, completedAt: Date.now() };
+    if (existingIdx >= 0) reviews[existingIdx] = entry;
+    else reviews.push(entry);
+    save(REVIEW_KEY, reviews);
+  }
+
+  const PILLAR_CHIP_COLORS = {
+    0: { bg: 'rgba(0,122,255,.12)',  text: '#007AFF' },
+    1: { bg: 'rgba(88,86,214,.12)',  text: '#5856D6' },
+    2: { bg: 'rgba(255,45,85,.12)',  text: '#FF2D55' },
+    '-1': { bg: 'rgba(201,150,63,.14)', text: '#C9963F' }
+  };
+
+  // ============================================
+  // SERVICE WORKER
+  // ============================================
+  let swRegistration = null;
+  if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('../sw.js').then(function(reg){
+      swRegistration = reg;
+      syncRemindersToSW();
+    }).catch(function(){});
+  }
+
+  function computeNextFireAt(r){
+    if (r.done) return null;
+    const now = new Date();
+    const parts = (r.time || '09:00').split(':');
+    const h = Number(parts[0]), m = Number(parts[1]);
+    const fire = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    if (r.repeat === 'Once') return fire.getTime() > now.getTime() ? fire.getTime() : null;
+    if (r.repeat === 'Daily'){ if (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 1); return fire.getTime(); }
+    if (r.repeat === 'Weekly'){ while (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 7); return fire.getTime(); }
+    return null;
+  }
+
+  function syncRemindersToSW(){
+    if (!swRegistration || !swRegistration.active) return;
+    const payload = reminders.map(function(r){
+      return {
+        id: r.id, title: r.title, time: r.time, done: r.done,
+        repeat: r.repeat, pillar: r.pillar || 'Reminder',
+        nextFireAt: computeNextFireAt(r)
+      };
+    });
+    swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
+  }
+
+  // ============================================
+  // JOURNAL AUTO-RESIZE
+  // ============================================
+  const LINE_HEIGHT = 23;
+  const JOURNAL_MIN = 52;
+  const JOURNAL_TIER_2 = 92;
+  const JOURNAL_TIER_3 = 138;
+  const JOURNAL_TIER_4 = 184;
+  const JOURNAL_MAX = 600;
+
+  function tierForContent(lines){
+    if (lines <= 2) return JOURNAL_MIN;
+    if (lines <= 5) return JOURNAL_TIER_2;
+    if (lines <= 8) return JOURNAL_TIER_3;
+    return JOURNAL_TIER_4;
+  }
+  function autoResizeJournal(el, focused){
+    if (!el) return;
+    el.style.height = 'auto';
+    const contentH = el.scrollHeight;
+    const lines = Math.max(1, Math.round(contentH / LINE_HEIGHT));
+    let target = tierForContent(lines);
+    if (focused && lines <= 2) target = JOURNAL_TIER_2;
+    if (contentH > target) target = contentH;
+    target = Math.min(target, JOURNAL_MAX);
+    el.style.height = target + 'px';
+  }
+
+  let journalFocusCount = 0;
+  function enterJournalingMode(){
+    journalFocusCount++;
+    if (journalFocusCount === 1) document.body.classList.add('journaling');
+  }
+  function exitJournalingMode(){
+    journalFocusCount = Math.max(0, journalFocusCount - 1);
+    if (journalFocusCount === 0) document.body.classList.remove('journaling');
+  }
 /* ===== CHUNK 3: JS APP ===== */
 </script>
 </body>
