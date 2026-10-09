@@ -517,6 +517,24 @@ input:checked + .slider::before{transform:translateX(20px)}
 </style>
 </head>
 <body>
+  <!-- TEMP: error catcher -->
+<div id="errBox" style="position:fixed;top:0;left:0;right:0;background:#FF3B30;color:#fff;font-family:ui-monospace,monospace;font-size:13px;padding:12px;z-index:99999;display:none;white-space:pre-wrap;max-height:70%;overflow:auto;line-height:1.4"></div>
+<script>
+window.addEventListener('error', function(e){
+  var box = document.getElementById('errBox');
+  if (!box) return;
+  box.style.display = 'block';
+  box.textContent = '❌ JS ERROR\n\n' + e.message + '\n\nLine: ' + e.lineno + ':' + e.colno;
+  console.error(e);
+});
+window.addEventListener('unhandledrejection', function(e){
+  var box = document.getElementById('errBox');
+  if (!box) return;
+  box.style.display = 'block';
+  box.textContent = '❌ PROMISE ERROR\n\n' + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
+});
+</script>
+<!-- END TEMP -->
 
 <!-- ============================================
      ONBOARDING FLOW (shown only to new users)
