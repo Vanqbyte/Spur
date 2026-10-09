@@ -123,9 +123,6 @@ body.journaling .content{padding-bottom:calc(40px + var(--safe-bottom))}
 .hero-msg{position:absolute;bottom:8px;right:20px;font-size:12px;font-weight:600;color:var(--pillar,var(--accent));opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
 .hero-msg.show{opacity:1;animation:msgIn 1.8s var(--ease)}
 @keyframes msgIn{0%{opacity:0;transform:translateY(4px)}15%{opacity:1;transform:translateY(0)}70%{opacity:1}100%{opacity:0;transform:translateY(0)}}
-.money-btn{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;background:var(--pillar-soft,var(--craft-soft));color:var(--pillar,var(--craft));border:none;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:-.1px;cursor:pointer;transition:transform .15s var(--spring)}
-.money-btn:active{transform:scale(.94)}
-.money-btn-action{background:var(--pillar,var(--craft));color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
 .month-counter{margin-top:8px;font-size:12px;color:var(--text-2);letter-spacing:-.1px}
 .month-counter strong{color:var(--pillar,var(--accent));font-weight:600}
 .week{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px 12px;display:flex;justify-content:space-between;gap:4px}
@@ -150,9 +147,6 @@ body.journaling .content{padding-bottom:calc(40px + var(--safe-bottom))}
 .journal-saved.show{opacity:1}
 .journal-saved::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success);opacity:.9}
 .journal-saved:not(.show)::before{opacity:0}
-.review{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px}
-.review-title{font-size:15px;font-weight:600;letter-spacing:-.25px;margin-bottom:6px}
-.review-text{font-size:15px;color:var(--text-2);letter-spacing:-.2px;line-height:1.5}
 .note{text-align:center;color:var(--text-3);font-size:13px;padding:16px 24px 0;line-height:1.5}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .stat{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px;transition:transform .15s var(--spring)}
@@ -204,23 +198,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 .chip{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-nested);padding:10px 16px;font-size:15px;color:var(--text);cursor:pointer;letter-spacing:-.2px;transition:transform .15s var(--spring),background .15s}
 .chip:active{transform:scale(.96)}
 .chip.selected{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500;transform:scale(1.02)}
-.timer-body{display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px}
-.timer-ring{position:relative;width:220px;height:220px;margin-bottom:24px}
-.timer-ring svg{transform:rotate(-90deg);display:block}
-.timer-track{fill:none;stroke:var(--craft-soft,rgba(88,86,214,.12));stroke-width:8}
-.timer-fill{fill:none;stroke:var(--craft,#5856D6);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
-.timer-display{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.timer-time{font-size:44px;font-weight:600;letter-spacing:-1.8px;line-height:1;font-variant-numeric:tabular-nums}
-.timer-label{font-size:13px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-top:8px}
-.timer-presets{display:flex;gap:8px;justify-content:center;margin-bottom:24px}
-.timer-actions{display:flex;gap:10px;justify-content:center}
-.timer-btn{padding:12px 24px;border-radius:12px;border:1px solid var(--hairline);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;letter-spacing:-.2px;cursor:pointer;transition:transform .15s var(--spring)}
-.timer-btn:active{transform:scale(.96)}
-.timer-btn.primary{background:var(--craft,#5856D6);color:#fff;border-color:var(--craft,#5856D6)}
-.money-summary{margin-top:8px;padding:14px 16px;background:var(--surface);border-radius:var(--r-nested);font-size:14px;color:var(--text-2);line-height:1.5}
-.money-summary strong{color:var(--text);font-weight:600}
-.money-summary .in{color:var(--success);font-weight:600}
-.money-summary .out{color:var(--destructive);font-weight:600}
 .icon-picker{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .icon-opt{aspect-ratio:1;background:var(--surface);border:2px solid transparent;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all .15s var(--spring)}
 .icon-opt:active{transform:scale(.94)}
@@ -248,7 +225,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 @keyframes rowSlideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .row.is-new{animation:newRowIn .6s var(--spring)}
 @keyframes newRowIn{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
-.row.is-new .row-title{position:relative}
 .row.is-new::after{content:"NEW";position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);padding:3px 6px;border-radius:6px;opacity:0;animation:newFadeIn .8s var(--ease) .15s forwards}
 @keyframes newFadeIn{to{opacity:1}}
 .row.is-new .check{margin-right:28px}
@@ -291,7 +267,7 @@ input:checked + .slider::before{transform:translateX(20px)}
 .review-card-today .rc-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:6px}
 .review-card-today .rc-title{font-size:20px;font-weight:700;letter-spacing:-.4px;margin-bottom:4px}
 .review-card-today .rc-text{font-size:14px;opacity:.92;line-height:1.4;letter-spacing:-.15px}
-.review-card-today .rc-action{display:inline-block;margin-top:14px;background:rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:700;padding:8px 14px;border-radius:999px;letter-spacing:-.1px}
+.review-card-today .rc-action{display:inline-block;margin-top:14px;background:rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:700;padding:8px 14px;border-radius:999px}
 .review-card-today.done-today{background:var(--surface);color:var(--text);box-shadow:var(--shadow-card)}
 .review-card-today.done-today .rc-label{color:var(--craft);opacity:1}
 .review-card-today.done-today .rc-title{color:var(--text)}
@@ -300,8 +276,8 @@ input:checked + .slider::before{transform:translateX(20px)}
 .review-flow{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
 .review-flow.active{display:flex;animation:fadeIn .3s var(--ease)}
 .review-topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px;flex-shrink:0}
-.review-progress-text{font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:-.1px}
-.review-skip-x{background:none;border:none;padding:8px;color:var(--text-2);font-size:15px;font-weight:500;cursor:pointer;letter-spacing:-.2px;transition:opacity .15s}
+.review-progress-text{font-size:13px;font-weight:600;color:var(--text-2)}
+.review-skip-x{background:none;border:none;padding:8px;color:var(--text-2);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .15s}
 .review-skip-x:active{opacity:.6}
 .review-progress-bar{height:3px;background:var(--surface-inset);margin:0 20px 24px;border-radius:2px;overflow:hidden;flex-shrink:0}
 .review-progress-fill{height:100%;background:var(--craft);transition:width .5s var(--spring);border-radius:2px}
@@ -320,178 +296,60 @@ input:checked + .slider::before{transform:translateX(20px)}
 .review-done-emoji{font-size:64px;margin-bottom:20px;animation:pop .6s var(--spring)}
 @keyframes pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 .review-done-title{font-size:28px;font-weight:700;letter-spacing:-.6px;margin:0 0 8px}
-.review-done-sub{font-size:16px;color:var(--text-2);letter-spacing:-.2px;line-height:1.5;max-width:340px;margin-bottom:32px}
+.review-done-sub{font-size:16px;color:var(--text-2);line-height:1.5;max-width:340px;margin-bottom:32px}
 .past-review-card{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px;margin-bottom:10px;cursor:pointer;border:none;text-align:left;width:100%;font-family:inherit;transition:transform .15s var(--spring)}
 .past-review-card:active{transform:scale(.98)}
 .past-review-week{font-size:12px;font-weight:700;color:var(--craft);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
-.past-review-preview{font-size:15px;color:var(--text);letter-spacing:-.2px;line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.past-review-preview{font-size:15px;color:var(--text);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .review-detail-qa{margin-bottom:20px}
 .review-detail-q{font-size:13px;font-weight:700;color:var(--craft);letter-spacing:.02em;margin-bottom:6px}
-.review-detail-a{font-size:16px;color:var(--text);letter-spacing:-.3px;line-height:1.5;white-space:pre-wrap}
+.review-detail-a{font-size:16px;color:var(--text);line-height:1.5;white-space:pre-wrap}
 .review-detail-a.empty{color:var(--text-3);font-style:italic}
-.version{text-align:center;font-size:12px;color:var(--text-3);padding:32px 16px 16px}
+.version{text-align:center;font-size:12px;color:var(--text-3);padding:32px 16px 4px}
+.version-hash{text-align:center;font-size:11px;color:var(--text-3);padding:0 16px 16px;letter-spacing:.04em;opacity:.7}
 
-/* ============================================
-   ONBOARDING FLOW
-   ============================================ */
-.onboarding-flow{
-  position:fixed;inset:0;background:var(--bg);z-index:400;
-  display:none;flex-direction:column;
-  padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
-  overflow:hidden;
-}
+/* ONBOARDING */
+.onboarding-flow{position:fixed;inset:0;background:var(--bg);z-index:400;display:none;flex-direction:column;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);overflow:hidden}
 .onboarding-flow.active{display:flex}
-.ob-progress{
-  position:absolute;top:calc(16px + var(--safe-top));left:16px;right:16px;
-  display:flex;gap:6px;z-index:2;
-}
-.ob-progress-dot{
-  flex:1;height:3px;border-radius:2px;
-  background:var(--surface-inset);
-  transition:background .3s var(--ease);
-}
+.ob-progress{position:absolute;top:calc(16px + var(--safe-top));left:16px;right:16px;display:flex;gap:6px;z-index:2}
+.ob-progress-dot{flex:1;height:3px;border-radius:2px;background:var(--surface-inset);transition:background .3s var(--ease)}
 .ob-progress-dot.active{background:var(--accent)}
-.ob-content{
-  flex:1;display:flex;flex-direction:column;
-  padding:64px 28px 24px;
-  max-width:560px;width:100%;margin:0 auto;
-  overflow-y:auto;
-}
-.ob-eyebrow{
-  font-size:12px;font-weight:700;letter-spacing:.1em;
-  color:var(--accent);text-transform:uppercase;
-  margin-bottom:16px;
-  opacity:0;animation:greetIn .5s var(--ease) .05s forwards;
-}
-.ob-title{
-  font-size:32px;font-weight:700;letter-spacing:-.7px;
-  line-height:1.15;margin:0 0 16px;color:var(--text);
-  opacity:0;animation:greetIn .5s var(--ease) .1s forwards;
-}
-.ob-body{
-  font-size:17px;color:var(--text-2);letter-spacing:-.2px;
-  line-height:1.5;margin:0 0 24px;
-  opacity:0;animation:greetIn .5s var(--ease) .15s forwards;
-}
+.ob-content{flex:1;display:flex;flex-direction:column;padding:64px 28px 24px;max-width:560px;width:100%;margin:0 auto;overflow-y:auto}
+.ob-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;opacity:0;animation:greetIn .5s var(--ease) .05s forwards}
+.ob-title{font-size:32px;font-weight:700;letter-spacing:-.7px;line-height:1.15;margin:0 0 16px;color:var(--text);opacity:0;animation:greetIn .5s var(--ease) .1s forwards}
+.ob-body{font-size:17px;color:var(--text-2);letter-spacing:-.2px;line-height:1.5;margin:0 0 24px;opacity:0;animation:greetIn .5s var(--ease) .15s forwards}
 .ob-body strong{color:var(--text);font-weight:600}
-.ob-learn-link{
-  background:none;border:none;color:var(--accent);
-  font-size:15px;font-weight:600;padding:8px 0;
-  cursor:pointer;letter-spacing:-.2px;align-self:flex-start;
-  margin-bottom:8px;
-  transition:opacity .15s;
-}
+.ob-hash{font-size:13px;color:var(--text-3);letter-spacing:.02em;margin-top:-8px;margin-bottom:24px;opacity:0;animation:greetIn .5s var(--ease) .2s forwards}
+.ob-learn-link{background:none;border:none;color:var(--accent);font-size:15px;font-weight:600;padding:8px 0;cursor:pointer;letter-spacing:-.2px;align-self:flex-start;margin-bottom:8px;transition:opacity .15s}
 .ob-learn-link:active{opacity:.6}
-.ob-bottom{
-  padding:16px 28px 24px;
-  max-width:560px;width:100%;margin:0 auto;
-  display:flex;flex-direction:column;gap:10px;
-  flex-shrink:0;
-}
-.ob-btn{
-  padding:16px 24px;border-radius:14px;
-  border:1px solid var(--hairline);
-  background:var(--surface);
-  color:var(--text);
-  font-size:17px;font-weight:600;
-  letter-spacing:-.3px;
-  cursor:pointer;width:100%;
-  transition:transform .15s var(--spring),opacity .15s;
-}
+.ob-bottom{padding:16px 28px 24px;max-width:560px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.ob-btn{padding:16px 24px;border-radius:14px;border:1px solid var(--hairline);background:var(--surface);color:var(--text);font-size:17px;font-weight:600;letter-spacing:-.3px;cursor:pointer;width:100%;transition:transform .15s var(--spring),opacity .15s}
 .ob-btn:active{transform:scale(.98)}
 .ob-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .ob-btn.primary[disabled]{opacity:.4;cursor:default}
 .ob-btn.ghost{background:none;border-color:transparent;color:var(--text-2);font-weight:500;font-size:15px}
-
-/* Onboarding pillar picker */
 .ob-layers{display:flex;flex-direction:column;gap:24px;opacity:0;animation:greetIn .5s var(--ease) .15s forwards}
-.ob-layer-head{
-  font-size:12px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--text-2);
-  margin-bottom:10px;padding-left:4px;
-}
+.ob-layer-head{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);margin-bottom:10px;padding-left:4px}
 .ob-pillars{display:flex;flex-direction:column;gap:8px}
-.ob-pillar{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 16px;background:var(--surface);
-  border:2px solid transparent;border-radius:12px;
-  cursor:pointer;text-align:left;font-family:inherit;
-  width:100%;transition:all .15s var(--spring);
-  box-shadow:var(--shadow-card);
-}
+.ob-pillar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:2px solid transparent;border-radius:12px;cursor:pointer;text-align:left;font-family:inherit;width:100%;transition:all .15s var(--spring);box-shadow:var(--shadow-card)}
 .ob-pillar:active{transform:scale(.98)}
 .ob-pillar.selected{border-color:var(--accent);background:var(--accent-soft)}
-.ob-pillar-icon{
-  width:36px;height:36px;border-radius:9px;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;color:#fff;font-size:18px;
-}
+.ob-pillar-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:18px}
+.ob-pillar-icon svg{width:20px;height:20px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ob-pillar-body{flex:1;min-width:0}
-.ob-pillar-name{
-  font-size:16px;font-weight:600;letter-spacing:-.3px;
-  color:var(--text);
-}
-.ob-pillar-desc{
-  font-size:13px;color:var(--text-2);
-  letter-spacing:-.1px;margin-top:1px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.ob-pillar-check{
-  width:24px;height:24px;border-radius:50%;
-  border:2px solid var(--text-3);flex-shrink:0;
-  position:relative;transition:all .2s var(--spring);
-}
-.ob-pillar.selected .ob-pillar-check{
-  background:var(--accent);border-color:var(--accent);
-}
-.ob-pillar.selected .ob-pillar-check::after{
-  content:"";position:absolute;left:6.5px;top:2.5px;
-  width:5px;height:10px;border:solid #fff;
-  border-width:0 2px 2px 0;transform:rotate(45deg);
-}
-.ob-counter{
-  position:sticky;bottom:0;
-  padding:12px 16px;background:var(--surface);
-  border-radius:12px;box-shadow:var(--shadow-card);
-  font-size:15px;font-weight:600;color:var(--text);
-  text-align:center;letter-spacing:-.2px;
-  margin-top:16px;
-}
+.ob-pillar-name{font-size:16px;font-weight:600;letter-spacing:-.3px;color:var(--text)}
+.ob-pillar-desc{font-size:13px;color:var(--text-2);letter-spacing:-.1px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ob-pillar-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--text-3);flex-shrink:0;position:relative;transition:all .2s var(--spring)}
+.ob-pillar.selected .ob-pillar-check{background:var(--accent);border-color:var(--accent)}
+.ob-pillar.selected .ob-pillar-check::after{content:"";position:absolute;left:6.5px;top:2.5px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.ob-counter{position:sticky;bottom:0;padding:12px 16px;background:var(--surface);border-radius:12px;box-shadow:var(--shadow-card);font-size:15px;font-weight:600;color:var(--text);text-align:center;letter-spacing:-.2px;margin-top:16px}
 .ob-counter.warn{color:var(--settled)}
-
-/* Layers learn-more sheet */
-.learn-layer{
-  padding:16px 0;
-  border-bottom:.5px solid var(--hairline);
-}
+.learn-layer{padding:16px 0;border-bottom:.5px solid var(--hairline)}
 .learn-layer:last-child{border-bottom:none}
-.learn-layer-title{
-  font-size:14px;font-weight:700;letter-spacing:.02em;
-  text-transform:uppercase;color:var(--accent);
-  margin-bottom:6px;
-}
-.learn-layer-pillars{
-  font-size:15px;color:var(--text);letter-spacing:-.2px;
-  margin-bottom:8px;font-weight:500;
-}
-.learn-layer-desc{
-  font-size:14px;color:var(--text-2);
-  letter-spacing:-.15px;line-height:1.5;
-}
-
-/* Manage Pillars row */
-.row.pillar-manage{
-  position:relative;
-}
-.pillar-manage-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-
-/* Library list styling (reused) */
+.learn-layer-title{font-size:14px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.learn-layer-pillars{font-size:15px;color:var(--text);letter-spacing:-.2px;margin-bottom:8px;font-weight:500}
+.learn-layer-desc{font-size:14px;color:var(--text-2);letter-spacing:-.15px;line-height:1.5}
 .lib-group{margin-bottom:24px}
-.lib-head{
-  font-size:12px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--text-2);
-  padding:0 4px 8px;
-}
 
 @media (max-width:767px){.sidebar{display:none}.app{grid-template-columns:0 1fr}}
 @media (min-width:768px) and (max-width:1023px){
@@ -517,37 +375,15 @@ input:checked + .slider::before{transform:translateX(20px)}
 </style>
 </head>
 <body>
-  <!-- TEMP: error catcher -->
-<div id="errBox" style="position:fixed;top:0;left:0;right:0;background:#FF3B30;color:#fff;font-family:ui-monospace,monospace;font-size:13px;padding:12px;z-index:99999;display:none;white-space:pre-wrap;max-height:70%;overflow:auto;line-height:1.4"></div>
-<script>
-window.addEventListener('error', function(e){
-  var box = document.getElementById('errBox');
-  if (!box) return;
-  box.style.display = 'block';
-  box.textContent = '❌ JS ERROR\n\n' + e.message + '\n\nLine: ' + e.lineno + ':' + e.colno;
-  console.error(e);
-});
-window.addEventListener('unhandledrejection', function(e){
-  var box = document.getElementById('errBox');
-  if (!box) return;
-  box.style.display = 'block';
-  box.textContent = '❌ PROMISE ERROR\n\n' + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
-});
-</script>
-<!-- END TEMP -->
 
-<!-- ============================================
-     ONBOARDING FLOW (shown only to new users)
-     ============================================ -->
+<!-- ONBOARDING -->
 <div class="onboarding-flow" id="onboardingFlow">
   <div class="ob-progress" id="obProgress"></div>
   <div class="ob-content" id="obContent"></div>
   <div class="ob-bottom" id="obBottom"></div>
 </div>
 
-<!-- ============================================
-     MAIN APP
-     ============================================ -->
+<!-- MAIN APP -->
 <div class="app" id="appRoot">
   <aside class="sidebar">
     <div class="sidebar-brand">Spur</div>
@@ -558,15 +394,15 @@ window.addEventListener('unhandledrejection', function(e){
     </button>
     <button class="sidebar-item" data-screen="pillar1">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
-      <span id="sideLabel1">Pillar 1</span>
+      <span id="sideLabel1">P1</span>
     </button>
     <button class="sidebar-item" data-screen="pillar2">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
-      <span id="sideLabel2">Pillar 2</span>
+      <span id="sideLabel2">P2</span>
     </button>
     <button class="sidebar-item" data-screen="pillar3">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
-      <span id="sideLabel3">Pillar 3</span>
+      <span id="sideLabel3">P3</span>
     </button>
     <button class="sidebar-item" data-screen="activity">
       <svg viewBox="0 0 24 24"><path d="M3 20h18M7 20V10M12 20V4M17 20v-8"/></svg>
@@ -642,10 +478,7 @@ window.addEventListener('unhandledrejection', function(e){
           <div class="group">
             <div class="row" style="cursor:default">
               <div class="row-icon" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
-              <div class="row-body">
-                <div class="row-title">Reminder alerts</div>
-                <div class="row-sub" id="notifStatus">Checking…</div>
-              </div>
+              <div class="row-body"><div class="row-title">Reminder alerts</div><div class="row-sub" id="notifStatus">Checking…</div></div>
               <button class="lt-btn" id="notifBtn" style="padding:8px 14px;background:var(--accent);color:#fff;border-radius:9px;font-weight:600">Enable</button>
             </div>
             <button class="row" id="testNotifBtn">
@@ -701,6 +534,7 @@ window.addEventListener('unhandledrejection', function(e){
             </button>
           </div>
           <div class="version">Spur v0.15 · Stonecode</div>
+          <div class="version-hash">#developyourperson</div>
         </div>
       </section>
     </main>
@@ -735,11 +569,7 @@ window.addEventListener('unhandledrejection', function(e){
   </div>
 </div>
 
-<!-- ============================================
-     SHEETS & MODALS
-     ============================================ -->
-
-<!-- Learn more: layers -->
+<!-- SHEETS -->
 <div class="overlay" id="learnOverlay"></div>
 <div class="sheet" id="learnSheet">
   <div class="sheet-handle"></div>
@@ -751,19 +581,17 @@ window.addEventListener('unhandledrejection', function(e){
   <div class="sheet-body" id="learnBody"></div>
 </div>
 
-<!-- Manage pillars -->
 <div class="overlay" id="manageOverlay"></div>
 <div class="sheet" id="manageSheet">
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <button class="sheet-btn" id="closeManage">Close</button>
     <h2 class="sheet-title">Manage Pillars</h2>
-    <button class="sheet-btn bold" id="saveManage" disabled style="opacity:.4">Save</button>
+    <button class="sheet-btn bold" id="saveManage" style="opacity:.4">Save</button>
   </div>
   <div class="sheet-body" id="manageBody"></div>
 </div>
 
-<!-- Review detail -->
 <div class="overlay" id="reviewDetailOverlay"></div>
 <div class="sheet" id="reviewDetailSheet">
   <div class="sheet-handle"></div>
@@ -775,7 +603,6 @@ window.addEventListener('unhandledrejection', function(e){
   <div class="sheet-body" id="reviewDetailBody"></div>
 </div>
 
-<!-- Import -->
 <div class="overlay" id="importOverlay"></div>
 <div class="sheet" id="importSheet">
   <div class="sheet-handle"></div>
@@ -785,15 +612,11 @@ window.addEventListener('unhandledrejection', function(e){
     <button class="sheet-btn bold" id="doImport">Restore</button>
   </div>
   <div class="sheet-body">
-    <div class="field">
-      <div class="field-label">Paste your export</div>
-      <textarea class="field-input" id="importText" placeholder='Paste the JSON from your exported backup…' rows="8" style="font-family:ui-monospace,Menlo,monospace;font-size:13px;min-height:180px;resize:vertical;line-height:1.4"></textarea>
-    </div>
+    <div class="field"><div class="field-label">Paste your export</div><textarea class="field-input" id="importText" placeholder='Paste the JSON from your exported backup…' rows="8" style="font-family:ui-monospace,Menlo,monospace;font-size:13px;min-height:180px;resize:vertical;line-height:1.4"></textarea></div>
     <div class="money-summary" id="importPreview" style="display:none"></div>
   </div>
 </div>
 
-<!-- Habit edit -->
 <div class="overlay" id="habitOverlay"></div>
 <div class="sheet" id="habitSheet">
   <div class="sheet-handle"></div>
@@ -809,7 +632,6 @@ window.addEventListener('unhandledrejection', function(e){
   </div>
 </div>
 
-<!-- Reminder add -->
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="addSheet">
   <div class="sheet-handle"></div>
@@ -831,7 +653,6 @@ window.addEventListener('unhandledrejection', function(e){
   </div>
 </div>
 
-<!-- Timer -->
 <div class="overlay" id="timerOverlay"></div>
 <div class="sheet" id="timerSheet">
   <div class="sheet-handle"></div>
@@ -840,30 +661,29 @@ window.addEventListener('unhandledrejection', function(e){
     <h2 class="sheet-title">Deep Work</h2>
     <button class="sheet-btn bold" id="startTimer">Start</button>
   </div>
-  <div class="sheet-body timer-body">
-    <div class="timer-ring">
-      <svg width="220" height="220" viewBox="0 0 220 220">
-        <circle class="timer-track" cx="110" cy="110" r="100"/>
-        <circle class="timer-fill" id="timerRing" cx="110" cy="110" r="100" stroke-dasharray="628.3" stroke-dashoffset="0"/>
+  <div class="sheet-body" style="display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px">
+    <div style="position:relative;width:220px;height:220px;margin-bottom:24px">
+      <svg width="220" height="220" viewBox="0 0 220 220" style="transform:rotate(-90deg);display:block">
+        <circle cx="110" cy="110" r="100" style="fill:none;stroke:var(--craft-soft);stroke-width:8"/>
+        <circle id="timerRing" cx="110" cy="110" r="100" stroke-dasharray="628.3" stroke-dashoffset="0" style="fill:none;stroke:var(--craft);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .3s linear"/>
       </svg>
-      <div class="timer-display">
-        <div class="timer-time" id="timerTime">25:00</div>
-        <div class="timer-label" id="timerLabel">Deep work</div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div id="timerTime" style="font-size:44px;font-weight:600;letter-spacing:-1.8px;line-height:1;font-variant-numeric:tabular-nums">25:00</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-top:8px">Deep work</div>
       </div>
     </div>
-    <div class="chip-row timer-presets" id="timerPresets">
+    <div class="chip-row" id="timerPresets" style="display:flex;gap:8px;justify-content:center;margin-bottom:24px">
       <button class="chip selected" data-min="25">25 min</button>
       <button class="chip" data-min="50">50 min</button>
       <button class="chip" data-min="90">90 min</button>
     </div>
-    <div class="timer-actions" id="timerActions" style="display:none">
-      <button class="timer-btn primary" id="pauseTimer">Pause</button>
-      <button class="timer-btn" id="stopTimer">Stop</button>
+    <div id="timerActions" style="display:none;gap:10px;justify-content:center">
+      <button class="timer-btn primary" id="pauseTimer" style="padding:12px 24px;border-radius:12px;border:1px solid var(--craft);background:var(--craft);color:#fff;font-size:15px;font-weight:600;cursor:pointer">Pause</button>
+      <button class="timer-btn" id="stopTimer" style="padding:12px 24px;border-radius:12px;border:1px solid var(--hairline);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;cursor:pointer">Stop</button>
     </div>
   </div>
 </div>
 
-<!-- Money -->
 <div class="overlay" id="moneyOverlay"></div>
 <div class="sheet" id="moneySheet">
   <div class="sheet-handle"></div>
@@ -885,7 +705,6 @@ window.addEventListener('unhandledrejection', function(e){
   </div>
 </div>
 
-<!-- Calendar -->
 <div class="overlay" id="calendarOverlay"></div>
 <div class="sheet" id="calendarSheet">
   <div class="sheet-handle"></div>
@@ -897,7 +716,6 @@ window.addEventListener('unhandledrejection', function(e){
   <div class="sheet-body" id="calendarBody"></div>
 </div>
 
-<!-- Day detail -->
 <div class="overlay" id="dayOverlay"></div>
 <div class="sheet" id="daySheet">
   <div class="sheet-handle"></div>
@@ -909,7 +727,6 @@ window.addEventListener('unhandledrejection', function(e){
   <div class="sheet-body" id="dayBody"></div>
 </div>
 
-<!-- Weekly review flow -->
 <div class="review-flow" id="reviewFlow">
   <div class="review-topbar">
     <span class="review-progress-text" id="reviewProgressText">Step 1 of 7</span>
@@ -935,8 +752,8 @@ window.addEventListener('unhandledrejection', function(e){
   const PILLAR_KEY = 'spur-pillars';
   const MONEY_KEY = 'spur-money';
   const REVIEW_KEY = 'spur-reviews';
-  const ACTIVE_KEY = 'spur-active-pillars';  // array of 3 pillar ids
-  const ONBOARDED_KEY = 'spur-onboarded';    // 'true' once done
+  const ACTIVE_KEY = 'spur-active-pillars';
+  const ONBOARDED_KEY = 'spur-onboarded';
   const SETTLE_MS = 30 * 1000;
   const NEW_REMINDER_MS = 24 * 60 * 60 * 1000;
 
@@ -958,310 +775,6 @@ window.addEventListener('unhandledrejection', function(e){
   let reminders = load(REM_KEY, []);
   let money = load(MONEY_KEY, []);
   let reviews = load(REVIEW_KEY, []);
-
-  // ============================================
-  // PILLAR LIBRARY — 10 pillars across 3 layers
-  // ============================================
-  // Each pillar: id (storage key), label (display), layer, icon (SVG key),
-  // color, accent (pillar CSS var), default habits, suggested habits.
-  const PILLAR_LIBRARY = {
-    body: {
-      label: 'Health',
-      layer: 'foundation',
-      icon: 'heart',
-      color: '#FF3B30',
-      accent: 'body',
-      description: 'Body, sleep, nutrition, movement, recovery',
-      defaults: [
-        { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
-        { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
-        { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
-      ],
-      suggestions: [
-        { icon:'dumbbell', label:'Workout / Gym' },
-        { icon:'drop',     label:'Drink 8 glasses of water' },
-        { icon:'book',     label:'Journal how body feels' },
-        { icon:'star',     label:'Sleep by a set time' },
-        { icon:'heart',    label:'Eat a real breakfast' },
-        { icon:'bolt',     label:'Move for 20 minutes' }
-      ]
-    },
-    craft: {
-      label: 'Craft',
-      layer: 'expression',
-      icon: 'bolt',
-      color: '#5856D6',
-      accent: 'craft',
-      description: 'Work, skill, career, deep work',
-      defaults: [
-        { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
-        { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
-        { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
-        { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
-      ],
-      suggestions: [
-        { icon:'bolt',  label:'Deep work block' },
-        { icon:'brain', label:'Learn something' },
-        { icon:'coin',  label:'Track spending' },
-        { icon:'ship',  label:'Ship something' },
-        { icon:'star',  label:'Work on the hardest task first' },
-        { icon:'book',  label:'Read for 20 minutes' }
-      ]
-    },
-    rel: {
-      label: 'People',
-      layer: 'connection',
-      icon: 'people',
-      color: '#FF2D55',
-      accent: 'rel',
-      description: 'Family, friends, partner, community',
-      defaults: [
-        { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
-        { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
-        { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
-        { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
-      ],
-      suggestions: [
-        { icon:'phone',  label:'Reach out to one person' },
-        { icon:'chat',   label:'One real conversation' },
-        { icon:'eye',    label:'Notice what someone needs' },
-        { icon:'shield', label:'Show up for yourself too' },
-        { icon:'heart',  label:'Express gratitude to someone' },
-        { icon:'book',   label:'Journal about a relationship' }
-      ]
-    },
-    mind: {
-      label: 'Mind',
-      layer: 'foundation',
-      icon: 'brain',
-      color: '#AF52DE',
-      accent: 'craft',
-      description: 'Learning, focus, thinking, curiosity',
-      defaults: [
-        { id:'read',    icon:'book',  label:'Read',                 color:'#AF52DE' },
-        { id:'learn',   icon:'brain', label:'Learn something new',   color:'#007AFF' },
-        { id:'reflect', icon:'eye',   label:'Reflect on today',      color:'#5856D6' }
-      ],
-      suggestions: [
-        { icon:'book',  label:'Read 10 pages' },
-        { icon:'brain', label:'Learn something new' },
-        { icon:'eye',   label:'Reflect on today' },
-        { icon:'star',  label:'Practice a skill for 15 min' },
-        { icon:'bolt',  label:'Focus block without phone' },
-        { icon:'chat',  label:'Have a thoughtful conversation' }
-      ]
-    },
-    character: {
-      label: 'Character',
-      layer: 'foundation',
-      icon: 'shield',
-      color: '#8E8E93',
-      accent: 'body',
-      description: 'Values, integrity, discipline, humility',
-      defaults: [
-        { id:'honest',    icon:'shield', label:'Act with integrity',       color:'#8E8E93' },
-        { id:'disciplined',icon:'bolt',  label:'Do the hard thing first',  color:'#5856D6' },
-        { id:'kind',      icon:'heart',  label:'Show kindness'             color:'#FF2D55' }
-      ],
-      suggestions: [
-        { icon:'shield', label:'Act with integrity' },
-        { icon:'bolt',   label:'Do the hard thing first' },
-        { icon:'heart',  label:'Show kindness to someone' },
-        { icon:'star',   label:'Keep your word' },
-        { icon:'book',   label:'Reflect on your values' },
-        { icon:'eye',    label:'Pause before reacting' }
-      ]
-    },
-    env: {
-      label: 'Environment',
-      layer: 'foundation',
-      icon: 'home',
-      color: '#00C7BE',
-      accent: 'rel',
-      description: 'Home, space, order, surroundings',
-      defaults: [
-        { id:'tidy',    icon:'home',   label:'Tidy one space',      color:'#00C7BE' },
-        { id:'reset',   icon:'star',   label:'Reset a room',         color:'#5856D6' },
-        { id:'prune',   icon:'bolt',   label:'Remove one thing'      color:'#8E8E93' }
-      ],
-      suggestions: [
-        { icon:'home',  label:'Tidy one space' },
-        { icon:'star',  label:'Reset a room' },
-        { icon:'bolt',  label:'Remove one thing you don\'t use' },
-        { icon:'book',  label:'Put something in its place' },
-        { icon:'heart', label:'Make your bed' }
-      ]
-    },
-    finance: {
-      label: 'Finance',
-      layer: 'expression',
-      icon: 'coin',
-      color: '#34C759',
-      accent: 'craft',
-      description: 'Money, saving, earning, stewardship',
-      defaults: [
-        { id:'track',    icon:'coin',  label:'Track spending',      color:'#34C759' },
-        { id:'save',     icon:'star',  label:'Save a little',        color:'#00C7BE' },
-        { id:'learnfin', icon:'brain', label:'Learn about money',    color:'#5856D6' }
-      ],
-      suggestions: [
-        { icon:'coin',  label:'Track spending' },
-        { icon:'star',  label:'Save a little' },
-        { icon:'brain', label:'Learn about money' },
-        { icon:'eye',   label:'Review your budget' },
-        { icon:'bolt',  label:'Avoid one impulse purchase' },
-        { icon:'ship',  label:'Work on an income stream' }
-      ]
-    },
-    play: {
-      label: 'Play',
-      layer: 'expression',
-      icon: 'game',
-      color: '#FF9500',
-      accent: 'body',
-      description: 'Fun, rest, hobbies, joy',
-      defaults: [
-        { id:'hobby',   icon:'star',  label:'Do something for joy',   color:'#FF9500' },
-        { id:'rest',    icon:'heart', label:'Rest without guilt',      color:'#AF52DE' },
-        { id:'outside', icon:'eye',   label:'Spend time outside',      color:'#34C759' }
-      ],
-      suggestions: [
-        { icon:'star',  label:'Do something for joy' },
-        { icon:'heart', label:'Rest without guilt' },
-        { icon:'eye',   label:'Spend time outside' },
-        { icon:'chat',  label:'Play with someone' },
-        { icon:'book',  label:'Read fiction' },
-        { icon:'bolt',  label:'Try something new' }
-      ]
-    },
-    spirit: {
-      label: 'Spirit',
-      layer: 'connection',
-      icon: 'dove',
-      color: '#5E5CE6',
-      accent: 'craft',
-      description: 'Faith, meditation, meaning, inner life',
-      defaults: [
-        { id:'meditate', icon:'eye',    label:'Meditate / pray',  color:'#5E5CE6' },
-        { id:'gratitude',icon:'heart',  label:'Practice gratitude',color:'#FF2D55' },
-        { id:'reflect',  icon:'book',   label:'Reflect on meaning', color:'#5856D6' }
-      ],
-      suggestions: [
-        { icon:'eye',   label:'Meditate / pray' },
-        { icon:'heart', label:'Practice gratitude' },
-        { icon:'book',  label:'Reflect on meaning' },
-        { icon:'star',  label:'Sit in silence for 5 minutes' },
-        { icon:'bolt',  label:'Read something spiritual' },
-        { icon:'chat',  label:'Talk with someone about faith' }
-      ]
-    },
-    purpose: {
-      label: 'Purpose',
-      layer: 'connection',
-      icon: 'target',
-      color: '#FF2D55',
-      accent: 'rel',
-      description: 'Contribution, service, legacy',
-      defaults: [
-        { id:'serve',    icon:'heart',  label:'Serve someone',         color:'#FF2D55' },
-        { id:'contribute',icon:'star',  label:'Contribute to something',color:'#5856D6' },
-        { id:'reflect',  icon:'book',   label:'Reflect on your why',   color:'#AF52DE' }
-      ],
-      suggestions: [
-        { icon:'heart', label:'Serve someone' },
-        { icon:'star',  label:'Contribute to something bigger' },
-        { icon:'book',  label:'Reflect on your why' },
-        { icon:'chat',  label:'Help someone with no reward' },
-        { icon:'bolt',  label:'Work on a meaningful project' }
-      ]
-    }
-  };
-
-  // Fallback defaults for legacy IDs (in case user had 'body'/'craft'/'rel')
-  const DEFAULT_HABITS = {
-    body: PILLAR_LIBRARY.body.defaults,
-    craft: PILLAR_LIBRARY.craft.defaults,
-    rel: PILLAR_LIBRARY.rel.defaults
-  };
-
-  // ============================================
-  // ACTIVE PILLARS (3 slots)
-  // ============================================
-  let activePillars = load(ACTIVE_KEY, null);
-
-  // Migrate: if pillars exist but no active list, use defaults
-  if (!activePillars || !Array.isArray(activePillars) || activePillars.length !== 3){
-    activePillars = ['body', 'craft', 'rel'];
-    save(ACTIVE_KEY, activePillars);
-  }
-
-  function getPillar(slotIdx){
-    const id = activePillars[slotIdx];
-    return id ? { id, ...PILLAR_LIBRARY[id] } : null;
-  }
-
-  // ============================================
-  // PILLAR DATA (habits + days) — keyed by pillar id
-  // ============================================
-  let pillars = load(PILLAR_KEY, null);
-  if (!pillars){
-    pillars = {};
-    save(PILLAR_KEY, pillars);
-  }
-
-  // Ensure each active pillar has data
-  function ensurePillarData(id){
-    const lib = PILLAR_LIBRARY[id];
-    if (!lib) return;
-    if (!pillars[id]){
-      pillars[id] = {
-        habits: JSON.parse(JSON.stringify(lib.defaults)),
-        days: {}
-      };
-      save(PILLAR_KEY, pillars);
-    } else if (!pillars[id].habits){
-      pillars[id].habits = JSON.parse(JSON.stringify(lib.defaults));
-    }
-    // Ensure habit ids/icons/colors
-    pillars[id].habits.forEach((h, idx) => {
-      if (!h.id) h.id = 'h_' + idx + '_' + Math.random().toString(36).slice(2,6);
-      if (!h.icon) h.icon = 'bolt';
-      if (!h.color) h.color = lib.color || '#007AFF';
-    });
-  }
-  activePillars.forEach(ensurePillarData);
-
-  // ============================================
-  // SERVICE WORKER
-  // ============================================
-  let swRegistration = null;
-  if ('serviceWorker' in navigator){
-    navigator.serviceWorker.register('../sw.js').then(reg => {
-      swRegistration = reg;
-      syncRemindersToSW();
-    }).catch((err) => { console.warn('SW registration failed', err); });
-  }
-
-  function computeNextFireAt(reminder){
-    if (reminder.done) return null;
-    const now = new Date();
-    const [h, m] = (reminder.time || '09:00').split(':').map(Number);
-    const fire = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
-    if (reminder.repeat === 'Once'){ return fire.getTime() > now.getTime() ? fire.getTime() : null; }
-    if (reminder.repeat === 'Daily'){ if (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 1); return fire.getTime(); }
-    if (reminder.repeat === 'Weekly'){ while (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 7); return fire.getTime(); }
-    return null;
-  }
-
-  function syncRemindersToSW(){
-    if (!swRegistration || !swRegistration.active) return;
-    const payload = reminders.map(r => ({
-      id: r.id, title: r.title, time: r.time, done: r.done,
-      repeat: r.repeat, pillar: r.pillar || 'Reminder',
-      nextFireAt: computeNextFireAt(r)
-    }));
-    swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
-  }
 
   // ============================================
   // ICONS
@@ -1290,42 +803,266 @@ window.addEventListener('unhandledrejection', function(e){
   const ICON_KEYS = ['dumbbell','drop','book','bolt','brain','coin','ship','phone','chat','eye','shield','heart','star','people','home','game','dove','target'];
   const COLOR_PALETTE = ['#FF3B30','#FF9500','#FFCC00','#34C759','#00C7BE','#007AFF','#5856D6','#AF52DE','#FF2D55','#8E8E93'];
 
-  const LAYER_META = {
-    foundation: {
-      label: 'Foundation',
-      blurb: 'Tends to steady everything else.'
+  // ============================================
+  // PILLAR LIBRARY — 10 pillars across 3 layers
+  // ============================================
+  const PILLAR_LIBRARY = {
+    body: {
+      label: 'Health',
+      layer: 'foundation',
+      icon: 'heart',
+      color: '#FF3B30',
+      description: 'Body, sleep, nutrition, movement, recovery',
+      defaults: [
+        { id:'gym',     icon:'dumbbell', label:'Workout / Gym',           color:'#FF3B30' },
+        { id:'water',   icon:'drop',     label:'Drink 8 glasses of water', color:'#00C7BE' },
+        { id:'journal', icon:'book',     label:'Journal how body feels',   color:'#AF52DE' }
+      ],
+      suggestions: [
+        { icon:'dumbbell', label:'Workout / Gym' },
+        { icon:'drop',     label:'Drink 8 glasses of water' },
+        { icon:'book',     label:'Journal how body feels' },
+        { icon:'star',     label:'Sleep by a set time' },
+        { icon:'heart',    label:'Eat a real breakfast' },
+        { icon:'bolt',     label:'Move for 20 minutes' }
+      ]
     },
-    expression: {
-      label: 'Expression',
-      blurb: 'How you build, earn, and enjoy.'
+    craft: {
+      label: 'Craft',
+      layer: 'expression',
+      icon: 'bolt',
+      color: '#5856D6',
+      description: 'Work, skill, career, deep work',
+      defaults: [
+        { id:'deep',  icon:'bolt',  label:'Deep work block', color:'#5856D6' },
+        { id:'learn', icon:'brain', label:'Learn something', color:'#007AFF' },
+        { id:'money', icon:'coin',  label:'Track spending',  color:'#34C759' },
+        { id:'ship',  icon:'ship',  label:'Ship something',  color:'#FF9500' }
+      ],
+      suggestions: [
+        { icon:'bolt',  label:'Deep work block' },
+        { icon:'brain', label:'Learn something' },
+        { icon:'coin',  label:'Track spending' },
+        { icon:'ship',  label:'Ship something' },
+        { icon:'star',  label:'Work on the hardest task first' },
+        { icon:'book',  label:'Read for 20 minutes' }
+      ]
     },
-    connection: {
-      label: 'Connection',
-      blurb: 'How you relate, believe, and serve.'
+    rel: {
+      label: 'People',
+      layer: 'connection',
+      icon: 'people',
+      color: '#FF2D55',
+      description: 'Family, friends, partner, community',
+      defaults: [
+        { id:'reach',   icon:'phone',  label:'Reach out to one person',   color:'#FF2D55' },
+        { id:'real',    icon:'chat',   label:'One real conversation',     color:'#5856D6' },
+        { id:'notice',  icon:'eye',    label:'Notice what someone needs', color:'#FF9500' },
+        { id:'respect', icon:'shield', label:'Show up for yourself too',  color:'#00C7BE' }
+      ],
+      suggestions: [
+        { icon:'phone',  label:'Reach out to one person' },
+        { icon:'chat',   label:'One real conversation' },
+        { icon:'eye',    label:'Notice what someone needs' },
+        { icon:'shield', label:'Show up for yourself too' },
+        { icon:'heart',  label:'Express gratitude to someone' },
+        { icon:'book',   label:'Journal about a relationship' }
+      ]
+    },
+    mind: {
+      label: 'Mind',
+      layer: 'foundation',
+      icon: 'brain',
+      color: '#AF52DE',
+      description: 'Learning, focus, thinking, curiosity',
+      defaults: [
+        { id:'read',    icon:'book',  label:'Read',                 color:'#AF52DE' },
+        { id:'learn',   icon:'brain', label:'Learn something new',   color:'#007AFF' },
+        { id:'reflect', icon:'eye',   label:'Reflect on today',      color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'book',  label:'Read 10 pages' },
+        { icon:'brain', label:'Learn something new' },
+        { icon:'eye',   label:'Reflect on today' },
+        { icon:'star',  label:'Practice a skill for 15 min' },
+        { icon:'bolt',  label:'Focus block without phone' },
+        { icon:'chat',  label:'Have a thoughtful conversation' }
+      ]
+    },
+    character: {
+      label: 'Character',
+      layer: 'foundation',
+      icon: 'shield',
+      color: '#8E8E93',
+      description: 'Values, integrity, discipline, humility',
+      defaults: [
+        { id:'honest',     icon:'shield', label:'Act with integrity',      color:'#8E8E93' },
+        { id:'disciplined',icon:'bolt',   label:'Do the hard thing first', color:'#5856D6' },
+        { id:'kind',       icon:'heart',  label:'Show kindness',           color:'#FF2D55' }
+      ],
+      suggestions: [
+        { icon:'shield', label:'Act with integrity' },
+        { icon:'bolt',   label:'Do the hard thing first' },
+        { icon:'heart',  label:'Show kindness to someone' },
+        { icon:'star',   label:'Keep your word' },
+        { icon:'book',   label:'Reflect on your values' },
+        { icon:'eye',    label:'Pause before reacting' }
+      ]
+    },
+    env: {
+      label: 'Environment',
+      layer: 'foundation',
+      icon: 'home',
+      color: '#00C7BE',
+      description: 'Home, space, order, surroundings',
+      defaults: [
+        { id:'tidy',  icon:'home', label:'Tidy one space', color:'#00C7BE' },
+        { id:'reset', icon:'star', label:'Reset a room',   color:'#5856D6' },
+        { id:'prune', icon:'bolt', label:'Remove one thing', color:'#8E8E93' }
+      ],
+      suggestions: [
+        { icon:'home',  label:'Tidy one space' },
+        { icon:'star',  label:'Reset a room' },
+        { icon:'bolt',  label:'Remove one thing you don\'t use' },
+        { icon:'book',  label:'Put something in its place' },
+        { icon:'heart', label:'Make your bed' }
+      ]
+    },
+    finance: {
+      label: 'Finance',
+      layer: 'expression',
+      icon: 'coin',
+      color: '#34C759',
+      description: 'Money, saving, earning, stewardship',
+      defaults: [
+        { id:'track',    icon:'coin',  label:'Track spending',   color:'#34C759' },
+        { id:'save',     icon:'star',  label:'Save a little',     color:'#00C7BE' },
+        { id:'learnfin', icon:'brain', label:'Learn about money', color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'coin',  label:'Track spending' },
+        { icon:'star',  label:'Save a little' },
+        { icon:'brain', label:'Learn about money' },
+        { icon:'eye',   label:'Review your budget' },
+        { icon:'bolt',  label:'Avoid one impulse purchase' },
+        { icon:'ship',  label:'Work on an income stream' }
+      ]
+    },
+    play: {
+      label: 'Play',
+      layer: 'expression',
+      icon: 'game',
+      color: '#FF9500',
+      description: 'Fun, rest, hobbies, joy',
+      defaults: [
+        { id:'hobby',   icon:'star',  label:'Do something for joy', color:'#FF9500' },
+        { id:'rest',    icon:'heart', label:'Rest without guilt',    color:'#AF52DE' },
+        { id:'outside', icon:'eye',   label:'Spend time outside',    color:'#34C759' }
+      ],
+      suggestions: [
+        { icon:'star',  label:'Do something for joy' },
+        { icon:'heart', label:'Rest without guilt' },
+        { icon:'eye',   label:'Spend time outside' },
+        { icon:'chat',  label:'Play with someone' },
+        { icon:'book',  label:'Read fiction' },
+        { icon:'bolt',  label:'Try something new' }
+      ]
+    },
+    spirit: {
+      label: 'Spirit',
+      layer: 'connection',
+      icon: 'dove',
+      color: '#5E5CE6',
+      description: 'Faith, meditation, meaning, inner life',
+      defaults: [
+        { id:'meditate',  icon:'eye',   label:'Meditate / pray',    color:'#5E5CE6' },
+        { id:'gratitude', icon:'heart', label:'Practice gratitude',  color:'#FF2D55' },
+        { id:'reflect',   icon:'book',  label:'Reflect on meaning',  color:'#5856D6' }
+      ],
+      suggestions: [
+        { icon:'eye',   label:'Meditate / pray' },
+        { icon:'heart', label:'Practice gratitude' },
+        { icon:'book',  label:'Reflect on meaning' },
+        { icon:'star',  label:'Sit in silence for 5 minutes' },
+        { icon:'bolt',  label:'Read something spiritual' },
+        { icon:'chat',  label:'Talk with someone about faith' }
+      ]
+    },
+    purpose: {
+      label: 'Purpose',
+      layer: 'connection',
+      icon: 'target',
+      color: '#FF2D55',
+      description: 'Contribution, service, legacy',
+      defaults: [
+        { id:'serve',      icon:'heart', label:'Serve someone',          color:'#FF2D55' },
+        { id:'contribute', icon:'star',  label:'Contribute to something', color:'#5856D6' },
+        { id:'reflect',    icon:'book',  label:'Reflect on your why',     color:'#AF52DE' }
+      ],
+      suggestions: [
+        { icon:'heart', label:'Serve someone' },
+        { icon:'star',  label:'Contribute to something bigger' },
+        { icon:'book',  label:'Reflect on your why' },
+        { icon:'chat',  label:'Help someone with no reward' },
+        { icon:'bolt',  label:'Work on a meaningful project' }
+      ]
     }
   };
 
+  const LAYER_META = {
+    foundation: { label: 'Foundation', blurb: 'Tends to steady everything else.' },
+    expression: { label: 'Expression', blurb: 'How you build, earn, and enjoy.' },
+    connection: { label: 'Connection', blurb: 'How you relate, believe, and serve.' }
+  };
+
+  const LAYER_ORDER = ['foundation', 'expression', 'connection'];
+
   // ============================================
-  // REVIEW QUESTIONS (uses active pillar labels dynamically)
+  // ACTIVE PILLARS
   // ============================================
-  function buildReviewQuestions(){
-    return [
-      { slot:0, chip:'Pillar 1', question:'How did this area feel this week?' },
-      { slot:0, chip:'Pillar 1', question:'What felt easiest? What felt hardest?' },
-      { slot:1, chip:'Pillar 2', question:'What did you build, learn, or ship?' },
-      { slot:1, chip:'Pillar 2', question:'Where did you get stuck?' },
-      { slot:2, chip:'Pillar 3', question:'Who did you show up for this week?' },
-      { slot:2, chip:'Pillar 3', question:'Who needs you that you haven\'t reached?' },
-      { slot:-1, chip:'Overall', question:'One thing to carry into next week?' }
-    ];
+  let activePillars = load(ACTIVE_KEY, null);
+  if (!activePillars || !Array.isArray(activePillars) || activePillars.length !== 3){
+    activePillars = ['body', 'craft', 'rel'];
+    save(ACTIVE_KEY, activePillars);
   }
 
-  const PILLAR_CHIP_COLORS = {
-    0: { bg: 'rgba(0,122,255,.12)',  text: '#007AFF' },
-    1: { bg: 'rgba(88,86,214,.12)',  text: '#5856D6' },
-    2: { bg: 'rgba(255,45,85,.12)',  text: '#FF2D55' },
-   '-1': { bg: 'rgba(201,150,63,.14)', text: '#C9963F' }
-  };
+  function getPillarLib(slotIdx){
+    const id = activePillars[slotIdx];
+    return id && PILLAR_LIBRARY[id] ? { id, ...PILLAR_LIBRARY[id] } : null;
+  }
+  function getPillarId(slotIdx){ return activePillars[slotIdx]; }
+
+  // ============================================
+  // PILLAR DATA
+  // ============================================
+  let pillars = load(PILLAR_KEY, null);
+  if (!pillars) pillars = {};
+
+  function ensurePillarData(id){
+    const lib = PILLAR_LIBRARY[id];
+    if (!lib) return;
+    if (!pillars[id]){
+      pillars[id] = {
+        habits: JSON.parse(JSON.stringify(lib.defaults)),
+        days: {}
+      };
+    } else if (!pillars[id].habits){
+      pillars[id].habits = JSON.parse(JSON.stringify(lib.defaults));
+    }
+    if (!pillars[id].days) pillars[id].days = {};
+    pillars[id].habits.forEach((h, idx) => {
+      if (!h.id) h.id = 'h_' + idx + '_' + Math.random().toString(36).slice(2,6);
+      if (!h.icon) h.icon = 'bolt';
+      if (!h.color) h.color = lib.color || '#007AFF';
+    });
+  }
+  activePillars.forEach(ensurePillarData);
+  save(PILLAR_KEY, pillars);
+
+  function getPillarData(slotIdx){
+    const id = activePillars[slotIdx];
+    return id && pillars[id] ? pillars[id] : null;
+  }
 
   // ============================================
   // HELPERS
@@ -1375,25 +1112,6 @@ window.addEventListener('unhandledrejection', function(e){
     setTimeout(() => el.remove(), 950);
   }
 
-  // ============================================
-  // GET PILLAR DATA BY SLOT (0/1/2)
-  // ============================================
-  function getPillarLib(slotIdx){
-    const id = activePillars[slotIdx];
-    return id ? PILLAR_LIBRARY[id] : null;
-  }
-  function getPillarId(slotIdx){
-    return activePillars[slotIdx];
-  }
-  function getPillarData(slotIdx){
-    const id = activePillars[slotIdx];
-    if (!id || !pillars[id]) return null;
-    return pillars[id];
-  }
-
-  // ============================================
-  // STREAK COMPUTATION
-  // ============================================
   function computeStreak(slotIdx){
     const p = getPillarData(slotIdx);
     if (!p) return 0;
@@ -1445,7 +1163,7 @@ window.addEventListener('unhandledrejection', function(e){
     const prefix = monthKey();
     let count = 0;
     Object.keys(p.days).forEach(k => {
-      if (k.startsWith(prefix) && p.days[k].done && p.days[k].done.length > 0){ count++; }
+      if (k.startsWith(prefix) && p.days[k].done && p.days[k].done.length > 0) count++;
     });
     return count;
   }
@@ -1466,15 +1184,9 @@ window.addEventListener('unhandledrejection', function(e){
     const map = { 0: 'rgba(0,122,255,.12)', 1: 'rgba(88,86,214,.12)', 2: 'rgba(255,45,85,.12)' };
     return map[slotIdx] || 'rgba(0,122,255,.12)';
   }
-  function isSettled(timestamp){
-    if (!timestamp) return false;
-    return (Date.now() - timestamp) >= SETTLE_MS;
-  }
-  function isNewReminder(r){
-    if (!r || r.done) return false;
-    if (!r.createdAt) return false;
-    return (Date.now() - r.createdAt) < NEW_REMINDER_MS;
-  }
+  function isSettled(ts){ return ts ? (Date.now() - ts) >= SETTLE_MS : false; }
+  function isNewReminder(r){ return r && !r.done && r.createdAt && (Date.now() - r.createdAt) < NEW_REMINDER_MS; }
+
   function getWeekStart(d){ const date = new Date(d); date.setHours(0,0,0,0); date.setDate(date.getDate() - date.getDay()); return date; }
   function getWeekEnd(d){ const s = getWeekStart(d); const e = new Date(s); e.setDate(e.getDate() + 6); return e; }
   function weekKey(d){ return dateKey(getWeekStart(d)); }
@@ -1494,8 +1206,9 @@ window.addEventListener('unhandledrejection', function(e){
     if (day === 6 && now.getHours() >= 17) return true;
     return false;
   }
-  function findReviewForWeek(weekKeyStr){ return reviews.find(r => r.weekStart === weekKeyStr); }
-  function currentWeekReview(){ return findReviewForWeek(weekKey(new Date())); }
+  function currentWeekReview(){
+    return reviews.find(r => r.weekStart === weekKey(new Date()));
+  }
   function saveReview(answers){
     const now = new Date();
     const ws = weekKey(now);
@@ -1507,7 +1220,84 @@ window.addEventListener('unhandledrejection', function(e){
     save(REVIEW_KEY, reviews);
   }
 
+  const PILLAR_CHIP_COLORS = {
+    0: { bg: 'rgba(0,122,255,.12)',  text: '#007AFF' },
+    1: { bg: 'rgba(88,86,214,.12)',  text: '#5856D6' },
+    2: { bg: 'rgba(255,45,85,.12)',  text: '#FF2D55' },
+   '-1': { bg: 'rgba(201,150,63,.14)', text: '#C9963F' }
+  };
+
   // ============================================
+  // SERVICE WORKER
+  // ============================================
+  let swRegistration = null;
+  if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('../sw.js').then(reg => {
+      swRegistration = reg;
+      syncRemindersToSW();
+    }).catch(() => {});
+  }
+
+  function computeNextFireAt(r){
+    if (r.done) return null;
+    const now = new Date();
+    const [h, m] = (r.time || '09:00').split(':').map(Number);
+    const fire = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    if (r.repeat === 'Once') return fire.getTime() > now.getTime() ? fire.getTime() : null;
+    if (r.repeat === 'Daily'){ if (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 1); return fire.getTime(); }
+    if (r.repeat === 'Weekly'){ while (fire.getTime() <= now.getTime()) fire.setDate(fire.getDate() + 7); return fire.getTime(); }
+    return null;
+  }
+
+  function syncRemindersToSW(){
+    if (!swRegistration || !swRegistration.active) return;
+    const payload = reminders.map(r => ({
+      id: r.id, title: r.title, time: r.time, done: r.done,
+      repeat: r.repeat, pillar: r.pillar || 'Reminder',
+      nextFireAt: computeNextFireAt(r)
+    }));
+    swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: payload });
+  }
+
+  // ============================================
+  // JOURNAL AUTO-RESIZE (tiered)
+  // ============================================
+  const LINE_HEIGHT = 23;
+  const JOURNAL_MIN = 52;
+  const JOURNAL_TIER_2 = 92;
+  const JOURNAL_TIER_3 = 138;
+  const JOURNAL_TIER_4 = 184;
+  const JOURNAL_MAX = 600;
+
+  function tierForContent(lines){
+    if (lines <= 2) return JOURNAL_MIN;
+    if (lines <= 5) return JOURNAL_TIER_2;
+    if (lines <= 8) return JOURNAL_TIER_3;
+    return JOURNAL_TIER_4;
+  }
+  function autoResizeJournal(el, focused){
+    if (!el) return;
+    el.style.height = 'auto';
+    const contentH = el.scrollHeight;
+    const lines = Math.max(1, Math.round(contentH / LINE_HEIGHT));
+    let target = tierForContent(lines);
+    if (focused && lines <= 2) target = JOURNAL_TIER_2;
+    if (contentH > target) target = contentH;
+    target = Math.min(target, JOURNAL_MAX);
+    el.style.height = target + 'px';
+  }
+
+  let journalFocusCount = 0;
+  function enterJournalingMode(){
+    journalFocusCount++;
+    if (journalFocusCount === 1) document.body.classList.add('journaling');
+  }
+  function exitJournalingMode(){
+    journalFocusCount = Math.max(0, journalFocusCount - 1);
+    if (journalFocusCount === 0) document.body.classList.remove('journaling');
+  }
+
+// ============================================
   // GREETING
   // ============================================
   const greetingLine = document.getElementById('greetingLine');
@@ -1538,11 +1328,12 @@ window.addEventListener('unhandledrejection', function(e){
   const screensEl = document.getElementById('screens');
 
   function currentTitles(){
+    const lib0 = getPillarLib(0), lib1 = getPillarLib(1), lib2 = getPillarLib(2);
     return {
       today: 'Today',
-      pillar1: getPillarLib(0) ? getPillarLib(0).label : 'Pillar 1',
-      pillar2: getPillarLib(1) ? getPillarLib(1).label : 'Pillar 2',
-      pillar3: getPillarLib(2) ? getPillarLib(2).label : 'Pillar 3',
+      pillar1: lib0 ? lib0.label : 'Pillar 1',
+      pillar2: lib1 ? lib1.label : 'Pillar 2',
+      pillar3: lib2 ? lib2.label : 'Pillar 3',
       activity: 'Activity',
       settings: 'Settings'
     };
@@ -1577,19 +1368,19 @@ window.addEventListener('unhandledrejection', function(e){
   }
 
   // ============================================
-  // RENDER PILLAR LABELS (sidebar + tabs)
+  // PILLAR LABELS
   // ============================================
   function renderPillarLabels(){
     for (let i = 0; i < 3; i++){
       const lib = getPillarLib(i);
-      const shortLabel = lib ? lib.label : ('Pillar ' + (i+1));
-      const tabLabel = lib ? lib.label : ('P' + (i+1));
-      const sideEl = document.getElementById('sideLabel' + (i+1));
-      const tabEl = document.getElementById('tabLabel' + (i+1));
-      const titleEl = document.getElementById('pillar' + (i+1) + 'Title');
-      if (sideEl) sideEl.textContent = shortLabel;
-      if (tabEl) tabEl.textContent = tabLabel;
-      if (titleEl) titleEl.textContent = shortLabel;
+      const label = lib ? lib.label : ('Pillar ' + (i+1));
+      const short = lib ? lib.label : ('P' + (i+1));
+      const s = document.getElementById('sideLabel' + (i+1));
+      const t = document.getElementById('tabLabel' + (i+1));
+      const h = document.getElementById('pillar' + (i+1) + 'Title');
+      if (s) s.textContent = label;
+      if (t) t.textContent = short;
+      if (h) h.textContent = label;
     }
   }
 
@@ -1604,16 +1395,15 @@ window.addEventListener('unhandledrejection', function(e){
       const lib = getPillarLib(i);
       if (!lib) continue;
       const p = getPillarData(i);
+      if (!p) continue;
       const key = todayKey();
       const day = getDay(i, key);
       const total = p.habits.length;
       const validDone = day.done.filter(id => p.habits.some(h => h.id === id)).length;
       const pct = total === 0 ? 0 : validDone / total;
-      const colors = ['var(--body)','var(--craft)','var(--rel)'];
-      const cls = ['t-body','t-craft','t-rel'];
-
+      const cls = ['t-body','t-craft','t-rel'][i];
       const btn = document.createElement('button');
-      btn.className = 'today-pillar ' + cls[i];
+      btn.className = 'today-pillar ' + cls;
       btn.innerHTML = `
         <div class="today-pillar-ring">
           <svg width="44" height="44" viewBox="0 0 44 44">
@@ -1630,17 +1420,15 @@ window.addEventListener('unhandledrejection', function(e){
   }
 
   // ============================================
-  // RENDER A PILLAR SCREEN
+  // PILLAR SCREEN RENDER
   // ============================================
-  const editingPillars = {}; // slot idx → edit mode
+  const editingPillars = {};
   const RING_CIRC = 238.76;
 
   function renderPillarScreen(slotIdx){
     const lib = getPillarLib(slotIdx);
-    if (!lib) return;
     const p = getPillarData(slotIdx);
-    if (!p) return;
-
+    if (!lib || !p) return;
     const prefix = 'pillar' + (slotIdx + 1);
     const container = document.getElementById(prefix + 'Content');
     if (!container) return;
@@ -1654,8 +1442,7 @@ window.addEventListener('unhandledrejection', function(e){
     const monthDays = monthDaysShown(slotIdx);
     const editMode = !!editingPillars[slotIdx];
 
-    // Hero
-    let heroHTML = `
+    const heroHTML = `
       <div class="hero" id="${prefix}Hero">
         <div class="ring" id="${prefix}RingWrap">
           <svg width="88" height="88" viewBox="0 0 88 88">
@@ -1676,22 +1463,10 @@ window.addEventListener('unhandledrejection', function(e){
         </div>
         <div class="hero-msg" id="${prefix}Msg"></div>
       </div>
-    `;
-
-    // Habits
-    let habitsHTML = `
       <div class="section-header"><span>Today's Habits</span><button class="edit-toggle" data-edit-slot="${slotIdx}">${editMode ? 'Done' : 'Edit'}</button></div>
       <div class="group" id="${prefix}Habits"></div>
-    `;
-
-    // Week strip
-    let weekHTML = `
       <div class="section-header"><span>Last 7 Days</span></div>
       <div class="week" id="${prefix}Week"></div>
-    `;
-
-    // Journal
-    let journalHTML = `
       <div class="section-header"><span>${escapeHtml(lib.label)} Journal</span></div>
       <div class="journal" id="${prefix}JournalCard">
         <textarea id="${prefix}Journal" placeholder="How did ${escapeHtml(lib.label.toLowerCase())} feel today?" rows="1"></textarea>
@@ -1700,17 +1475,17 @@ window.addEventListener('unhandledrejection', function(e){
       <div class="note">Gentle streaks — miss one day is grace, miss two resets.</div>
     `;
 
-    container.innerHTML = heroHTML + habitsHTML + weekHTML + journalHTML;
+    container.innerHTML = heroHTML;
 
-    // Render habits rows
+    // Habits
     const habitsEl = document.getElementById(prefix + 'Habits');
     if (habitsEl){
       habitsEl.innerHTML = '';
       if (p.habits.length === 0){
-        const empty = document.createElement('div');
-        empty.style.cssText = 'padding:24px 16px;text-align:center;color:var(--text-2);font-size:14px;';
-        empty.textContent = 'No habits yet — tap Edit to add one.';
-        habitsEl.appendChild(empty);
+        const e = document.createElement('div');
+        e.style.cssText = 'padding:24px 16px;text-align:center;color:var(--text-2);font-size:14px;';
+        e.textContent = 'No habits yet — tap Edit to add one.';
+        habitsEl.appendChild(e);
       }
       p.habits.forEach((h, idx) => {
         const isDone = day.done.includes(h.id);
@@ -1747,10 +1522,9 @@ window.addEventListener('unhandledrejection', function(e){
           const chk = row.querySelector('.check');
           chk.addEventListener('click', (e) => { e.stopPropagation(); toggleHabit(slotIdx, h.id, e); });
           row.addEventListener('click', (e) => {
-            // Special-case: Craft deep work opens timer
             const pillarId = getPillarId(slotIdx);
-            if (pillarId === 'craft' && h.id === 'deep'){ openTimer(); }
-            else { toggleHabit(slotIdx, h.id, e); }
+            if (pillarId === 'craft' && h.id === 'deep') openTimer();
+            else toggleHabit(slotIdx, h.id, e);
           });
         }
         habitsEl.appendChild(row);
@@ -1765,7 +1539,7 @@ window.addEventListener('unhandledrejection', function(e){
       }
     }
 
-    // Render week strip
+    // Week strip
     const weekEl = document.getElementById(prefix + 'Week');
     if (weekEl){
       weekEl.innerHTML = '';
@@ -1776,26 +1550,19 @@ window.addEventListener('unhandledrejection', function(e){
         const done = validDone === total && total > 0;
         const partial = validDone > 0 && !done;
         const hasJournal = d && d.journal && d.journal.trim().length > 0;
-
         const cell = document.createElement('button');
         cell.className = 'day';
         cell.type = 'button';
         if (i === 0) cell.classList.add('today');
-
         const dot = document.createElement('div');
         dot.className = 'dot';
         if (done) dot.classList.add('done');
         else if (partial) dot.classList.add('partial');
         dot.textContent = done ? '✓' : (partial ? '·' : '');
-        if (hasJournal){
-          const jd = document.createElement('span');
-          jd.className = 'jdot';
-          dot.appendChild(jd);
-        }
+        if (hasJournal){ const jd = document.createElement('span'); jd.className = 'jdot'; dot.appendChild(jd); }
         const label = document.createElement('div');
         label.className = 'day-label';
         label.textContent = shortDay(k);
-
         cell.appendChild(dot);
         cell.appendChild(label);
         cell.addEventListener('click', () => openDayDetail(slotIdx, k));
@@ -1803,7 +1570,7 @@ window.addEventListener('unhandledrejection', function(e){
       }
     }
 
-    // Wire edit toggle
+    // Edit toggle
     const editBtn = container.querySelector('[data-edit-slot]');
     if (editBtn){
       editBtn.addEventListener('click', () => {
@@ -1824,40 +1591,37 @@ window.addEventListener('unhandledrejection', function(e){
       journalDate.textContent = d.toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
     }
 
-    if (journalEl && !journalEl.dataset.wired){
-      journalEl.dataset.wired = '1';
+    if (journalEl){
       journalEl.value = day.journal || '';
       autoResizeJournal(journalEl, false);
-
-      journalEl.addEventListener('focus', () => {
-        if (cardEl) cardEl.classList.add('focused');
-        enterJournalingMode();
-        autoResizeJournal(journalEl, true);
-      });
-      journalEl.addEventListener('blur', () => {
-        if (cardEl) cardEl.classList.remove('focused');
-        exitJournalingMode();
-        autoResizeJournal(journalEl, false);
-      });
-
-      let timer = null;
-      journalEl.addEventListener('input', () => {
-        autoResizeJournal(journalEl, document.activeElement === journalEl);
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          const key = todayKey();
-          getDay(slotIdx, key).journal = journalEl.value;
-          save(PILLAR_KEY, pillars);
-          if (savedEl){ savedEl.classList.add('show'); setTimeout(() => savedEl.classList.remove('show'), 1600); }
-          if (cardEl){ cardEl.classList.add('pulse'); setTimeout(() => cardEl.classList.remove('pulse'), 1000); }
-          vibrate(6);
-          renderTodayStrip();
-          renderActivity();
-        }, 700);
-      });
-    } else if (journalEl){
-      journalEl.value = day.journal || '';
-      autoResizeJournal(journalEl, false);
+      if (!journalEl.dataset.wired){
+        journalEl.dataset.wired = '1';
+        journalEl.addEventListener('focus', () => {
+          if (cardEl) cardEl.classList.add('focused');
+          enterJournalingMode();
+          autoResizeJournal(journalEl, true);
+        });
+        journalEl.addEventListener('blur', () => {
+          if (cardEl) cardEl.classList.remove('focused');
+          exitJournalingMode();
+          autoResizeJournal(journalEl, false);
+        });
+        let timer = null;
+        journalEl.addEventListener('input', () => {
+          autoResizeJournal(journalEl, document.activeElement === journalEl);
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            const key = todayKey();
+            getDay(slotIdx, key).journal = journalEl.value;
+            save(PILLAR_KEY, pillars);
+            if (savedEl){ savedEl.classList.add('show'); setTimeout(() => savedEl.classList.remove('show'), 1600); }
+            if (cardEl){ cardEl.classList.add('pulse'); setTimeout(() => cardEl.classList.remove('pulse'), 1000); }
+            vibrate(6);
+            renderTodayStrip();
+            renderActivity();
+          }, 700);
+        });
+      }
     }
   }
 
@@ -1873,16 +1637,13 @@ window.addEventListener('unhandledrejection', function(e){
     if (wasDone){
       const doneAt = day.doneAt[habitId];
       if (isSettled(doneAt)){
-        const proceed = confirm('Unlock this habit? It was settled 30+ seconds ago.');
-        if (!proceed) return;
+        if (!confirm('Unlock this habit? It was settled 30+ seconds ago.')) return;
       }
       day.done.splice(idx, 1);
       delete day.doneAt[habitId];
       save(PILLAR_KEY, pillars);
       vibrate(8);
-      renderPillarScreen(slotIdx);
-      renderTodayStrip();
-      renderActivity();
+      renderPillarScreen(slotIdx); renderTodayStrip(); renderActivity();
       return;
     }
 
@@ -1897,9 +1658,7 @@ window.addEventListener('unhandledrejection', function(e){
       if (row){ row.classList.add('wash'); setTimeout(() => row.classList.remove('wash'), 950); }
     }
     vibrate(12);
-    renderPillarScreen(slotIdx);
-    renderTodayStrip();
-    renderActivity();
+    renderPillarScreen(slotIdx); renderTodayStrip(); renderActivity();
     setTimeout(() => checkCompletion(slotIdx), 250);
     setTimeout(() => renderPillarScreen(slotIdx), SETTLE_MS + 100);
   }
@@ -1922,8 +1681,8 @@ window.addEventListener('unhandledrejection', function(e){
         msg.classList.add('show');
         setTimeout(() => msg.classList.remove('show'), 1900);
       }
-      const ringWrap = document.getElementById(prefix + 'RingWrap');
-      if (ringWrap){ ringWrap.classList.add('breath'); setTimeout(() => ringWrap.classList.remove('breath'), 700); }
+      const rw = document.getElementById(prefix + 'RingWrap');
+      if (rw){ rw.classList.add('breath'); setTimeout(() => rw.classList.remove('breath'), 700); }
       const streak = computeStreak(slotIdx);
       if (streak === 7 || streak === 30 || streak === 100 || streak === 365){
         setTimeout(() => {
@@ -2015,10 +1774,8 @@ window.addEventListener('unhandledrejection', function(e){
       const h = p.habits.find(x => x.id === editCtx.habitId);
       if (h){ h.label = label; h.icon = editCtx.icon; h.color = editCtx.color; }
     } else {
-      // Soft cap warning at 5+
       if (p.habits.length >= 5){
-        const proceed = confirm('You already have ' + p.habits.length + ' habits.\n\nMore than 4 can split attention. Add anyway?');
-        if (!proceed) return;
+        if (!confirm('You already have ' + p.habits.length + ' habits.\n\nMore than 4 can split attention. Add anyway?')) return;
       }
       const newId = 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2,5);
       p.habits.push({ id: newId, icon: editCtx.icon, label: label, color: editCtx.color });
@@ -2041,9 +1798,7 @@ window.addEventListener('unhandledrejection', function(e){
     const [h] = p.habits.splice(idx, 1);
     p.habits.splice(target, 0, h);
     save(PILLAR_KEY, pillars);
-    renderPillarScreen(slotIdx);
-    renderTodayStrip();
-    vibrate(8);
+    renderPillarScreen(slotIdx); renderTodayStrip(); vibrate(8);
   }
   function deleteHabit(slotIdx, habitId){
     const p = getPillarData(slotIdx);
@@ -2053,47 +1808,7 @@ window.addEventListener('unhandledrejection', function(e){
     if (!confirm(`Delete "${h.label}"?\n\nThis removes it from today's list. Past history stays.`)) return;
     p.habits = p.habits.filter(x => x.id !== habitId);
     save(PILLAR_KEY, pillars);
-    renderPillarScreen(slotIdx);
-    renderTodayStrip();
-    renderActivity();
-    vibrate(15);
-  }
-
-  // ============================================
-  // JOURNAL AUTO-RESIZE (tiered)
-  // ============================================
-  const LINE_HEIGHT = 23;
-  const JOURNAL_MIN = 52;
-  const JOURNAL_TIER_2 = 92;
-  const JOURNAL_TIER_3 = 138;
-  const JOURNAL_TIER_4 = 184;
-  const JOURNAL_MAX = 600;
-
-  function tierForContent(contentLines){
-    if (contentLines <= 2) return JOURNAL_MIN;
-    if (contentLines <= 5) return JOURNAL_TIER_2;
-    if (contentLines <= 8) return JOURNAL_TIER_3;
-    return JOURNAL_TIER_4;
-  }
-  function autoResizeJournal(el, focused){
-    if (!el) return;
-    el.style.height = 'auto';
-    const contentH = el.scrollHeight;
-    const contentLines = Math.max(1, Math.round(contentH / LINE_HEIGHT));
-    let target = tierForContent(contentLines);
-    if (focused && contentLines <= 2) target = JOURNAL_TIER_2;
-    if (contentH > target) target = contentH;
-    target = Math.min(target, JOURNAL_MAX);
-    el.style.height = target + 'px';
-  }
-  let journalFocusCount = 0;
-  function enterJournalingMode(){
-    journalFocusCount++;
-    if (journalFocusCount === 1) document.body.classList.add('journaling');
-  }
-  function exitJournalingMode(){
-    journalFocusCount = Math.max(0, journalFocusCount - 1);
-    if (journalFocusCount === 0) document.body.classList.remove('journaling');
+    renderPillarScreen(slotIdx); renderTodayStrip(); renderActivity(); vibrate(15);
   }
 
   // ============================================
@@ -2111,8 +1826,8 @@ window.addEventListener('unhandledrejection', function(e){
       if (emptyReminders) emptyReminders.style.display = 'block';
     } else {
       if (emptyReminders) emptyReminders.style.display = 'none';
-      const open = reminders.filter(r => !r.done).slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      const done = reminders.filter(r => r.done).slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      const open = reminders.filter(r => !r.done).slice().sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+      const done = reminders.filter(r => r.done).slice().sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
       open.forEach(r => remindersGroup.appendChild(makeReminderRow(r)));
       if (done.length > 0){
         const sep = document.createElement('div');
@@ -2136,18 +1851,15 @@ window.addEventListener('unhandledrejection', function(e){
   function toggleReminder(r){
     if (r.done){
       if (isSettled(r.doneAt)){
-        const proceed = confirm('Unlock this reminder? It was settled 30+ seconds ago.');
-        if (!proceed) return;
+        if (!confirm('Unlock this reminder? It was settled 30+ seconds ago.')) return;
       }
-      r.done = false;
-      r.doneAt = null;
+      r.done = false; r.doneAt = null;
     } else {
-      r.done = true;
-      r.doneAt = Date.now();
+      r.done = true; r.doneAt = Date.now();
     }
     save(REM_KEY, reminders);
     renderReminders();
-    if (r.done) vibrate(12); else vibrate(8);
+    vibrate(r.done ? 12 : 8);
   }
 
   function makeReminderRow(r){
@@ -2223,7 +1935,6 @@ window.addEventListener('unhandledrejection', function(e){
   const pastReviewsContainer = document.getElementById('pastReviewsContainer');
 
   function renderActivity(){
-    // Stats: streak + week total
     if (statGrid){
       statGrid.innerHTML = '';
       for (let i = 0; i < 3; i++){
@@ -2236,7 +1947,6 @@ window.addEventListener('unhandledrejection', function(e){
         statGrid.appendChild(card);
         countUp(card.querySelector('.stat-value'), streak);
       }
-      // Week total
       let total7 = 0;
       for (let i = 0; i < 3; i++){
         const p = getPillarData(i);
@@ -2255,7 +1965,6 @@ window.addEventListener('unhandledrejection', function(e){
       countUp(weekCard.querySelector('.stat-value'), total7);
     }
 
-    // Charts per slot
     if (chartsContainer){
       chartsContainer.innerHTML = '';
       const classes = ['var(--body)','var(--craft)','var(--rel)'];
@@ -2265,12 +1974,10 @@ window.addEventListener('unhandledrejection', function(e){
         if (!lib || !p) continue;
         const total = p.habits.length;
         const validIds = p.habits.map(h => h.id);
-
         const header = document.createElement('div');
         header.className = 'section-header';
         header.innerHTML = `<span>${escapeHtml(lib.label)} This Week</span>`;
         chartsContainer.appendChild(header);
-
         const wrap = document.createElement('div');
         wrap.className = 'chart-wrap';
         wrap.style.setProperty('--pillar', classes[i]);
@@ -2292,7 +1999,6 @@ window.addEventListener('unhandledrejection', function(e){
       }
     }
 
-    // Money week
     if (moneyWeek){
       const now = new Date();
       const weekStart = new Date(now);
@@ -2313,7 +2019,6 @@ window.addEventListener('unhandledrejection', function(e){
       `;
     }
 
-    // Journal history (across active pillars)
     if (journalHistory){
       journalHistory.innerHTML = '';
       const entries = [];
@@ -2341,7 +2046,6 @@ window.addEventListener('unhandledrejection', function(e){
         });
       }
     }
-
     renderPastReviews();
   }
 
@@ -2401,7 +2105,8 @@ window.addEventListener('unhandledrejection', function(e){
       </div>
       <div class="cal-grid">`;
 
-    for (let i = 0; i < startWeekday; i++){ html += `<div class="cal-day empty"></div>`; }
+    for (let i = 0; i < startWeekday; i++) html += `<div class="cal-day empty"></div>`;
+
     for (let day = 1; day <= daysInMonth; day++){
       const dk = `${year}-${pad(month+1)}-${pad(day)}`;
       const d = p.days[dk];
@@ -2441,8 +2146,8 @@ window.addEventListener('unhandledrejection', function(e){
 
     let html = `<div class="day-detail-header"><div class="day-detail-date">${dateObj.getDate()} ${dateObj.toLocaleDateString(undefined,{month:'short'})}</div><div class="day-detail-weekday">${dateLabel}</div>`;
     if (doneCount > 0){
-      const streakThatDay = computeStreakUpTo(slotIdx, dateKey);
-      html += `<div class="day-detail-streak" style="background:${pillarSoft};color:${pillarColor}"><svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>${streakThatDay} day streak</div>`;
+      const st = computeStreakUpTo(slotIdx, dateKey);
+      html += `<div class="day-detail-streak" style="background:${pillarSoft};color:${pillarColor}"><svg viewBox="0 0 16 16"><path d="M8 1c.5 2 2 3 3 4.5C12.5 7 13 8.5 13 10a5 5 0 11-10 0c0-1.5.5-3 2-4.5C6 4 7.5 3 8 1z"/></svg>${st} day streak</div>`;
     }
     html += `</div>`;
 
@@ -2479,15 +2184,10 @@ window.addEventListener('unhandledrejection', function(e){
   document.getElementById('closeDay').addEventListener('click', closeDayDetail);
   dayOverlay.addEventListener('click', closeDayDetail);
 
-  // Wire history buttons
   document.querySelectorAll('[data-history]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const screenId = btn.dataset.history;
-      const m = screenId.match(/pillar(\d)/);
-      if (m){
-        const slot = parseInt(m[1], 10) - 1;
-        openCalendar(slot);
-      }
+      const m = btn.dataset.history.match(/pillar(\d)/);
+      if (m) openCalendar(parseInt(m[1], 10) - 1);
     });
   });
 
@@ -2506,6 +2206,18 @@ window.addEventListener('unhandledrejection', function(e){
 
   let reviewState = null;
 
+  function buildReviewQuestions(){
+    return [
+      { slot:0, chip:'P1', q:'How did this area feel this week?' },
+      { slot:0, chip:'P1', q:'What felt easiest? What felt hardest?' },
+      { slot:1, chip:'P2', q:'What did you build, learn, or ship?' },
+      { slot:1, chip:'P2', q:'Where did you get stuck?' },
+      { slot:2, chip:'P3', q:'Who did you show up for this week?' },
+      { slot:2, chip:'P3', q:'Who needs you that you haven\'t reached?' },
+      { slot:-1, chip:'Overall', q:'One thing to carry into next week?' }
+    ];
+  }
+
   function renderReviewCard(){
     if (!reviewCardContainer) return;
     reviewCardContainer.innerHTML = '';
@@ -2515,7 +2227,6 @@ window.addEventListener('unhandledrejection', function(e){
 
     const card = document.createElement('button');
     card.className = 'review-card-today' + (doneThisWeek ? ' done-today' : '');
-
     if (doneThisWeek){
       const preview = (doneThisWeek.answers.find(a => a.answer && a.answer.trim()) || {}).answer || 'Week saved.';
       card.innerHTML = `
@@ -2545,7 +2256,6 @@ window.addEventListener('unhandledrejection', function(e){
       questions: qs,
       answers: existing ? existing.answers.map(a => a.answer || '') : qs.map(() => '')
     };
-    // Pad if mismatch
     while (reviewState.answers.length < qs.length) reviewState.answers.push('');
     reviewFlow.classList.add('active');
     vibrate(8);
@@ -2574,11 +2284,11 @@ window.addEventListener('unhandledrejection', function(e){
           <button class="review-btn primary" id="reviewFinishBtn" style="width:auto;padding:14px 32px">Close</button>
         </div>
       `;
-      const finishBtn = document.getElementById('reviewFinishBtn');
-      if (finishBtn){
-        finishBtn.addEventListener('click', () => {
+      const fb = document.getElementById('reviewFinishBtn');
+      if (fb){
+        fb.addEventListener('click', () => {
           saveReview(reviewState.answers.map((ans, i) => ({
-            q: reviewState.questions[i].question,
+            q: reviewState.questions[i].q,
             pillar: reviewState.questions[i].slot,
             chip: reviewState.questions[i].chip,
             answer: ans || ''
@@ -2595,22 +2305,20 @@ window.addEventListener('unhandledrejection', function(e){
     reviewProgressText.textContent = `Step ${idx + 1} of ${total}`;
     reviewProgressFill.style.width = ((idx) / total * 100) + '%';
 
-    // Determine chip label dynamically
     let chipLabel = item.chip;
     let chipColors = PILLAR_CHIP_COLORS[item.slot] || PILLAR_CHIP_COLORS['-1'];
     if (item.slot >= 0){
       const lib = getPillarLib(item.slot);
       chipLabel = lib ? lib.label : item.chip;
-      chipColors = PILLAR_CHIP_COLORS[item.slot] || chipColors;
     }
 
     reviewContent.innerHTML = `
       <div class="review-pillar-chip" style="background:${chipColors.bg};color:${chipColors.text}">${escapeHtml(chipLabel)}</div>
-      <h2 class="review-question">${escapeHtml(item.question)}</h2>
+      <h2 class="review-question">${escapeHtml(item.q)}</h2>
       <textarea class="review-textarea" id="reviewTextarea" placeholder="Type your answer — or skip if nothing comes up.">${escapeHtml(reviewState.answers[idx] || '')}</textarea>
     `;
     const ta = document.getElementById('reviewTextarea');
-    if (ta){ ta.addEventListener('input', () => { reviewState.answers[idx] = ta.value; }); }
+    if (ta) ta.addEventListener('input', () => { reviewState.answers[idx] = ta.value; });
     reviewSkip.textContent = 'Skip';
     reviewNext.textContent = (idx === total - 1) ? 'Finish' : 'Next';
   }
@@ -2631,7 +2339,7 @@ window.addEventListener('unhandledrejection', function(e){
   if (reviewSkip) reviewSkip.addEventListener('click', reviewSkipStep);
   if (reviewNext) reviewNext.addEventListener('click', reviewAdvance);
   if (reviewClose) reviewClose.addEventListener('click', () => {
-    if (confirm('Close without saving? Your answers this session will be lost.')){ closeReviewFlow(); }
+    if (confirm('Close without saving? Your answers this session will be lost.')) closeReviewFlow();
   });
 
   const reviewDetailSheet = document.getElementById('reviewDetailSheet');
@@ -2644,9 +2352,9 @@ window.addEventListener('unhandledrejection', function(e){
     reviewDetailTitle.textContent = formatWeekLabel(review.weekStart);
     let html = '';
     review.answers.forEach(a => {
-      const chipColors = PILLAR_CHIP_COLORS[a.pillar] || PILLAR_CHIP_COLORS['-1'];
+      const c = PILLAR_CHIP_COLORS[a.pillar] || PILLAR_CHIP_COLORS['-1'];
       html += `<div class="review-detail-qa">
-        <div class="review-detail-q" style="color:${chipColors.text}">${escapeHtml(a.chip || 'Review')} · ${escapeHtml(a.q)}</div>
+        <div class="review-detail-q" style="color:${c.text}">${escapeHtml(a.chip || 'Review')} · ${escapeHtml(a.q)}</div>
         <div class="review-detail-a${(!a.answer || !a.answer.trim()) ? ' empty' : ''}">${escapeHtml((a.answer && a.answer.trim()) || 'Skipped')}</div>
       </div>`;
     });
@@ -2685,7 +2393,7 @@ window.addEventListener('unhandledrejection', function(e){
   }
 
   // ============================================
-  // ONBOARDING FLOW
+  // ONBOARDING
   // ============================================
   const onboardingFlow = document.getElementById('onboardingFlow');
   const obProgress = document.getElementById('obProgress');
@@ -2693,17 +2401,11 @@ window.addEventListener('unhandledrejection', function(e){
   const obBottom = document.getElementById('obBottom');
 
   const OB_STEPS = ['welcome', 'rule', 'layers', 'pick', 'done'];
-  let obState = {
-    step: 0,
-    picks: [],
-    isRecap: false,
-    isPreview: false
-  };
+  let obState = { step: 0, picks: [], isRecap: false, isPreview: false };
 
   function shouldOnboard(){
     const onboarded = loadRaw(ONBOARDED_KEY, null);
     if (onboarded === 'true') return false;
-    // Existing users (have pillars with data) skip
     const hasData = pillars && Object.keys(pillars).some(k => {
       const p = pillars[k];
       return p && p.days && Object.keys(p.days).length > 0;
@@ -2717,22 +2419,12 @@ window.addEventListener('unhandledrejection', function(e){
 
   function openOnboarding(opts){
     opts = opts || {};
-    obState = {
-      step: 0,
-      picks: [],
-      isRecap: !!opts.recap,
-      isPreview: !!opts.preview
-    };
-    if (opts.preview){
-      // Preview — skip the actual save at the end
-    }
+    obState = { step: 0, picks: [], isRecap: !!opts.recap, isPreview: !!opts.preview };
     onboardingFlow.classList.add('active');
     renderObProgress();
     renderObStep();
   }
-  function closeOnboarding(){
-    onboardingFlow.classList.remove('active');
-  }
+  function closeOnboarding(){ onboardingFlow.classList.remove('active'); }
 
   function renderObProgress(){
     obProgress.innerHTML = '';
@@ -2753,6 +2445,7 @@ window.addEventListener('unhandledrejection', function(e){
         <div class="ob-eyebrow">Welcome</div>
         <h1 class="ob-title">Welcome to Spur.</h1>
         <p class="ob-body">A quiet place to show up for what matters.<br><br>No streaks to break. No guilt. Just small steps, tracked gently.</p>
+        <div class="ob-hash">#developyourperson</div>
       `;
       const btn = document.createElement('button');
       btn.className = 'ob-btn primary';
@@ -2783,7 +2476,6 @@ window.addEventListener('unhandledrejection', function(e){
       learn.textContent = 'Learn more →';
       learn.addEventListener('click', () => openLearnSheet());
       obContent.appendChild(learn);
-
       const btn = document.createElement('button');
       btn.className = 'ob-btn primary';
       btn.textContent = 'Continue';
@@ -2799,11 +2491,9 @@ window.addEventListener('unhandledrejection', function(e){
         <div class="ob-counter" id="obCounter">0 of 3 selected</div>
       `;
       renderObPicker();
-
       const btn = document.createElement('button');
       btn.className = 'ob-btn primary';
       btn.textContent = obState.isRecap ? 'Close' : 'Continue';
-      btn.id = 'obPickContinue';
       btn.disabled = obState.isRecap ? false : (obState.picks.length !== 3);
       if (obState.isRecap) btn.style.opacity = '1';
       btn.addEventListener('click', () => {
@@ -2843,21 +2533,17 @@ window.addEventListener('unhandledrejection', function(e){
     const container = document.getElementById('obLayers');
     if (!container) return;
     container.innerHTML = '';
-
-    const layerOrder = ['foundation', 'expression', 'connection'];
-    layerOrder.forEach(layerId => {
-      const pillarsInLayer = Object.keys(PILLAR_LIBRARY).filter(id => PILLAR_LIBRARY[id].layer === layerId);
-      if (!pillarsInLayer.length) return;
-
+    LAYER_ORDER.forEach(layerId => {
+      const ids = Object.keys(PILLAR_LIBRARY).filter(id => PILLAR_LIBRARY[id].layer === layerId);
+      if (!ids.length) return;
       const group = document.createElement('div');
       const head = document.createElement('div');
       head.className = 'ob-layer-head';
       head.textContent = LAYER_META[layerId].label + ' — ' + LAYER_META[layerId].blurb;
       group.appendChild(head);
-
       const list = document.createElement('div');
       list.className = 'ob-pillars';
-      pillarsInLayer.forEach(id => {
+      ids.forEach(id => {
         const p = PILLAR_LIBRARY[id];
         const isPicked = obState.picks.includes(id);
         const item = document.createElement('button');
@@ -2876,17 +2562,18 @@ window.addEventListener('unhandledrejection', function(e){
       group.appendChild(list);
       container.appendChild(group);
     });
+    const counter = document.getElementById('obCounter');
+    if (counter){
+      counter.textContent = obState.picks.length + ' of 3 selected';
+      counter.classList.toggle('warn', obState.picks.length !== 3);
+    }
   }
 
   function toggleObPick(id){
     const idx = obState.picks.indexOf(id);
-    if (idx >= 0){
-      obState.picks.splice(idx, 1);
-    } else {
-      if (obState.picks.length >= 3){
-        vibrate([30, 30, 30]);
-        return;
-      }
+    if (idx >= 0) obState.picks.splice(idx, 1);
+    else {
+      if (obState.picks.length >= 3){ vibrate([30, 30, 30]); return; }
       obState.picks.push(id);
     }
     vibrate(6);
@@ -2904,15 +2591,14 @@ window.addEventListener('unhandledrejection', function(e){
 
   function finishOnboarding(){
     if (!obState.isPreview){
-      // Save the picks
       activePillars = obState.picks.slice();
       save(ACTIVE_KEY, activePillars);
-      // Ensure each new pillar has data
       activePillars.forEach(ensurePillarData);
+      save(PILLAR_KEY, pillars);
       saveRaw(ONBOARDED_KEY, 'true');
     }
     closeOnboarding();
-    // Re-render everything
+    document.getElementById('appRoot').style.visibility = 'visible';
     renderPillarLabels();
     for (let i = 0; i < 3; i++) renderPillarScreen(i);
     renderTodayStrip();
@@ -2923,18 +2609,16 @@ window.addEventListener('unhandledrejection', function(e){
   }
 
   // ============================================
-  // LEARN MORE SHEET
+  // LEARN SHEET
   // ============================================
   const learnSheet = document.getElementById('learnSheet');
   const learnOverlay = document.getElementById('learnOverlay');
   const learnBody = document.getElementById('learnBody');
   document.getElementById('closeLearn').addEventListener('click', () => {
-    learnSheet.classList.remove('active');
-    learnOverlay.classList.remove('active');
+    learnSheet.classList.remove('active'); learnOverlay.classList.remove('active');
   });
   learnOverlay.addEventListener('click', () => {
-    learnSheet.classList.remove('active');
-    learnOverlay.classList.remove('active');
+    learnSheet.classList.remove('active'); learnOverlay.classList.remove('active');
   });
 
   function openLearnSheet(){
@@ -2964,19 +2648,17 @@ window.addEventListener('unhandledrejection', function(e){
   }
 
   // ============================================
-  // MANAGE PILLARS SHEET
+  // MANAGE PILLARS
   // ============================================
   const manageSheet = document.getElementById('manageSheet');
   const manageOverlay = document.getElementById('manageOverlay');
   const manageBody = document.getElementById('manageBody');
   const saveManageBtn = document.getElementById('saveManage');
   document.getElementById('closeManage').addEventListener('click', () => {
-    manageSheet.classList.remove('active');
-    manageOverlay.classList.remove('active');
+    manageSheet.classList.remove('active'); manageOverlay.classList.remove('active');
   });
   manageOverlay.addEventListener('click', () => {
-    manageSheet.classList.remove('active');
-    manageOverlay.classList.remove('active');
+    manageSheet.classList.remove('active'); manageOverlay.classList.remove('active');
   });
 
   let managePicks = [];
@@ -2991,25 +2673,19 @@ window.addEventListener('unhandledrejection', function(e){
 
   function renderManageBody(){
     manageBody.innerHTML = '';
-    const counter = document.createElement('div');
-    counter.className = 'ob-counter' + (managePicks.length === 3 ? '' : ' warn');
-    counter.textContent = `${managePicks.length} of 3 selected`;
-    if (managePicks.length === 3) counter.style.color = 'var(--success)';
-
-    const layerOrder = ['foundation', 'expression', 'connection'];
-    layerOrder.forEach(layerId => {
+    LAYER_ORDER.forEach(layerId => {
+      const ids = Object.keys(PILLAR_LIBRARY).filter(id => PILLAR_LIBRARY[id].layer === layerId);
+      if (!ids.length) return;
       const group = document.createElement('div');
       group.className = 'lib-group';
       const head = document.createElement('div');
       head.className = 'ob-layer-head';
       head.textContent = LAYER_META[layerId].label;
       group.appendChild(head);
-
       const list = document.createElement('div');
       list.className = 'ob-pillars';
-      Object.keys(PILLAR_LIBRARY).forEach(id => {
+      ids.forEach(id => {
         const p = PILLAR_LIBRARY[id];
-        if (p.layer !== layerId) return;
         const isPicked = managePicks.includes(id);
         const item = document.createElement('button');
         item.className = 'ob-pillar' + (isPicked ? ' selected' : '');
@@ -3028,26 +2704,21 @@ window.addEventListener('unhandledrejection', function(e){
       manageBody.appendChild(group);
     });
 
+    const counter = document.createElement('div');
+    counter.className = 'ob-counter' + (managePicks.length === 3 ? '' : ' warn');
+    counter.textContent = `${managePicks.length} of 3 selected`;
+    if (managePicks.length === 3) counter.style.color = 'var(--success)';
     manageBody.appendChild(counter);
 
-    if (managePicks.length === 3){
-      saveManageBtn.disabled = false;
-      saveManageBtn.style.opacity = '1';
-    } else {
-      saveManageBtn.disabled = true;
-      saveManageBtn.style.opacity = '.4';
-    }
+    if (managePicks.length === 3){ saveManageBtn.disabled = false; saveManageBtn.style.opacity = '1'; }
+    else { saveManageBtn.disabled = true; saveManageBtn.style.opacity = '.4'; }
   }
 
   function toggleManagePick(id){
     const idx = managePicks.indexOf(id);
-    if (idx >= 0){
-      managePicks.splice(idx, 1);
-    } else {
-      if (managePicks.length >= 3){
-        vibrate([30, 30, 30]);
-        return;
-      }
+    if (idx >= 0) managePicks.splice(idx, 1);
+    else {
+      if (managePicks.length >= 3){ vibrate([30, 30, 30]); return; }
       managePicks.push(id);
     }
     vibrate(6);
@@ -3074,15 +2745,12 @@ window.addEventListener('unhandledrejection', function(e){
   document.getElementById('managePillarsBtn').addEventListener('click', openManagePillars);
 
   // ============================================
-  // ONBOARD RECAP (Settings row)
+  // ONBOARD RECAP
   // ============================================
   document.getElementById('onboardRecapBtn').addEventListener('click', () => {
     const preview = confirm('See onboarding again.\n\nOK — run through the full flow as a new user would see it (does not change your data).\n\nCancel — replay the tour without pillar picking.');
-    if (preview){
-      openOnboarding({ recap: true, preview: true });
-    } else {
-      openOnboarding({ recap: true });
-    }
+    if (preview) openOnboarding({ recap: true, preview: true });
+    else openOnboarding({ recap: true });
   });
 
   // ============================================
@@ -3119,13 +2787,11 @@ window.addEventListener('unhandledrejection', function(e){
       }
       if (swRegistration && swRegistration.active){
         swRegistration.active.postMessage({ type: 'SCHEDULE_REMINDERS', reminders: [{ id: 'test_' + Date.now(), title: 'Test notification — this is how reminders will look', done: false, nextFireAt: Date.now() + 2000 }] });
-      } else { new Notification('Reminder', { body: 'Test notification' }); }
+      } else new Notification('Reminder', { body: 'Test notification' });
       vibrate(8);
     });
   }
-  if (testReviewBtn){
-    testReviewBtn.addEventListener('click', () => { vibrate(8); startReview(); });
-  }
+  if (testReviewBtn) testReviewBtn.addEventListener('click', () => { vibrate(8); startReview(); });
   updateNotifUI();
   if ('Notification' in window && navigator.permissions){
     navigator.permissions.query({ name: 'notifications' }).then(p => { p.onchange = updateNotifUI; }).catch(() => {});
@@ -3142,12 +2808,11 @@ window.addEventListener('unhandledrejection', function(e){
   const timerActions = document.getElementById('timerActions');
   const startBtn = document.getElementById('startTimer');
   const pauseBtn = document.getElementById('pauseTimer');
-  = const stopBtn = document.getElementById('stopTimer');
+  const stopBtn = document.getElementById('stopTimer');
 
-  ' const TIMER_CIRC = none628.3;
-  let timerDuration = 25';
- * 60;
-  let timerRemaining =    25 * 60;
+  const TIMER_CIRC = 628.3;
+  let timerDuration = 25 * 60;
+  let timerRemaining = 25 * 60;
   let timerInterval = null;
   let timerRunning = false;
   let timerPaused = false;
@@ -3176,13 +2841,14 @@ window.addEventListener('unhandledrejection', function(e){
     timerDuration = selectedMinutes * 60;
     timerRemaining = timerDuration;
     if (startBtn) startBtn.style.display = 'inline-block';
-    if (timerActions) timerActions.style.display if (timerPresets) timerPresets.style.display = 'flex';
+    if (timerActions) timerActions.style.display = 'none';
+    if (timerPresets) timerPresets.style.display = 'flex';
     if (pauseBtn) pauseBtn.textContent = 'Pause';
     updateTimerVisual();
   }
   function startTimer(){
     if (timerRunning) return;
-    if ('Notification' in window && Notification.permission === 'default'){ Notification.requestPermission().catch(() => {}); }
+    if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {});
     timerRunning = true; timerPaused = false;
     if (startBtn) startBtn.style.display = 'none';
     if (timerPresets) timerPresets.style.display = 'none';
@@ -3208,19 +2874,17 @@ window.addEventListener('unhandledrejection', function(e){
     if ('Notification' in window && Notification.permission === 'granted'){
       try { new Notification('Craft', { body: `${selectedMinutes} minutes of deep work done.`, tag: 'spur-timer' }); } catch(e){}
     }
-    // Find craft slot, mark deep done
     const craftSlot = activePillars.indexOf('craft');
     if (craftSlot >= 0){
       const key = todayKey();
       const day = getDay(craftSlot, key);
-      const deepHabit = getPillarData(craftSlot).habits.find(h => h.id === 'deep');
+      const p = getPillarData(craftSlot);
+      const deepHabit = p && p.habits.find(h => h.id === 'deep');
       if (deepHabit && !day.done.includes('deep')){
         day.done.push('deep');
         day.doneAt['deep'] = Date.now();
         save(PILLAR_KEY, pillars);
-        renderPillarScreen(craftSlot);
-        renderTodayStrip();
-        renderActivity();
+        renderPillarScreen(craftSlot); renderTodayStrip(); renderActivity();
         setTimeout(() => checkCompletion(craftSlot), 300);
       }
     }
@@ -3258,29 +2922,18 @@ window.addEventListener('unhandledrejection', function(e){
   function renderMoneySummary(){
     if (!moneySummary) return;
     const today = todayKey();
-   ('# const todayEntries = money.filter(m => m.date === today);
-    const inSum = todayEntries.filter(m => m.type === 'in').reduce((s,m) => s+m.amount, 0);
-    const outSum = todayEntries.filter(m => m.type === 'out').reduce((s,m) => s+m.amount, 0);
+    const te = money.filter(m => m.date === today);
+    const inSum = te.filter(m => m.type === 'in').reduce((s,m) => s+m.amount, 0);
+    const outSum = te.filter(m => m.type === 'out').reduce((s,m) => s+m.amount, 0);
     const net = inSum - outSum;
     moneySummary.innerHTML = `Today: <span class="in">${fmtMoney(inSum)} in</span> · <span class="out">${fmtMoney(outSum)} out</span><br>Net: <strong style="color:${net >= 0 ? 'var(--success)' : 'var(--destructive)'}">${fmtMoney(net)}</strong>`;
-  }
-  function openMoney(){
-    if (moneySheet) moneySheet.classList.add('active');
-    if (moneyOverlay) moneyOverlay.classList.add('active');
-    if (moneyAmount) moneyAmount.value = '';
-    if (moneyNote) moneyNote.value = '';
-    moneyType = 'out';
-    document.querySelectorAll('#moneySheet .chip').forEach(c => c.classList.toggle('selected', c.dataset.type === 'out'));
-    renderMoneySummary();
-    setTimeout(() => moneyAmount && moneyAmount.focus(), 350);
-    vibrate(5);
   }
   function closeMoney(){ if (moneySheet) moneySheet.classList.remove('active'); if (moneyOverlay) moneyOverlay.classList.remove('active'); }
   if (moneyOverlay) moneyOverlay.addEventListener('click', closeMoney);
   document.getElementById('cancelMoney').addEventListener('click', closeMoney);
   document.querySelectorAll('#moneySheet .chip').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAllmoneySheet .chip').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('#moneySheet .chip').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       moneyType = btn.dataset.type;
       vibrate(5);
@@ -3321,20 +2974,18 @@ window.addEventListener('unhandledrejection', function(e){
   function summarizeImport(data){
     const rCount = (data.reminders || []).length;
     let days = 0, journals = 0;
-    const pillarsData = data.pillars || {};
-    Object.keys(pillarsData).forEach(pid => {
-      const pd = pillarsData[pid];
-      if (pd && pd.days){
-        Object.keys(pd.days).forEach(k => {
-          const d = pd.days[k];
+    const pd = data.pillars || {};
+    Object.keys(pd).forEach(pid => {
+      const p = pd[pid];
+      if (p && p.days){
+        Object.keys(p.days).forEach(k => {
+          const d = p.days[k];
           if (d && d.done && d.done.length > 0) days++;
           if (d && d.journal && d.journal.trim()) journals++;
         });
       }
     });
-    const mCount = (data.money || []).length;
-    const revCount = (data.reviews || []).length;
-    return { rCount, days, journals, mCount, revCount };
+    return { rCount, days, journals, mCount: (data.money || []).length, revCount: (data.reviews || []).length };
   }
   function updatePreview(){
     if (!importText || !importPreview) return;
@@ -3345,7 +2996,7 @@ window.addEventListener('unhandledrejection', function(e){
       if (typeof data !== 'object' || data === null) throw new Error('Not an object');
       parsedImport = data;
       const s = summarizeImport(data);
-      const when = data.exportedAt ? new Date(data.exportedAt).toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric', year:'numeric' }) : 'unknown';
+      const when = data.exportedAt ? new Date(data.exportedAt).toLocaleDateString() : 'unknown';
       importPreview.innerHTML = `<strong>Backup contents</strong><br>• ${s.rCount} reminder${s.rCount === 1 ? '' : 's'}<br>• ${s.days} habit-day${s.days === 1 ? '' : 's'}<br>• ${s.journals} journal entr${s.journals === 1 ? 'y' : 'ies'}<br>• ${s.mCount} money log${s.mCount === 1 ? '' : 's'}<br>• ${s.revCount} weekly review${s.revCount === 1 ? '' : 's'}<br><span style="color:var(--text-2)">Exported: ${when}</span><br><br><span style="color:var(--destructive)">This will REPLACE all current Spur data.</span>`;
       importPreview.style.display = 'block';
     } catch(e){
@@ -3363,15 +3014,18 @@ window.addEventListener('unhandledrejection', function(e){
     doImportBtn.addEventListener('click', () => {
       if (!parsedImport){ alert('Nothing valid to import.'); return; }
       const s = summarizeImport(parsedImport);
-      const ok = confirm(`Restore this backup?\n\n• ${s.rCount} reminders\n• ${s.days} habit-days\n• ${s.journals} journal entries\n• ${s.mCount} money logs\n• ${s.revCount} weekly reviews\n\nThis will REPLACE all current data.`);
-      if (!ok) return;
+      if (!confirm(`Restore this backup?\n\n• ${s.rCount} reminders\n• ${s.days} habit-days\n• ${s.journals} journal entries\n• ${s.mCount} money logs\n• ${s.revCount} weekly reviews\n\nThis will REPLACE all current data.`)) return;
       try {
         if (Array.isArray(parsedImport.reminders)){ reminders = parsedImport.reminders; save(REM_KEY, reminders); }
         if (parsedImport.pillars && typeof parsedImport.pillars === 'object'){
           pillars = parsedImport.pillars;
-          // Ensure all active pillars have data
           activePillars.forEach(ensurePillarData);
           save(PILLAR_KEY, pillars);
+        }
+        if (Array.isArray(parsedImport.activePillars) && parsedImport.activePillars.length === 3){
+          activePillars = parsedImport.activePillars;
+          save(ACTIVE_KEY, activePillars);
+          activePillars.forEach(ensurePillarData);
         }
         if (Array.isArray(parsedImport.money)){ money = parsedImport.money; save(MONEY_KEY, money); }
         if (Array.isArray(parsedImport.reviews)){ reviews = parsedImport.reviews; save(REVIEW_KEY, reviews); }
@@ -3379,25 +3033,22 @@ window.addEventListener('unhandledrejection', function(e){
         renderReminders();
         renderPillarLabels();
         for (let i = 0; i < 3; i++) renderPillarScreen(i);
-        renderTodayStrip();
-        renderActivity();
-        renderReviewCard();
+        renderTodayStrip(); renderActivity(); renderReviewCard();
         closeImport();
         vibrate([80, 40, 80, 40, 120]);
-        setTimeout(() => alert(`Restored.`), 300);
+        setTimeout(() => alert('Restored.'), 300);
       } catch(e){ alert('Import failed: ' + (e.message || 'unknown error')); }
     });
   }
 
   document.getElementById('exportBtn').addEventListener('click', () => {
     const data = JSON.stringify({
-      reminders, pillars, money, reviews,
-      activePillars,
+      reminders, pillars, money, reviews, activePillars,
       exportedAt: new Date().toISOString()
     }, null, 2);
     if (navigator.clipboard){
       navigator.clipboard.writeText(data).then(() => alert('Data copied')).catch(() => prompt('Copy your data:', data));
-    } else { prompt('Copy your data:', data); }
+    } else prompt('Copy your data:', data);
     vibrate(8);
   });
 
@@ -3417,43 +3068,32 @@ window.addEventListener('unhandledrejection', function(e){
     if (meta) meta.setAttribute('content', t === 'dark' ? '#000000' : '#F2F2F7');
   }
   applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-  if (darkToggle){ darkToggle.addEventListener('change', () => { applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); }); }
+  if (darkToggle) darkToggle.addEventListener('change', () => { applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); });
 
   // ============================================
   // RESET
   // ============================================
   document.getElementById('resetBtn').addEventListener('click', () => {
-    if (confirm('Reset all Spur data? This cannot be undone.')){
-      reminders = []; money = []; reviews = [];
-      pillars = {};
-      activePillars = ['body', 'craft', 'rel'];
-      save(REM_KEY, reminders);
-      save(MONEY_KEY, money);
-      save(PILLAR_KEY, pillars);
-      save(REVIEW_KEY, reviews);
-      save(ACTIVE_KEY, activePillars);
-      saveRaw(ONBOARDED_KEY, '');
-      activePillars.forEach(ensurePillarData);
-      renderReminders();
-      renderPillarLabels();
-      for (let i = 0; i < 3; i++) renderPillarScreen(i);
-      renderTodayStrip();
-      renderActivity();
-      renderReviewCard();
-      vibrate(20);
-      // Give onboarding a chance to run on next reload
-      setTimeout(() => location.reload(), 500);
-    }
+    if (!confirm('Reset all Spur data? This cannot be undone.')) return;
+    reminders = []; money = []; reviews = [];
+    pillars = {};
+    activePillars = ['body', 'craft', 'rel'];
+    save(REM_KEY, reminders); save(MONEY_KEY, money); save(PILLAR_KEY, pillars); save(REVIEW_KEY, reviews); save(ACTIVE_KEY, activePillars);
+    saveRaw(ONBOARDED_KEY, '');
+    activePillars.forEach(ensurePillarData);
+    renderReminders(); renderPillarLabels();
+    for (let i = 0; i < 3; i++) renderPillarScreen(i);
+    renderTodayStrip(); renderActivity(); renderReviewCard();
+    vibrate(20);
+    setTimeout(() => location.reload(), 500);
   });
 
   // ============================================
   // INIT
   // ============================================
-  // First-launch detection — decide whether to onboard
   const needsOnboarding = shouldOnboard();
 
   if (needsOnboarding){
-    // Hide main app until onboarding done
     document.getElementById('appRoot').style.visibility = 'hidden';
     openOnboarding({});
   } else {
@@ -3474,8 +3114,7 @@ window.addEventListener('unhandledrejection', function(e){
     }
   });
 
-  console.log('%cSpur v0.15 · Stonecode','color:#FF2D55;font-weight:600;font-size:14px');
-})();
+  console.log('%cSpur v0.15 · Stonecode — #developyourperson','color:#FF2D55;font-weight:600;font-size:14px');
 </script>
 </body>
 </html>
