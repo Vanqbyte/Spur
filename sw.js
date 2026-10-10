@@ -1,7 +1,7 @@
 // Spur Service Worker — notifications with follow-ups + offline caching
-// v0.16 — fixed syntax errors from v0.15
+// v0.16 — fixed syntax errors from v0.15, bumped cache to v10-3
 
-const CACHE = 'spur-v10-2';
+const CACHE = 'spur-v10-3';
 const ASSETS = ['./', './index.html'];
 // Version files are intentionally NOT precached — the loader handles freshness.
 
