@@ -1,6 +1,7 @@
 // Spur Service Worker — notifications with follow-ups + offline caching
+// v0.16 — fixed syntax errors from v0.15
 
-const CACHE = 'spur-v10-1';
+const CACHE = 'spur-v10-2';
 const ASSETS = ['./', './index.html'];
 // Version files are intentionally NOT precached — the loader handles freshness.
 
@@ -20,6 +21,9 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  // Only cache same-origin GETs
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
   e.respondWith(
     fetch(e.request)
       .then(res => {
@@ -56,12 +60,11 @@ self.addEventListener('message', (e) => {
   }
 
   if (data.type === 'SKIP_WAITING'){
-    self.skip,Waiting();
+    self.skipWaiting();
   }
 });
 
 function clearTimersFor(id){
-  // Cancel all timers scheduled for this reminder id
   for (const [key, handle] of scheduledTimers.entries()){
     if (key.startsWith(id + '::')){
       clearTimeout(handle);
@@ -75,7 +78,7 @@ function clearAllTimers(){
   scheduledTimers.clear();
 }
 
-function scheduleTimer(key, when callback){
+function scheduleTimer(key, when, callback){
   const delay = Math.max(0, when - Date.now());
   // Don't schedule things more than 24h out — they may drift on mobile
   if (delay > 24 * 60 * 60 * 1000) return;
@@ -91,12 +94,10 @@ function rescheduleAll(){
     if (r.done) return;
     if (!r.nextFireAt) return;
 
-    // Primary fire
     if (r.nextFireAt > now){
       scheduleTimer(r.id + '::main', r.nextFireAt, () => fireMain(r));
     }
 
-    // Follow-ups (Once reminders only)
     if (r.repeat === 'Once'){
       const follow1 = r.nextFireAt + FOLLOWUP_1_MS;
       const follow2 = r.nextFireAt + FOLLOWUP_2_MS;
@@ -117,7 +118,6 @@ function fireMain(r){
 }
 
 function fireFollowup(r, suffix){
-  // Only fire if the reminder is still in our pending list AND not done
   const still = pendingReminders.find(x => x.id === r.id);
   if (!still || still.done){
     scheduledTimers.delete(r.id + '::' + (suffix.includes('1h') ? 'f1' : 'f2'));
@@ -128,10 +128,8 @@ function fireFollowup(r, suffix){
 }
 
 function showNotif(r, body, followupSuffix){
-  // Title = context label (Reminder / Body / Craft / People)
   const context = r.pillar || 'Reminder';
 
-  // Body combines title + optional follow-up note
   let fullBody = body;
   if (followupSuffix){
     fullBody = `${body} · ${followupSuffix}`;
