@@ -82,12 +82,16 @@ body.journaling .content{padding-bottom:calc(40px + var(--safe-bottom))}
 .greeting-line{font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--text);line-height:1.25;animation:greetIn .5s var(--ease)}
 .greeting-date{font-size:15px;color:var(--text-2);letter-spacing:-.2px;margin-top:2px;animation:greetIn .55s var(--ease) backwards;animation-delay:.05s}
 @keyframes greetIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.section-header{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:.02em;text-transform:uppercase;padding:24px 0 8px}
+.section-header{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text-2);letter-spacing:.02em;text-transform:uppercase;padding:24px 2px 8px}
 .section-header .header-actions{display:flex;gap:2px;align-items:center}
 .edit-toggle{background:none;border:none;color:var(--accent);font-size:13px;font-weight:600;padding:0;cursor:pointer;letter-spacing:.02em;text-transform:uppercase;transition:opacity .15s}
 .edit-toggle:active{opacity:.6}
 .edit-toggle.reset{color:var(--text-3)}
 .edit-toggle.reset:active{opacity:.5}
+.section-add-btn{background:none;border:none;padding:6px;margin-right:2px;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background .15s var(--ease),transform .12s var(--ease)}
+.section-add-btn:hover{background:var(--accent-soft)}
+.section-add-btn:active{transform:scale(.9);background:var(--accent-soft)}
+.section-add-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block}
 .group{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
 .row{display:flex;align-items:center;gap:12px;padding:13px 16px;min-height:52px;position:relative;cursor:pointer;background:var(--surface);border:none;width:100%;text-align:left;font:inherit;color:inherit;transition:background .3s var(--ease)}
 .row.wash{animation:rowWash .9s var(--ease)}
@@ -489,7 +493,7 @@ input:checked + .slider::before{transform:translateX(20px)}
           <div id="reviewCardContainer"></div>
           <div class="section-header"><span>Your Pillars</span></div>
           <div class="today-strip" id="todayStrip"></div>
-          <div class="section-header"><span>Reminders</span><button class="edit-toggle" id="remindersAddBtn" aria-label="Add reminder">+</button></div>
+          <div class="section-header"><span>Reminders</span><button class="section-add-btn" id="remindersAddBtn" aria-label="Add reminder"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
           <div class="reminders-group" id="remindersGroup"></div>
           <div class="empty" id="emptyReminders">No reminders yet.<br>Tap + to add your first.</div>
         </div>
