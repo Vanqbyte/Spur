@@ -140,6 +140,15 @@ body.journaling .content{padding-bottom:calc(40px + var(--safe-bottom))}
 @keyframes msgIn{0%{opacity:0;transform:translateY(4px)}15%{opacity:1;transform:translateY(0)}70%{opacity:1}100%{opacity:0;transform:translateY(0)}}
 .month-counter{margin-top:8px;font-size:12px;color:var(--text-2);letter-spacing:-.1px}
 .month-counter strong{color:var(--pillar,var(--accent));font-weight:600}
+.today-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
+.today-pillar{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;font-family:inherit;text-align:center;transition:transform .15s var(--spring);width:100%;min-width:0}
+.today-pillar:active{transform:scale(.96)}
+.today-pillar-ring{position:relative;width:44px;height:44px}
+.today-pillar-ring svg{transform:rotate(-90deg);display:block}
+.today-pillar-ring .track{fill:none;stroke:currentColor;opacity:.15;stroke-width:4}
+.today-pillar-ring .fill{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s var(--spring)}
+.today-pillar-label{font-size:12px;font-weight:600;color:var(--text);letter-spacing:-.1px}
+.today-pillar-pct{font-size:10px;font-weight:600;color:var(--text-2);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .week{background:var(--surface);border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px 12px;display:flex;justify-content:space-between;gap:4px}
 .day{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;cursor:pointer;background:none;border:none;padding:4px 0;font-family:inherit;border-radius:8px;transition:background .15s}
 .day:active{background:var(--surface-inset)}
@@ -1621,7 +1630,7 @@ input:checked + .slider::before{transform:translateX(20px)}
   const JOURNAL_TIER_2 = 92;
   const JOURNAL_TIER_3 = 138;
   const JOURNAL_TIER_4 = 184;
-  const JOURNAL_MAX = 600;
+  const JOURNAL_MAX = Math.min(window.innerHeight * 0.6, 600);
 
   function tierForContent(lines){
     if (lines <= 2) return JOURNAL_MIN;
