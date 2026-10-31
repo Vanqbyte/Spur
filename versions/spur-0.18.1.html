@@ -17,7 +17,8 @@
   --rel:#FF2D55;--rel-soft:rgba(255,45,85,.12);
   --settled:#C9963F;--settled-soft:rgba(201,150,63,.14);
   --success:#34C759;--destructive:#FF3B30;
-  --bg:#F2F2F7;--surface:#FFFFFF;--surface-inset:rgba(120,120,128,.08);
+  --bg:#F2F2F7;--surface:#FFFFFF;--su
+  rface-inset:rgba(120,120,128,.08);
   --text:#000000;--text-2:rgba(60,60,67,.62);--text-3:rgba(60,60,67,.34);
   --hairline:rgba(60,60,67,.16);
   --shadow-card:0 1px 3px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.02);
@@ -639,12 +640,26 @@ input:checked + .slider::before{transform:translateX(20px)}
             </button>
           </div>
 
-          <div class="section-header"><span>App</span></div>           <div class="group">             <button class="row" id="installAppBtn">               <div class="row-icon" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></div>               <div class="row-body"><div class="row-title">Install Spur</div><div class="row-sub">Add to your home screen</div></div>               <div class="row-value">›</div>             </button>           </div>            <div class="section-header"><span>App</span></div>           <div class="group">             <button class="row" id="installAppBtn">               <div class="row-icon" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></div>               <div class="row-body"><div class="row-title">Install Spur</div><div class="row-sub">Add to your home screen</div></div>               <div class="row-value">›</div>             </button>           </div>            <div class="section-header"><span>Appearance</span></div>
+          <div class="section-header"><span>App</span></div>
           <div class="group">
-            <div class="row">
-              <div class="row-icon" style="background:#8E8E93"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
-              <div class="row-body"><div class="row-title">Dark Mode</div></div>
-              <label class="switch"><input type="checkbox" id="darkToggle"><span class="slider"></span></label>
+            <button class="row" id="installAppBtn">
+              <div class="row-icon" style="background:var(--accent)"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></div>
+              <div class="row-body"><div class="row-title">Install Spur</div><div class="row-sub">Add to your home screen</div></div>
+              <div class="row-value">›</div>
+            </button>
+          </div>
+
+          <div class="section-header"><span>Appearance</span></div>
+          <div class="group">
+            <div class="row" style="cursor:default; padding-top:16px; padding-bottom:16px;">
+              <div class="row-body">
+                <div class="row-title">Theme</div>
+                <div class="chip-row" id="themeChips" style="margin-top:10px">
+                  <button class="chip" data-theme-opt="system">System</button>
+                  <button class="chip" data-theme-opt="light">Light</button>
+                  <button class="chip" data-theme-opt="dark">Dark</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -926,17 +941,15 @@ input:checked + .slider::before{transform:translateX(20px)}
   <div class="sheet-body" id="remDayBody"></div>
 </div>
 
-<div class="overlay" id="installOverlay"></div> <div class="sheet" id="installSheet">   <div class="sheet-handle"></div>   <div class="sheet-header">     <button class="sheet-btn" id="closeInstall">Close</button>     <h2 class="sheet-title">Install Spur</h2>     <span style="width:60px"></span>   </div>   <div class="sheet-body" id="installBody"></div> </div>  <div class="overlay" id="installOverlay"></div> <div class="sheet" id="installSheet">   <div class="sheet-handle"></div>   <div class="sheet-header">     <button class="sheet-btn" id="closeInstall">Close</button>     <h2 class="sheet-title">Install Spur</h2>     <span style="width:60px"></span>   </div>   <div class="sheet-body" id="installBody"></div> </div>  <div class="overlay" id="installOverlay"></div> <div class="sheet" id="installSheet">   <div class="sheet-handle"></div>   <div class="sheet-header">     <button class="sheet-btn" id="closeInstall">Close</button>     <h2 class="sheet-title">Install Spur</h2>     <span style="width:60px"></span>   </div>   <div class="sheet-body" id="installBody"></div> </div>  <div class="review-flow" id="reviewFlow">
-  <div class="review-topbar">
-    <span class="review-progress-text" id="reviewProgressText">Step 1 of 7</span>
-    <button class="review-skip-x" id="reviewClose">Close</button>
+<div class="overlay" id="installOverlay"></div>
+<div class="sheet" id="installSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <button class="sheet-btn" id="closeInstall">Close</button>
+    <h2 class="sheet-title">Install Spur</h2>
+    <span style="width:60px"></span>
   </div>
-  <div class="review-progress-bar"><div class="review-progress-fill" id="reviewProgressFill" style="width:0%"></div></div>
-  <div class="review-content" id="reviewContent"></div>
-  <div class="review-bottom" id="reviewBottom">
-    <button class="review-btn ghost" id="reviewSkip">Skip</button>
-    <button class="review-btn primary" id="reviewNext">Next</button>
-  </div>
+  <div class="sheet-body" id="installBody"></div>
 </div>
 
 <script>
@@ -4140,81 +4153,88 @@ input:checked + .slider::before{transform:translateX(20px)}
 })();
 
 // ============================================
-  // INSTALL PWA
+  // INSTALL PWA (Standalone block)
   // ============================================
-  let deferredPrompt = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-  });
+  (function() {
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
 
-  const installSheet = document.getElementById('installSheet');
-  const installOverlay = document.getElementById('installOverlay');
-  const installBody = document.getElementById('installBody');
+    const installSheet = document.getElementById('installSheet');
+    const installOverlay = document.getElementById('installOverlay');
+    const installBody = document.getElementById('installBody');
 
-  function closeInstall(){ 
-    if(installSheet) installSheet.classList.remove('active'); 
-    if(installOverlay) installOverlay.classList.remove('active'); 
-  }
-  document.getElementById('closeInstall').addEventListener('click', closeInstall);
-  installOverlay.addEventListener('click', closeInstall);
-
-  document.getElementById('installAppBtn').addEventListener('click', async function(){
-    vibrate(5);
+    function closeInstall(){ 
+      if(installSheet) installSheet.classList.remove('active'); 
+      if(installOverlay) installOverlay.classList.remove('active'); 
+    }
     
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-      alert('Spur is already installed on your device!');
-      return;
+    const closeBtn = document.getElementById('closeInstall');
+    if (closeBtn) closeBtn.addEventListener('click', closeInstall);
+    if (installOverlay) installOverlay.addEventListener('click', closeInstall);
+
+    const installBtn = document.getElementById('installAppBtn');
+    if (installBtn) {
+      installBtn.addEventListener('click', async function(){
+        vibrate(5);
+        
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+          alert('Spur is already installed on your device!');
+          return;
+        }
+
+        const ua = navigator.userAgent.toLowerCase();
+        const isIOS = /iphone|ipad|ipod/.test(ua);
+        const isAndroid = /android/.test(ua);
+
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') deferredPrompt = null;
+          return;
+        }
+
+        let html = '';
+        if (isIOS) {
+          html = 
+            '<div style="text-align:center; padding: 10px 0 20px;">' +
+            '<div style="font-size:44px;margin-bottom:16px;">📱</div>' +
+            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on iPhone</h3>' +
+            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">You must use <strong>Safari</strong> to install Spur. If you are in Chrome or another browser, open this page in Safari first.</p>' +
+            '</div>' +
+            '<div class="group" style="margin-top:8px;">' +
+            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>Share</strong> button at the bottom of Safari.</div></div><div style="color:var(--accent);"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg></div></div>' +
+            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Scroll down and tap <strong>Add to Home Screen</strong>.</div></div><div style="color:var(--accent);font-size:20px;">➕</div></div>' +
+            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">3. Tap <strong>Add</strong> in the top right corner.</div></div><div style="color:var(--accent);font-weight:600;font-size:15px;">Add</div></div>' +
+            '</div>';
+        } else if (isAndroid) {
+          html = 
+            '<div style="text-align:center; padding: 10px 0 20px;">' +
+            '<div style="font-size:44px;margin-bottom:16px;">🤖</div>' +
+            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Android</h3>' +
+            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Open this page in <strong>Chrome</strong> to see the install prompt, or add it manually.</p>' +
+            '</div>' +
+            '<div class="group" style="margin-top:8px;">' +
+            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>three dots</strong> (⋮) in the top right of Chrome.</div></div></div>' +
+            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Tap <strong>Add to Home screen</strong>.</div></div></div>' +
+            '</div>';
+        } else {
+          html = 
+            '<div style="text-align:center; padding: 10px 0 20px;">' +
+            '<div style="font-size:44px;margin-bottom:16px;">💻</div>' +
+            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Desktop</h3>' +
+            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Look for the <strong>Install</strong> icon (a little monitor with a down arrow) in your browser\'s address bar.</p>' +
+            '</div>';
+        }
+
+        installBody.innerHTML = html;
+        installSheet.classList.add('active');
+        installOverlay.classList.add('active');
+      });
     }
-
-    const ua = navigator.userAgent.toLowerCase();
-    const isIOS = /iphone|ipad|ipod/.test(ua);
-    const isAndroid = /android/.test(ua);
-
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') deferredPrompt = null;
-      return;
-    }
-
-    let html = '';
-    if (isIOS) {
-      html = 
-        '<div style="text-align:center; padding: 10px 0 20px;">' +
-        '<div style="font-size:44px;margin-bottom:16px;">📱</div>' +
-        '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on iPhone</h3>' +
-        '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">You must use <strong>Safari</strong> to install Spur. If you are in Chrome or another browser, open this page in Safari first.</p>' +
-        '</div>' +
-        '<div class="group" style="margin-top:8px;">' +
-        '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>Share</strong> button at the bottom of Safari.</div></div><div style="color:var(--accent);"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg></div></div>' +
-        '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Scroll down and tap <strong>Add to Home Screen</strong>.</div></div><div style="color:var(--accent);font-size:20px;">➕</div></div>' +
-        '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">3. Tap <strong>Add</strong> in the top right corner.</div></div><div style="color:var(--accent);font-weight:600;font-size:15px;">Add</div></div>' +
-        '</div>';
-    } else if (isAndroid) {
-      html = 
-        '<div style="text-align:center; padding: 10px 0 20px;">' +
-        '<div style="font-size:44px;margin-bottom:16px;">🤖</div>' +
-        '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Android</h3>' +
-        '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Open this page in <strong>Chrome</strong> to see the install prompt, or add it manually.</p>' +
-        '</div>' +
-        '<div class="group" style="margin-top:8px;">' +
-        '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>three dots</strong> (⋮) in the top right of Chrome.</div></div></div>' +
-        '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Tap <strong>Add to Home screen</strong>.</div></div></div>' +
-        '</div>';
-    } else {
-      html = 
-        '<div style="text-align:center; padding: 10px 0 20px;">' +
-        '<div style="font-size:44px;margin-bottom:16px;">💻</div>' +
-        '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Desktop</h3>' +
-        '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Look for the <strong>Install</strong> icon (a little monitor with a down arrow) in your browser\'s address bar.</p>' +
-        '</div>';
-    }
-
-    installBody.innerHTML = html;
-    installSheet.classList.add('active');
-    installOverlay.classList.add('active');
-  });
+  })();
 
 </script>
 </body>
