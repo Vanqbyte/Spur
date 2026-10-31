@@ -4047,7 +4047,67 @@ input:checked + .slider::before{transform:translateX(20px)}
     } else prompt('Copy your data:', data);
     vibrate(8);
   });
+  
+  // ============================================
+  // INSTALL PWA
+  // ============================================
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
 
+  const installSheet = document.getElementById('installSheet');
+  const installOverlay = document.getElementById('installOverlay');
+  const installBody = document.getElementById('installBody');
+
+  const installBtn = document.getElementById('installAppBtn');
+  if (installBtn) {
+    installBtn.addEventListener('click', async function(){
+      vibrate(5);
+      
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+        alert('Spur is already installed on your device!');
+        return;
+      }
+
+      const ua = navigator.userAgent.toLowerCase();
+      const isIOS = /iphone|ipad|ipod/.test(ua);
+      const isAndroid = /android/.test(ua);
+
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') deferredPrompt = null;
+        return;
+      }
+
+      let html = '';
+      if (isIOS) {
+        html = '<div style="text-align:center; padding: 10px 0 20px;"><div style="font-size:44px;margin-bottom:16px;">📱</div><h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on iPhone</h3><p style="font-size:15px;color:var(--text-2);line-height:1.5;">You must use <strong>Safari</strong> to install Spur. If you are in Chrome or another browser, open this page in Safari first.</p></div><div class="group" style="margin-top:8px;"><div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>Share</strong> button at the bottom of Safari.</div></div><div style="color:var(--accent);"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg></div></div><div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Scroll down and tap <strong>Add to Home Screen</strong>.</div></div><div style="color:var(--accent);font-size:20px;">➕</div></div><div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">3. Tap <strong>Add</strong> in the top right corner.</div></div><div style="color:var(--accent);font-weight:600;font-size:15px;">Add</div></div></div>';
+      } else if (isAndroid) {
+        html = '<div style="text-align:center; padding: 10px 0 20px;"><div style="font-size:44px;margin-bottom:16px;">🤖</div><h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Android</h3><p style="font-size:15px;color:var(--text-2);line-height:1.5;">Open this page in <strong>Chrome</strong> to see the install prompt, or add it manually.</p></div><div class="group" style="margin-top:8px;"><div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>three dots</strong> (⋮) in the top right of Chrome.</div></div></div><div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Tap <strong>Add to Home screen</strong>.</div></div></div></div>';
+      } else {
+        html = '<div style="text-align:center; padding: 10px 0 20px;"><div style="font-size:44px;margin-bottom:16px;">💻</div><h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Desktop</h3><p style="font-size:15px;color:var(--text-2);line-height:1.5;">Look for the <strong>Install</strong> icon (a little monitor with a down arrow) in your browser\'s address bar.</p></div>';
+      }
+
+      installBody.innerHTML = html;
+      installSheet.classList.add('active');
+      installOverlay.classList.add('active');
+    });
+  }
+
+  function closeInstall(){ 
+    if(installSheet) installSheet.classList.remove('active'); 
+    if(installOverlay) installOverlay.classList.remove('active'); 
+  }
+  const closeBtn = document.getElementById('closeInstall');
+  if (closeBtn) closeBtn.addEventListener('click', closeInstall);
+  if (installOverlay) installOverlay.addEventListener('click', closeInstall);
+
+  // ============================================
+  // THEME (System / Light / Dark)
+  // ============================================
   // ============================================
   // THEME (System / Light / Dark)
   // ============================================
@@ -4150,90 +4210,6 @@ input:checked + .slider::before{transform:translateX(20px)}
 
   console.log('%cSpur v0.18.1 · Stonecode — #developyourperson','color:#FF2D55;font-weight:600;font-size:14px');
 })();
-
-// ============================================
-  // INSTALL PWA (Standalone block)
-  // ============================================
-  (function() {
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    const installSheet = document.getElementById('installSheet');
-    const installOverlay = document.getElementById('installOverlay');
-    const installBody = document.getElementById('installBody');
-
-    function closeInstall(){ 
-      if(installSheet) installSheet.classList.remove('active'); 
-      if(installOverlay) installOverlay.classList.remove('active'); 
-    }
-    
-    const closeBtn = document.getElementById('closeInstall');
-    if (closeBtn) closeBtn.addEventListener('click', closeInstall);
-    if (installOverlay) installOverlay.addEventListener('click', closeInstall);
-
-    const installBtn = document.getElementById('installAppBtn');
-    if (installBtn) {
-      installBtn.addEventListener('click', async function(){
-        vibrate(5);
-        
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-          alert('Spur is already installed on your device!');
-          return;
-        }
-
-        const ua = navigator.userAgent.toLowerCase();
-        const isIOS = /iphone|ipad|ipod/.test(ua);
-        const isAndroid = /android/.test(ua);
-
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          if (outcome === 'accepted') deferredPrompt = null;
-          return;
-        }
-
-        let html = '';
-        if (isIOS) {
-          html = 
-            '<div style="text-align:center; padding: 10px 0 20px;">' +
-            '<div style="font-size:44px;margin-bottom:16px;">📱</div>' +
-            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on iPhone</h3>' +
-            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">You must use <strong>Safari</strong> to install Spur. If you are in Chrome or another browser, open this page in Safari first.</p>' +
-            '</div>' +
-            '<div class="group" style="margin-top:8px;">' +
-            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>Share</strong> button at the bottom of Safari.</div></div><div style="color:var(--accent);"><svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg></div></div>' +
-            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Scroll down and tap <strong>Add to Home Screen</strong>.</div></div><div style="color:var(--accent);font-size:20px;">➕</div></div>' +
-            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">3. Tap <strong>Add</strong> in the top right corner.</div></div><div style="color:var(--accent);font-weight:600;font-size:15px;">Add</div></div>' +
-            '</div>';
-        } else if (isAndroid) {
-          html = 
-            '<div style="text-align:center; padding: 10px 0 20px;">' +
-            '<div style="font-size:44px;margin-bottom:16px;">🤖</div>' +
-            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Android</h3>' +
-            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Open this page in <strong>Chrome</strong> to see the install prompt, or add it manually.</p>' +
-            '</div>' +
-            '<div class="group" style="margin-top:8px;">' +
-            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">1. Tap the <strong>three dots</strong> (⋮) in the top right of Chrome.</div></div></div>' +
-            '<div class="row" style="cursor:default"><div class="row-body"><div class="row-title" style="white-space:normal;">2. Tap <strong>Add to Home screen</strong>.</div></div></div>' +
-            '</div>';
-        } else {
-          html = 
-            '<div style="text-align:center; padding: 10px 0 20px;">' +
-            '<div style="font-size:44px;margin-bottom:16px;">💻</div>' +
-            '<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Install on Desktop</h3>' +
-            '<p style="font-size:15px;color:var(--text-2);line-height:1.5;">Look for the <strong>Install</strong> icon (a little monitor with a down arrow) in your browser\'s address bar.</p>' +
-            '</div>';
-        }
-
-        installBody.innerHTML = html;
-        installSheet.classList.add('active');
-        installOverlay.classList.add('active');
-      });
-    }
-  })();
 
 </script>
 </body>
