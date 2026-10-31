@@ -4037,23 +4037,59 @@ input:checked + .slider::before{transform:translateX(20px)}
   });
 
   // ============================================
-  // THEME
+  // THEME (System / Light / Dark)
   // ============================================
-  const darkToggle = document.getElementById('darkToggle');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  let savedTheme = null;
-  try { savedTheme = localStorage.getItem(THEME_KEY); } catch(e){}
+  const themeChips = document.getElementById('themeChips');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  
+  let savedTheme = 'system';
+  try { 
+    const stored = localStorage.getItem(THEME_KEY); 
+    if (stored === 'light' || stored === 'dark' || stored === 'system') savedTheme = stored;
+  } catch(e){}
 
-  function applyTheme(t){
-    document.documentElement.setAttribute('data-theme', t);
-    if (darkToggle) darkToggle.checked = (t === 'dark');
-    try { localStorage.setItem(THEME_KEY, t); } catch(e){}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', t === 'dark' ? '#000000' : '#F2F2F7');
+  function getEffectiveTheme(pref) {
+    if (pref === 'system') {
+      return systemPrefersDark.matches ? 'dark' : 'light';
+    }
+    return pref;
   }
-  applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-  if (darkToggle) darkToggle.addEventListener('change', function(){ applyTheme(darkToggle.checked ? 'dark' : 'light'); vibrate(8); });
 
+  function applyTheme(pref) {
+    const effective = getEffectiveTheme(pref);
+    document.documentElement.setAttribute('data-theme', effective);
+    
+    if (themeChips) {
+      themeChips.querySelectorAll('.chip').forEach(function(btn) {
+        btn.classList.toggle('selected', btn.dataset.themeOpt === pref);
+      });
+    }
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', effective === 'dark' ? '#000000' : '#F2F2F7');
+  }
+
+  function setThemePreference(pref) {
+    savedTheme = pref;
+    try { localStorage.setItem(THEME_KEY, pref); } catch(e){}
+    applyTheme(pref);
+    vibrate(8);
+  }
+
+  applyTheme(savedTheme);
+
+  if (themeChips) {
+    themeChips.querySelectorAll('.chip').forEach(function(btn) {
+      btn.addEventListener('click', function() { setThemePreference(btn.dataset.themeOpt); });
+    });
+  }
+
+  systemPrefersDark.addEventListener('change', function() {
+    if (savedTheme === 'system') {
+      applyTheme('system');
+    }
+  });
+  
   // ============================================
   // RESET
   // ============================================
